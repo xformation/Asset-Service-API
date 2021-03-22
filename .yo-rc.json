@@ -1,0 +1,37 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.synectiks.asset"
+    },
+    "jhipsterVersion": "6.10.5",
+    "applicationType": "microservice",
+    "baseName": "assetservice",
+    "packageName": "com.synectiks.asset",
+    "packageFolder": "com/synectiks/asset",
+    "serverPort": "5057",
+    "authenticationType": "jwt",
+    "cacheProvider": "no",
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "postgresql",
+    "prodDatabaseType": "postgresql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "ZTdlYTc4NzBiMzhlNGM0ZjQxNDlkOGMwMWJhMmExNTcxYWY2MTNlODY3OGQwYjY5YTBiN2IwYmZiYzkyZWUyOGZkODE5ZDAwMmU0ZDVlMTBjZTBlNTdhYzM0YmJiNWFlNWM2ZmE4MjEyNWZmMjkxZmM1OTE5OTVjODA1ZTc0N2Y=",
+    "embeddableLaunchScript": false,
+    "creationTimestamp": 1616398912029,
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": false,
+    "clientPackageManager": "npm",
+    "blueprints": [],
+    "skipClient": true,
+    "skipUserManagement": true
+  }
+}
