@@ -1,0 +1,52 @@
+entity Environment{
+   name String
+   description String maxlength(5000)
+   createdOn Instant
+   updatedOn Instant 
+   status String
+   scopes String
+   authUrl String
+   tokenUrl String
+   apiUrl String
+}
+
+entity EnvAccount {
+   name String
+   description String maxlength(5000)
+   createdOn Instant
+   updatedOn Instant 
+   status String
+   clientId String maxlength(1000)
+   clientSecret String maxlength(2000)
+   userType String
+   email String
+   password String
+}
+
+entity Input {
+   name String
+   description String maxlength(5000)
+   createdOn Instant
+   updatedOn Instant 
+   status String
+   source String
+   type String
+   url String
+   userId String
+   password String
+   database String
+   inputData Blob
+   access String
+   basicAuth String
+   basicAuthUser String
+   basicAuthPassword String
+   withCredentials String
+   secureInputData String
+}
+
+relationship ManyToOne {
+	EnvAccount{environment} to Environment,
+	Input{envAccount} to EnvAccount
+}
+
+dto * with mapstruct service all with serviceImpl
