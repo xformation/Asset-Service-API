@@ -8,6 +8,8 @@ entity Environment{
    authUrl String
    tokenUrl String
    apiUrl String
+   updatedBy String
+   createdBy String
 }
 
 entity EnvAccount {

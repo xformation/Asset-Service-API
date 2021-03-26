@@ -1,22 +1,16 @@
 package com.synectiks.asset.service.mapper;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class InputMapperTest {
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-    private InputMapper inputMapper;
+class InputMapperTest {
 
-    @BeforeEach
-    public void setUp() {
-//        inputMapper = new InputMapperImpl();
-    }
+  private InputMapper inputMapper;
 
-    @Test
-    public void testEntityFromId() {
-        Long id = 1L;
-        assertThat(inputMapper.fromId(id).getId()).isEqualTo(id);
-        assertThat(inputMapper.fromId(null)).isNull();
-    }
+  @BeforeEach
+  public void setUp() {
+//    inputMapper = new InputMapperImpl();
+  }
 }

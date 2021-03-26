@@ -1,156 +1,160 @@
 package com.synectiks.asset.service.dto;
 
-import java.time.Instant;
-import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
+import java.util.Objects;
+import javax.validation.constraints.*;
 
 /**
  * A DTO for the {@link com.synectiks.asset.domain.EnvAccount} entity.
  */
 public class EnvAccountDTO implements Serializable {
-    
-    private Long id;
 
-    private String name;
+  private Long id;
 
-    @Size(max = 5000)
-    private String description;
+  private String name;
 
-    private Instant createdOn;
+  @Size(max = 5000)
+  private String description;
 
-    private Instant updatedOn;
+  private Instant createdOn;
 
-    private String status;
+  private Instant updatedOn;
 
-    @Size(max = 1000)
-    private String clientId;
+  private String status;
 
-    @Size(max = 2000)
-    private String clientSecret;
+  @Size(max = 1000)
+  private String clientId;
 
-    private String userType;
+  @Size(max = 2000)
+  private String clientSecret;
 
-    private String email;
+  private String userType;
 
-    private String password;
+  private String email;
 
+  private String password;
 
-    private Long environmentId;
-    
-    public Long getId() {
-        return id;
+  private EnvironmentDTO environment;
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public Instant getCreatedOn() {
+    return createdOn;
+  }
+
+  public void setCreatedOn(Instant createdOn) {
+    this.createdOn = createdOn;
+  }
+
+  public Instant getUpdatedOn() {
+    return updatedOn;
+  }
+
+  public void setUpdatedOn(Instant updatedOn) {
+    this.updatedOn = updatedOn;
+  }
+
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
+  }
+
+  public String getClientId() {
+    return clientId;
+  }
+
+  public void setClientId(String clientId) {
+    this.clientId = clientId;
+  }
+
+  public String getClientSecret() {
+    return clientSecret;
+  }
+
+  public void setClientSecret(String clientSecret) {
+    this.clientSecret = clientSecret;
+  }
+
+  public String getUserType() {
+    return userType;
+  }
+
+  public void setUserType(String userType) {
+    this.userType = userType;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public EnvironmentDTO getEnvironment() {
+    return environment;
+  }
+
+  public void setEnvironment(EnvironmentDTO environment) {
+    this.environment = environment;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof EnvAccountDTO)) {
+      return false;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    EnvAccountDTO envAccountDTO = (EnvAccountDTO) o;
+    if (this.id == null) {
+      return false;
     }
+    return Objects.equals(this.id, envAccountDTO.id);
+  }
 
-    public String getName() {
-        return name;
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.id);
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Instant getCreatedOn() {
-        return createdOn;
-    }
-
-    public void setCreatedOn(Instant createdOn) {
-        this.createdOn = createdOn;
-    }
-
-    public Instant getUpdatedOn() {
-        return updatedOn;
-    }
-
-    public void setUpdatedOn(Instant updatedOn) {
-        this.updatedOn = updatedOn;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
-    }
-
-    public String getClientSecret() {
-        return clientSecret;
-    }
-
-    public void setClientSecret(String clientSecret) {
-        this.clientSecret = clientSecret;
-    }
-
-    public String getUserType() {
-        return userType;
-    }
-
-    public void setUserType(String userType) {
-        this.userType = userType;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Long getEnvironmentId() {
-        return environmentId;
-    }
-
-    public void setEnvironmentId(Long environmentId) {
-        this.environmentId = environmentId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof EnvAccountDTO)) {
-            return false;
-        }
-
-        return id != null && id.equals(((EnvAccountDTO) o).id);
-    }
-
-    @Override
-    public int hashCode() {
-        return 31;
-    }
-
-    // prettier-ignore
+  // prettier-ignore
     @Override
     public String toString() {
         return "EnvAccountDTO{" +
@@ -165,7 +169,7 @@ public class EnvAccountDTO implements Serializable {
             ", userType='" + getUserType() + "'" +
             ", email='" + getEmail() + "'" +
             ", password='" + getPassword() + "'" +
-            ", environmentId=" + getEnvironmentId() +
+            ", environment=" + getEnvironment() +
             "}";
     }
 }

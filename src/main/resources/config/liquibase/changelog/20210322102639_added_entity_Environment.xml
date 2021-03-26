@@ -42,6 +42,12 @@
             <column name="api_url" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+             <column name="updated_by" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="environment" columnName="created_on" columnDataType="datetime"/>
@@ -76,6 +82,8 @@
             <column name="auth_url" type="string"/>
             <column name="token_url" type="string"/>
             <column name="api_url" type="string"/>
+            <column name="updated_by" type="string"/>
+            <column name="created_by" type="string"/>
         </loadData>
     </changeSet> -->
 

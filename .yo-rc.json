@@ -32,6 +32,8 @@
     "clientPackageManager": "npm",
     "blueprints": [],
     "skipClient": true,
-    "skipUserManagement": true
+    "skipUserManagement": true,
+    "entities": ["Environment", "EnvAccount", "Input"],
+    "lastLiquibaseTimestamp": 1616575206000
   }
 }

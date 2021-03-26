@@ -1,9 +1,7 @@
 package com.synectiks.asset.service.mapper;
 
-
 import com.synectiks.asset.domain.*;
 import com.synectiks.asset.service.dto.EnvironmentDTO;
-
 import org.mapstruct.*;
 
 /**
@@ -11,15 +9,8 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface EnvironmentMapper extends EntityMapper<EnvironmentDTO, Environment> {
-
-
-
-    default Environment fromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        Environment environment = new Environment();
-        environment.setId(id);
-        return environment;
-    }
+  @Named("id")
+  @BeanMapping(ignoreByDefault = true)
+  @Mapping(target = "id", source = "id")
+  EnvironmentDTO toDtoId(Environment environment);
 }
