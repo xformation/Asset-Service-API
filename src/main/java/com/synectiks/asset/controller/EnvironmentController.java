@@ -4,22 +4,25 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
-import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.synectiks.asset.config.Constants;
 import com.synectiks.asset.domain.Environment;
 import com.synectiks.asset.repository.EnvironmentRepository;
 
@@ -30,7 +33,8 @@ import io.github.jhipster.web.util.HeaderUtil;
 @CrossOrigin( origins = "*")
 public class EnvironmentController {
 	private static final String ENTITY_NAME = "environment";
-
+	private static final Logger logger = LoggerFactory.getLogger(EnvironmentController.class);
+	
 	@Value("${jhipster.clientApp.name}")
 	private String applicationName;
 
@@ -46,7 +50,7 @@ public class EnvironmentController {
 			@RequestParam(required = false) String apiUrl,
 			@RequestParam(required = false) String description
 			) throws URISyntaxException {
-
+		logger.info("Adding environment");
 		Environment environment = new Environment();
 		environment.setName(name);
 		environment.setDescription(description);
@@ -58,6 +62,7 @@ public class EnvironmentController {
 		environment.setUpdatedOn(now);
 		environment = environmentRepository.save(environment);
 		List<Environment> list = getAllEnvironment();
+		logger.info("Adding environment completed");
 		return ResponseEntity
 				.created(new URI("/api/addEnvironment/" + environment.getId())).headers(HeaderUtil
 						.createEntityCreationAlert(applicationName, false, ENTITY_NAME, environment.getId().toString()))
@@ -67,7 +72,9 @@ public class EnvironmentController {
 
 	@GetMapping("/getAllEnvironment")
 	private List<Environment> getAllEnvironment() {
+		logger.info("Getting all environments");
 		List<Environment> list = environmentRepository.findAll(Sort.by(Direction.DESC, "id"));
+		logger.info("Getting all environments completed");
 		return list;
 	}
 	
@@ -80,9 +87,8 @@ public class EnvironmentController {
 			@RequestParam(required = false) String apiUrl,
 			@RequestParam(required = false) String description,
 			@RequestParam(name = "userName", required = false) String userName
-			)
-					throws URISyntaxException {
-
+			) throws URISyntaxException {
+		logger.info("Updating environment");
 		Environment environment = new Environment();
 		environment.setName(name);
 		environment.setDescription(description);
@@ -93,7 +99,7 @@ public class EnvironmentController {
 		environment.setUpdatedOn(now);
 
 		environment = environmentRepository.save(environment);
-
+		logger.info("Updating environment completed");
 		return ResponseEntity
 				.created(new URI("/api/updateEnvironment/" + environment.getId())).headers(HeaderUtil
 						.createEntityCreationAlert(applicationName, false, ENTITY_NAME, environment.getId().toString()))
@@ -101,5 +107,29 @@ public class EnvironmentController {
 	}
 
 	
+	@DeleteMapping("/deleteEnvironment/{id}")
+    public ResponseEntity<Void> deleteEnvironment(@PathVariable Long id) {
+		logger.info("Deleting environment");
+		environmentRepository.deleteById(id);
+		logger.info("Deleting environment completed");
+		return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
+	}
 	
+	@GetMapping("/getEnvironment/{id}")
+    public ResponseEntity<Environment> getEnvironment(@PathVariable Long id) throws URISyntaxException {
+		logger.info("Getting environment");
+		Optional<Environment> oEnv =environmentRepository.findById(id);
+		if(oEnv.isPresent()) {
+			logger.info("Environment object found");
+			return ResponseEntity
+					.created(new URI("/api/updateEnvironment/" + oEnv.get().getId())).headers(HeaderUtil
+							.createEntityCreationAlert(applicationName, false, ENTITY_NAME, oEnv.get().getId().toString()))
+					.body(oEnv.get());
+		}
+		logger.info("Getting environment completed");
+		return ResponseEntity
+				.created(new URI("/api/updateEnvironment/")).headers(HeaderUtil
+						.createEntityCreationAlert(applicationName, false, ENTITY_NAME, ""))
+				.body(null);
+	}
 }

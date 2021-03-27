@@ -42,10 +42,16 @@
             <column name="api_url" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-             <column name="updated_by" type="varchar(255)">
+            <column name="updated_by" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="created_by" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="json_data" type="longblob">
+                <constraints nullable="true" />
+            </column>
+            <column name="json_data_content_type" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
@@ -84,6 +90,9 @@
             <column name="api_url" type="string"/>
             <column name="updated_by" type="string"/>
             <column name="created_by" type="string"/>
+            <column name="json_data" type="blob"/>
+            <column name="json_data_content_type" type="string"/>
+            jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here
         </loadData>
     </changeSet> -->
 

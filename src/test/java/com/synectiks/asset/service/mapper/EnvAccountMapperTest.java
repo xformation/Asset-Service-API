@@ -1,16 +1,22 @@
 package com.synectiks.asset.service.mapper;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
-class EnvAccountMapperTest {
+public class EnvAccountMapperTest {
 
-  private EnvAccountMapper envAccountMapper;
+    private EnvAccountMapper envAccountMapper;
 
-  @BeforeEach
-  public void setUp() {
-//    envAccountMapper = new EnvAccountMapperImpl();
-  }
+    @BeforeEach
+    public void setUp() {
+//        envAccountMapper = new EnvAccountMapperImpl();
+    }
+
+    @Test
+    public void testEntityFromId() {
+        Long id = 1L;
+        assertThat(envAccountMapper.fromId(id).getId()).isEqualTo(id);
+        assertThat(envAccountMapper.fromId(null)).isNull();
+    }
 }

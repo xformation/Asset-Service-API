@@ -17,9 +17,15 @@
     <include file="config/liquibase/changelog/20210322102639_added_entity_Environment.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210322102739_added_entity_EnvAccount.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210322102839_added_entity_Input.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210326055657_added_entity_Dashboard.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210326055757_added_entity_Organization.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210326055857_added_entity_OrganizationalUnit.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210326055957_added_entity_OuEnvAcMapping.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20210322102739_added_entity_constraints_EnvAccount.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210322102839_added_entity_constraints_Input.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210326055657_added_entity_constraints_Dashboard.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210326055957_added_entity_constraints_OuEnvAcMapping.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

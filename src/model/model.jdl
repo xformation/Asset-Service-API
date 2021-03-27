@@ -10,6 +10,7 @@ entity Environment{
    apiUrl String
    updatedBy String
    createdBy String
+   jsonData Blob
 }
 
 entity EnvAccount {
@@ -23,6 +24,9 @@ entity EnvAccount {
    userType String
    email String
    password String
+   jsonData Blob
+   updatedBy String
+   createdBy String
 }
 
 entity Input {
@@ -43,12 +47,57 @@ entity Input {
    basicAuthUser String
    basicAuthPassword String
    withCredentials String
-   secureInputData String
+   secureInputData Blob
+   daprPubSubName String
+   daprTopic String
+   daprRoute String
+   createdBy String
+   updatedBy String
 }
+
+entity Dashboard {
+   name String
+   description String maxlength(5000)
+   createdOn Instant
+   updatedOn Instant 
+   status String
+   isMonitored  String maxlength(3)
+   jsonData Blob
+   createdBy String
+   updatedBy String
+}
+
+entity Organization {
+   name String
+   description String maxlength(5000)
+   createdOn Instant
+   updatedOn Instant 
+   status String
+   createdBy String
+   updatedBy String
+}
+
+entity OrganizationalUnit {
+   name String
+   description String maxlength(5000)
+   createdOn Instant
+   updatedOn Instant 
+   status String
+   createdBy String
+   updatedBy String
+}
+
+entity OuEnvAcMapping {
+   
+}
+
 
 relationship ManyToOne {
 	EnvAccount{environment} to Environment,
-	Input{envAccount} to EnvAccount
+	Input{envAccount} to EnvAccount,
+	Dashboard{input} to Input,
+	OuEnvAcMapping{organizationalUnit} to OrganizationalUnit,
+	OuEnvAcMapping{envAccount} to EnvAccount
 }
 
 dto * with mapstruct service all with serviceImpl
