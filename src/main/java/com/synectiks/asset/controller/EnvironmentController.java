@@ -80,6 +80,7 @@ public class EnvironmentController {
 	
 	@PutMapping("/updateEnvironment")
 	public ResponseEntity<Environment> updateEnvironment(
+			@RequestParam Long id,
 			@RequestParam(required = false) String name,
 			@RequestParam(required = false) String scopes, 
 			@RequestParam(required = false) String authUrl,
@@ -89,7 +90,16 @@ public class EnvironmentController {
 			@RequestParam(name = "userName", required = false) String userName
 			) throws URISyntaxException {
 		logger.info("Updating environment");
-		Environment environment = new Environment();
+		
+		Optional<Environment> oEnv = environmentRepository.findById(id);
+		if(!oEnv.isPresent()) {
+			logger.warn("Environment object not found for give id: "+id);
+			return ResponseEntity
+					.created(new URI("/api/updateEnvironment/")).headers(HeaderUtil
+							.createEntityCreationAlert(applicationName, false, ENTITY_NAME, ""))
+					.body(null);
+		}
+		Environment environment = oEnv.get();
 		environment.setName(name);
 		environment.setDescription(description);
 		environment.setAuthUrl(authUrl);
@@ -106,7 +116,6 @@ public class EnvironmentController {
 				.body(environment);
 	}
 
-	
 	@DeleteMapping("/deleteEnvironment/{id}")
     public ResponseEntity<Void> deleteEnvironment(@PathVariable Long id) {
 		logger.info("Deleting environment");
