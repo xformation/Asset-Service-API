@@ -67,11 +67,15 @@ public class EnvAccount implements Serializable {
 
     @Column(name = "created_by")
     private String createdBy;
+    
+//    @Column(name= "environment_id")
+//    private String environmentId;
 
-    @ManyToOne
+    
+
+	@ManyToOne
     @JsonIgnoreProperties(value = "envAccounts", allowSetters = true)
-    private Environment environment;
-
+	private  Environment environment;
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
@@ -158,6 +162,18 @@ public class EnvAccount implements Serializable {
     public void setClientId(String clientId) {
         this.clientId = clientId;
     }
+    
+//    public String getEnvironmentId() {
+//  		return environmentId;
+//  	}
+//    public EnvAccount environmentId(String environmentId) {
+//        this.environmentId = environmentId;
+//        return this;
+//    }
+//
+//  	public void setEnvironmentId(String environmentId) {
+//  		this.environmentId = environmentId;
+//  	}
 
     public String getClientSecret() {
         return clientSecret;
@@ -171,6 +187,7 @@ public class EnvAccount implements Serializable {
     public void setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
     }
+  	
 
     public String getUserType() {
         return userType;
@@ -197,6 +214,7 @@ public class EnvAccount implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+   
 
     public String getPassword() {
         return password;
@@ -271,10 +289,13 @@ public class EnvAccount implements Serializable {
         this.environment = environment;
         return this;
     }
-
     public void setEnvironment(Environment environment) {
         this.environment = environment;
     }
+    
+  
+
+    
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -312,6 +333,7 @@ public class EnvAccount implements Serializable {
             ", jsonDataContentType='" + getJsonDataContentType() + "'" +
             ", updatedBy='" + getUpdatedBy() + "'" +
             ", createdBy='" + getCreatedBy() + "'" +
+//            ",environmentId='" + getEnvironmentId() +"'" +
             "}";
     }
 }

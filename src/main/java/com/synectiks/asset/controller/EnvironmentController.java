@@ -30,7 +30,7 @@ import io.github.jhipster.web.util.HeaderUtil;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin( origins = "*")
+//@CrossOrigin( origins = "*")
 public class EnvironmentController {
 	private static final String ENTITY_NAME = "environment";
 	private static final Logger logger = LoggerFactory.getLogger(EnvironmentController.class);
