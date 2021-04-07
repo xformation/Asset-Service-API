@@ -48,7 +48,8 @@ public class EnvironmentController {
 			@RequestParam(required = false) String authUrl,
 			@RequestParam(required = false) String tokenUrl, 
 			@RequestParam(required = false) String apiUrl,
-			@RequestParam(required = false) String description
+			@RequestParam(required = false) String description,
+			@RequestParam(required = false) String type
 			) throws URISyntaxException {
 		logger.info("Adding environment");
 		Environment environment = new Environment();
@@ -56,7 +57,9 @@ public class EnvironmentController {
 		environment.setDescription(description);
 		environment.setAuthUrl(authUrl);
 		environment.setTokenUrl(tokenUrl);
+		environment.setScopes(scopes);
 		environment.setApiUrl(apiUrl);
+		environment.setType(type);
 		Instant now = Instant.now();
 		environment.setCreatedOn(now);
 		environment.setUpdatedOn(now);
@@ -102,6 +105,7 @@ public class EnvironmentController {
 		Environment environment = oEnv.get();
 		environment.setName(name);
 		environment.setDescription(description);
+		environment.setScopes(scopes);
 		environment.setAuthUrl(authUrl);
 		environment.setTokenUrl(tokenUrl);
 		environment.setApiUrl(apiUrl);
