@@ -26,8 +26,6 @@ import com.synectiks.asset.repository.EnvironmentRepository;
 
 import io.github.jhipster.web.util.HeaderUtil;
 
-
-
 @RestController
 @RequestMapping("/api")
 public class EnvAccountController {
@@ -102,7 +100,7 @@ public class EnvAccountController {
 		return list;
 	}
 	
-	@GetMapping("/getEnvAccount{id}")
+	@GetMapping("/getEnvAccount/{id}")
 	public ResponseEntity<EnvAccount> getEnvAccount(@PathVariable Long id)
 	throws URISyntaxException
 	{
@@ -180,14 +178,3 @@ public class EnvAccountController {
      }
 
 }
-
-
-
-
-	
-
-
-
-	
-	
-
