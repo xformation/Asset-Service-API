@@ -39,6 +39,8 @@ public class EnvironmentDTO implements Serializable {
     private byte[] jsonData;
 
     private String jsonDataContentType;
+    private String type;
+
     
     public Long getId() {
         return id;
@@ -152,6 +154,14 @@ public class EnvironmentDTO implements Serializable {
         this.jsonDataContentType = jsonDataContentType;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -186,6 +196,7 @@ public class EnvironmentDTO implements Serializable {
             ", updatedBy='" + getUpdatedBy() + "'" +
             ", createdBy='" + getCreatedBy() + "'" +
             ", jsonData='" + getJsonData() + "'" +
+            ", type='" + getType() + "'" +
             "}";
     }
 }

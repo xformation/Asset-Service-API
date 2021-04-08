@@ -73,6 +73,9 @@ public class EnvironmentResourceIT {
     private static final String DEFAULT_JSON_DATA_CONTENT_TYPE = "image/jpg";
     private static final String UPDATED_JSON_DATA_CONTENT_TYPE = "image/png";
 
+    private static final String DEFAULT_TYPE = "AAAAAAAAAA";
+    private static final String UPDATED_TYPE = "BBBBBBBBBB";
+
     @Autowired
     private EnvironmentRepository environmentRepository;
 
@@ -110,7 +113,8 @@ public class EnvironmentResourceIT {
             .updatedBy(DEFAULT_UPDATED_BY)
             .createdBy(DEFAULT_CREATED_BY)
             .jsonData(DEFAULT_JSON_DATA)
-            .jsonDataContentType(DEFAULT_JSON_DATA_CONTENT_TYPE);
+            .jsonDataContentType(DEFAULT_JSON_DATA_CONTENT_TYPE)
+            .type(DEFAULT_TYPE);
         return environment;
     }
     /**
@@ -133,7 +137,8 @@ public class EnvironmentResourceIT {
             .updatedBy(UPDATED_UPDATED_BY)
             .createdBy(UPDATED_CREATED_BY)
             .jsonData(UPDATED_JSON_DATA)
-            .jsonDataContentType(UPDATED_JSON_DATA_CONTENT_TYPE);
+            .jsonDataContentType(UPDATED_JSON_DATA_CONTENT_TYPE)
+            .type(UPDATED_TYPE);
         return environment;
     }
 
@@ -170,6 +175,7 @@ public class EnvironmentResourceIT {
         assertThat(testEnvironment.getCreatedBy()).isEqualTo(DEFAULT_CREATED_BY);
         assertThat(testEnvironment.getJsonData()).isEqualTo(DEFAULT_JSON_DATA);
         assertThat(testEnvironment.getJsonDataContentType()).isEqualTo(DEFAULT_JSON_DATA_CONTENT_TYPE);
+        assertThat(testEnvironment.getType()).isEqualTo(DEFAULT_TYPE);
     }
 
     @Test
@@ -216,7 +222,8 @@ public class EnvironmentResourceIT {
             .andExpect(jsonPath("$.[*].updatedBy").value(hasItem(DEFAULT_UPDATED_BY)))
             .andExpect(jsonPath("$.[*].createdBy").value(hasItem(DEFAULT_CREATED_BY)))
             .andExpect(jsonPath("$.[*].jsonDataContentType").value(hasItem(DEFAULT_JSON_DATA_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].jsonData").value(hasItem(Base64Utils.encodeToString(DEFAULT_JSON_DATA))));
+            .andExpect(jsonPath("$.[*].jsonData").value(hasItem(Base64Utils.encodeToString(DEFAULT_JSON_DATA))))
+            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE)));
     }
     
     @Test
@@ -242,7 +249,8 @@ public class EnvironmentResourceIT {
             .andExpect(jsonPath("$.updatedBy").value(DEFAULT_UPDATED_BY))
             .andExpect(jsonPath("$.createdBy").value(DEFAULT_CREATED_BY))
             .andExpect(jsonPath("$.jsonDataContentType").value(DEFAULT_JSON_DATA_CONTENT_TYPE))
-            .andExpect(jsonPath("$.jsonData").value(Base64Utils.encodeToString(DEFAULT_JSON_DATA)));
+            .andExpect(jsonPath("$.jsonData").value(Base64Utils.encodeToString(DEFAULT_JSON_DATA)))
+            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE));
     }
     @Test
     @Transactional
@@ -277,7 +285,8 @@ public class EnvironmentResourceIT {
             .updatedBy(UPDATED_UPDATED_BY)
             .createdBy(UPDATED_CREATED_BY)
             .jsonData(UPDATED_JSON_DATA)
-            .jsonDataContentType(UPDATED_JSON_DATA_CONTENT_TYPE);
+            .jsonDataContentType(UPDATED_JSON_DATA_CONTENT_TYPE)
+            .type(UPDATED_TYPE);
         EnvironmentDTO environmentDTO = environmentMapper.toDto(updatedEnvironment);
 
         restEnvironmentMockMvc.perform(put("/api/environments")
@@ -302,6 +311,7 @@ public class EnvironmentResourceIT {
         assertThat(testEnvironment.getCreatedBy()).isEqualTo(UPDATED_CREATED_BY);
         assertThat(testEnvironment.getJsonData()).isEqualTo(UPDATED_JSON_DATA);
         assertThat(testEnvironment.getJsonDataContentType()).isEqualTo(UPDATED_JSON_DATA_CONTENT_TYPE);
+        assertThat(testEnvironment.getType()).isEqualTo(UPDATED_TYPE);
     }
 
     @Test

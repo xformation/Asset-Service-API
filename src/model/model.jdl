@@ -11,7 +11,9 @@ entity Environment{
    updatedBy String
    createdBy String
    jsonData Blob
+   type String
 }
+
 
 entity EnvAccount {
    name String

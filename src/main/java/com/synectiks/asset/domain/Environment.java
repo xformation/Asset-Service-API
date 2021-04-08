@@ -62,6 +62,9 @@ public class Environment implements Serializable {
     @Column(name = "json_data_content_type")
     private String jsonDataContentType;
 
+    @Column(name = "type")
+    private String type;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
@@ -239,6 +242,19 @@ public class Environment implements Serializable {
     public void setJsonDataContentType(String jsonDataContentType) {
         this.jsonDataContentType = jsonDataContentType;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public Environment type(String type) {
+        this.type = type;
+        return this;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -275,6 +291,7 @@ public class Environment implements Serializable {
             ", createdBy='" + getCreatedBy() + "'" +
             ", jsonData='" + getJsonData() + "'" +
             ", jsonDataContentType='" + getJsonDataContentType() + "'" +
+            ", type='" + getType() + "'" +
             "}";
     }
 }

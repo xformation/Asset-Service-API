@@ -54,7 +54,9 @@
             <column name="json_data_content_type" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+			<column name="type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="environment" columnName="created_on" columnDataType="datetime"/>
         <dropDefaultValue tableName="environment" columnName="updated_on" columnDataType="datetime"/>
