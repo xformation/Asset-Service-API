@@ -64,7 +64,7 @@ public class InputDTO implements Serializable {
     private String updatedBy;
 
 
-    private Long envAccountId;
+    private Long environmentId;
     
     public Long getId() {
         return id;
@@ -274,12 +274,12 @@ public class InputDTO implements Serializable {
         this.updatedBy = updatedBy;
     }
 
-    public Long getEnvAccountId() {
-        return envAccountId;
+    public Long getEnvironmentId() {
+        return environmentId;
     }
 
-    public void setEnvAccountId(Long envAccountId) {
-        this.envAccountId = envAccountId;
+    public void setEnvironmentId(Long environmentId) {
+        this.environmentId = environmentId;
     }
 
     @Override
@@ -327,7 +327,7 @@ public class InputDTO implements Serializable {
             ", daprRoute='" + getDaprRoute() + "'" +
             ", createdBy='" + getCreatedBy() + "'" +
             ", updatedBy='" + getUpdatedBy() + "'" +
-            ", envAccountId=" + getEnvAccountId() +
+            ", environmentId=" + getEnvironmentId() +
             "}";
     }
 }

@@ -2,15 +2,15 @@
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.2.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     <!--
-        Added the constraints for entity EnvAccount.
+        Added the constraints for entity Input.
     -->
-    <changeSet id="20210322102739-2" author="jhipster">
+    <changeSet id="20210402071702-2" author="jhipster">
         
         <addForeignKeyConstraint baseColumnNames="environment_id"
-                                 baseTableName="env_account"
-                                 constraintName="fk_env_account_environment_id"
+                                 baseTableName="input"
+                                 constraintName="fk_input_environment_id"
                                  referencedColumnNames="id"
                                  referencedTableName="environment"/>
 

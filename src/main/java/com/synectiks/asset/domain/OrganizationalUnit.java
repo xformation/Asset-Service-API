@@ -1,5 +1,6 @@
 package com.synectiks.asset.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -42,6 +43,10 @@ public class OrganizationalUnit implements Serializable {
 
     @Column(name = "updated_by")
     private String updatedBy;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = "organizationalUnits", allowSetters = true)
+    private Organization organization;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -141,6 +146,19 @@ public class OrganizationalUnit implements Serializable {
 
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
+    }
+
+    public Organization getOrganization() {
+        return organization;
+    }
+
+    public OrganizationalUnit organization(Organization organization) {
+        this.organization = organization;
+        return this;
+    }
+
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

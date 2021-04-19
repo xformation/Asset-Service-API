@@ -7,11 +7,11 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * A OuEnvAcMapping.
+ * A OuEnvMapping.
  */
 @Entity
-@Table(name = "ou_env_ac_mapping")
-public class OuEnvAcMapping implements Serializable {
+@Table(name = "ou_env_mapping")
+public class OuEnvMapping implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -21,12 +21,12 @@ public class OuEnvAcMapping implements Serializable {
     private Long id;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "ouEnvAcMappings", allowSetters = true)
+    @JsonIgnoreProperties(value = "ouEnvMappings", allowSetters = true)
     private OrganizationalUnit organizationalUnit;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "ouEnvAcMappings", allowSetters = true)
-    private EnvAccount envAccount;
+    @JsonIgnoreProperties(value = "ouEnvMappings", allowSetters = true)
+    private Environment environment;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -41,7 +41,7 @@ public class OuEnvAcMapping implements Serializable {
         return organizationalUnit;
     }
 
-    public OuEnvAcMapping organizationalUnit(OrganizationalUnit organizationalUnit) {
+    public OuEnvMapping organizationalUnit(OrganizationalUnit organizationalUnit) {
         this.organizationalUnit = organizationalUnit;
         return this;
     }
@@ -50,17 +50,17 @@ public class OuEnvAcMapping implements Serializable {
         this.organizationalUnit = organizationalUnit;
     }
 
-    public EnvAccount getEnvAccount() {
-        return envAccount;
+    public Environment getEnvironment() {
+        return environment;
     }
 
-    public OuEnvAcMapping envAccount(EnvAccount envAccount) {
-        this.envAccount = envAccount;
+    public OuEnvMapping environment(Environment environment) {
+        this.environment = environment;
         return this;
     }
 
-    public void setEnvAccount(EnvAccount envAccount) {
-        this.envAccount = envAccount;
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -69,10 +69,10 @@ public class OuEnvAcMapping implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof OuEnvAcMapping)) {
+        if (!(o instanceof OuEnvMapping)) {
             return false;
         }
-        return id != null && id.equals(((OuEnvAcMapping) o).id);
+        return id != null && id.equals(((OuEnvMapping) o).id);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class OuEnvAcMapping implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "OuEnvAcMapping{" +
+        return "OuEnvMapping{" +
             "id=" + getId() +
             "}";
     }

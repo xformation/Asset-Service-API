@@ -1,25 +1,10 @@
-entity Environment{
+entity Environment {
    name String
    description String maxlength(5000)
    createdOn Instant
-   updatedOn Instant 
-   status String
-   scopes String
-   authUrl String
-   tokenUrl String
-   apiUrl String
+   updatedOn Instant
    updatedBy String
-   createdBy String
-   jsonData Blob
-   type String
-}
-
-
-entity EnvAccount {
-   name String
-   description String maxlength(5000)
-   createdOn Instant
-   updatedOn Instant 
+   createdBy String   
    status String
    clientId String maxlength(1000)
    clientSecret String maxlength(2000)
@@ -27,8 +12,11 @@ entity EnvAccount {
    email String
    password String
    jsonData Blob
-   updatedBy String
-   createdBy String
+   scopes String
+   authUrl String
+   tokenUrl String
+   apiUrl String
+   type String
 }
 
 entity Input {
@@ -89,17 +77,18 @@ entity OrganizationalUnit {
    updatedBy String
 }
 
-entity OuEnvAcMapping {
+entity OuEnvMapping {
    
 }
 
 
 relationship ManyToOne {
-	EnvAccount{environment} to Environment,
-	Input{envAccount} to EnvAccount,
+	Organization{environment} to Environment,
+	OrganizationalUnit{organization} to Organization,
+	Input{environment} to Environment,
 	Dashboard{input} to Input,
-	OuEnvAcMapping{organizationalUnit} to OrganizationalUnit,
-	OuEnvAcMapping{envAccount} to EnvAccount
+	OuEnvMapping{organizationalUnit} to OrganizationalUnit,
+	OuEnvMapping{environment} to Environment
 }
 
 dto * with mapstruct service all with serviceImpl

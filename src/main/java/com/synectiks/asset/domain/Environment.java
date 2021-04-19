@@ -34,8 +34,38 @@ public class Environment implements Serializable {
     @Column(name = "updated_on")
     private Instant updatedOn;
 
+    @Column(name = "updated_by")
+    private String updatedBy;
+
+    @Column(name = "created_by")
+    private String createdBy;
+
     @Column(name = "status")
     private String status;
+
+    @Size(max = 1000)
+    @Column(name = "client_id", length = 1000)
+    private String clientId;
+
+    @Size(max = 2000)
+    @Column(name = "client_secret", length = 2000)
+    private String clientSecret;
+
+    @Column(name = "user_type")
+    private String userType;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "password")
+    private String password;
+
+    @Lob
+    @Column(name = "json_data")
+    private byte[] jsonData;
+
+    @Column(name = "json_data_content_type")
+    private String jsonDataContentType;
 
     @Column(name = "scopes")
     private String scopes;
@@ -48,22 +78,11 @@ public class Environment implements Serializable {
 
     @Column(name = "api_url")
     private String apiUrl;
-
-    @Column(name = "updated_by")
-    private String updatedBy;
-
-    @Column(name = "created_by")
-    private String createdBy;
-
-    @Lob
-    @Column(name = "json_data")
-    private byte[] jsonData;
-
-    @Column(name = "json_data_content_type")
-    private String jsonDataContentType;
-
+   
     @Column(name = "type")
     private String type;
+    
+   
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -126,6 +145,32 @@ public class Environment implements Serializable {
         this.updatedOn = updatedOn;
     }
 
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public Environment updatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+        return this;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public Environment createdBy(String createdBy) {
+        this.createdBy = createdBy;
+        return this;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -137,6 +182,97 @@ public class Environment implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public Environment clientId(String clientId) {
+        this.clientId = clientId;
+        return this;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public String getClientSecret() {
+        return clientSecret;
+    }
+
+    public Environment clientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
+        return this;
+    }
+
+    public void setClientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public Environment userType(String userType) {
+        this.userType = userType;
+        return this;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Environment email(String email) {
+        this.email = email;
+        return this;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public Environment password(String password) {
+        this.password = password;
+        return this;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public byte[] getJsonData() {
+        return jsonData;
+    }
+
+    public Environment jsonData(byte[] jsonData) {
+        this.jsonData = jsonData;
+        return this;
+    }
+
+    public void setJsonData(byte[] jsonData) {
+        this.jsonData = jsonData;
+    }
+
+    public String getJsonDataContentType() {
+        return jsonDataContentType;
+    }
+
+    public Environment jsonDataContentType(String jsonDataContentType) {
+        this.jsonDataContentType = jsonDataContentType;
+        return this;
+    }
+
+    public void setJsonDataContentType(String jsonDataContentType) {
+        this.jsonDataContentType = jsonDataContentType;
     }
 
     public String getScopes() {
@@ -191,58 +327,6 @@ public class Environment implements Serializable {
         this.apiUrl = apiUrl;
     }
 
-    public String getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public Environment updatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-        return this;
-    }
-
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public Environment createdBy(String createdBy) {
-        this.createdBy = createdBy;
-        return this;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public byte[] getJsonData() {
-        return jsonData;
-    }
-
-    public Environment jsonData(byte[] jsonData) {
-        this.jsonData = jsonData;
-        return this;
-    }
-
-    public void setJsonData(byte[] jsonData) {
-        this.jsonData = jsonData;
-    }
-
-    public String getJsonDataContentType() {
-        return jsonDataContentType;
-    }
-
-    public Environment jsonDataContentType(String jsonDataContentType) {
-        this.jsonDataContentType = jsonDataContentType;
-        return this;
-    }
-
-    public void setJsonDataContentType(String jsonDataContentType) {
-        this.jsonDataContentType = jsonDataContentType;
-    }
-
     public String getType() {
         return type;
     }
@@ -282,15 +366,20 @@ public class Environment implements Serializable {
             ", description='" + getDescription() + "'" +
             ", createdOn='" + getCreatedOn() + "'" +
             ", updatedOn='" + getUpdatedOn() + "'" +
+            ", updatedBy='" + getUpdatedBy() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
             ", status='" + getStatus() + "'" +
+            ", clientId='" + getClientId() + "'" +
+            ", clientSecret='" + getClientSecret() + "'" +
+            ", userType='" + getUserType() + "'" +
+            ", email='" + getEmail() + "'" +
+            ", password='" + getPassword() + "'" +
+            ", jsonData='" + getJsonData() + "'" +
+            ", jsonDataContentType='" + getJsonDataContentType() + "'" +
             ", scopes='" + getScopes() + "'" +
             ", authUrl='" + getAuthUrl() + "'" +
             ", tokenUrl='" + getTokenUrl() + "'" +
             ", apiUrl='" + getApiUrl() + "'" +
-            ", updatedBy='" + getUpdatedBy() + "'" +
-            ", createdBy='" + getCreatedBy() + "'" +
-            ", jsonData='" + getJsonData() + "'" +
-            ", jsonDataContentType='" + getJsonDataContentType() + "'" +
             ", type='" + getType() + "'" +
             "}";
     }

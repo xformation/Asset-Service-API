@@ -9,13 +9,13 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link Input} and its DTO {@link InputDTO}.
  */
-@Mapper(componentModel = "spring", uses = {EnvAccountMapper.class})
+@Mapper(componentModel = "spring", uses = {EnvironmentMapper.class})
 public interface InputMapper extends EntityMapper<InputDTO, Input> {
 
-    @Mapping(source = "envAccount.id", target = "envAccountId")
+    @Mapping(source = "environment.id", target = "environmentId")
     InputDTO toDto(Input input);
 
-    @Mapping(source = "envAccountId", target = "envAccount")
+    @Mapping(source = "environmentId", target = "environment")
     Input toEntity(InputDTO inputDTO);
 
     default Input fromId(Long id) {

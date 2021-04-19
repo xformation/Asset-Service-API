@@ -10,8 +10,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.domain.Sort.Order;
-import org.springframework.data.util.Streamable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,13 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.synectiks.asset.domain.EnvAccount;
-import com.synectiks.asset.domain.Environment;
 import com.synectiks.asset.domain.Input;
-import com.synectiks.asset.repository.EnvAccountRepository;
 import com.synectiks.asset.repository.InputRepository;
 
-import feign.Headers;
 import io.github.jhipster.web.util.HeaderUtil;
 
 @RestController
@@ -40,9 +34,6 @@ public class InputController {
 	
 	@Autowired
 	private InputRepository inputRepository;
-	
-	@Autowired
-	private EnvAccountRepository envAccountRepository;
 	
 	
 	@PostMapping("/addInput")
@@ -61,9 +52,9 @@ public class InputController {
 			@RequestParam(required = false) Long envAccountId
 			) throws URISyntaxException {
 		
-		Optional<EnvAccount> oIn = envAccountRepository.findById(envAccountId);
-		if(oIn.isPresent()) {
-			EnvAccount env = oIn.get();
+//		Optional<EnvAccount> oIn = envAccountRepository.findById(envAccountId);
+//		if(oIn.isPresent()) {
+//			EnvAccount env = oIn.get();
 			Input input = new Input();
 			input.setName(name);
 			input.setDescription(description);
@@ -76,7 +67,7 @@ public class InputController {
 			input.setDatabase(database);
 			input.setCreatedBy(createdBy);
 			input.setUpdatedBy(updatedBy);
-			input.setEnvAccount(env);
+//			input.setEnvAccount(env);
 			Instant now= Instant.now();
 			input.setCreatedOn(now);
 			input.setUpdatedOn(now);
@@ -89,12 +80,12 @@ public class InputController {
 					.body(list);
 		}
 			
-		return ResponseEntity
-				.created(new URI("/api/addInput/")).headers(HeaderUtil
-						.createEntityCreationAlert( applicationName, false, ENTITY_NAME,
-								""))
-				.body(null);
-		}
+//		return ResponseEntity
+//				.created(new URI("/api/addInput/")).headers(HeaderUtil
+//						.createEntityCreationAlert( applicationName, false, ENTITY_NAME,
+//								""))
+//				.body(null);
+//		}
 
 	@GetMapping("/getAllInput")
 	private List<Input> getAllInput() {

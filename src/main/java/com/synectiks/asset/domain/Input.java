@@ -102,7 +102,7 @@ public class Input implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties(value = "inputs", allowSetters = true)
-    private EnvAccount envAccount;
+    private Environment environment;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -438,17 +438,17 @@ public class Input implements Serializable {
         this.updatedBy = updatedBy;
     }
 
-    public EnvAccount getEnvAccount() {
-        return envAccount;
+    public Environment getEnvironment() {
+        return environment;
     }
 
-    public Input envAccount(EnvAccount envAccount) {
-        this.envAccount = envAccount;
+    public Input environment(Environment environment) {
+        this.environment = environment;
         return this;
     }
 
-    public void setEnvAccount(EnvAccount envAccount) {
-        this.envAccount = envAccount;
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

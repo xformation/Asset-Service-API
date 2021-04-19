@@ -47,8 +47,34 @@ public class EnvironmentResourceIT {
     private static final Instant DEFAULT_UPDATED_ON = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_UPDATED_ON = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
+    private static final String DEFAULT_UPDATED_BY = "AAAAAAAAAA";
+    private static final String UPDATED_UPDATED_BY = "BBBBBBBBBB";
+
+    private static final String DEFAULT_CREATED_BY = "AAAAAAAAAA";
+    private static final String UPDATED_CREATED_BY = "BBBBBBBBBB";
+
     private static final String DEFAULT_STATUS = "AAAAAAAAAA";
     private static final String UPDATED_STATUS = "BBBBBBBBBB";
+
+    private static final String DEFAULT_CLIENT_ID = "AAAAAAAAAA";
+    private static final String UPDATED_CLIENT_ID = "BBBBBBBBBB";
+
+    private static final String DEFAULT_CLIENT_SECRET = "AAAAAAAAAA";
+    private static final String UPDATED_CLIENT_SECRET = "BBBBBBBBBB";
+
+    private static final String DEFAULT_USER_TYPE = "AAAAAAAAAA";
+    private static final String UPDATED_USER_TYPE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_EMAIL = "AAAAAAAAAA";
+    private static final String UPDATED_EMAIL = "BBBBBBBBBB";
+
+    private static final String DEFAULT_PASSWORD = "AAAAAAAAAA";
+    private static final String UPDATED_PASSWORD = "BBBBBBBBBB";
+
+    private static final byte[] DEFAULT_JSON_DATA = TestUtil.createByteArray(1, "0");
+    private static final byte[] UPDATED_JSON_DATA = TestUtil.createByteArray(1, "1");
+    private static final String DEFAULT_JSON_DATA_CONTENT_TYPE = "image/jpg";
+    private static final String UPDATED_JSON_DATA_CONTENT_TYPE = "image/png";
 
     private static final String DEFAULT_SCOPES = "AAAAAAAAAA";
     private static final String UPDATED_SCOPES = "BBBBBBBBBB";
@@ -61,17 +87,6 @@ public class EnvironmentResourceIT {
 
     private static final String DEFAULT_API_URL = "AAAAAAAAAA";
     private static final String UPDATED_API_URL = "BBBBBBBBBB";
-
-    private static final String DEFAULT_UPDATED_BY = "AAAAAAAAAA";
-    private static final String UPDATED_UPDATED_BY = "BBBBBBBBBB";
-
-    private static final String DEFAULT_CREATED_BY = "AAAAAAAAAA";
-    private static final String UPDATED_CREATED_BY = "BBBBBBBBBB";
-
-    private static final byte[] DEFAULT_JSON_DATA = TestUtil.createByteArray(1, "0");
-    private static final byte[] UPDATED_JSON_DATA = TestUtil.createByteArray(1, "1");
-    private static final String DEFAULT_JSON_DATA_CONTENT_TYPE = "image/jpg";
-    private static final String UPDATED_JSON_DATA_CONTENT_TYPE = "image/png";
 
     private static final String DEFAULT_TYPE = "AAAAAAAAAA";
     private static final String UPDATED_TYPE = "BBBBBBBBBB";
@@ -105,15 +120,20 @@ public class EnvironmentResourceIT {
             .description(DEFAULT_DESCRIPTION)
             .createdOn(DEFAULT_CREATED_ON)
             .updatedOn(DEFAULT_UPDATED_ON)
+            .updatedBy(DEFAULT_UPDATED_BY)
+            .createdBy(DEFAULT_CREATED_BY)
             .status(DEFAULT_STATUS)
+            .clientId(DEFAULT_CLIENT_ID)
+            .clientSecret(DEFAULT_CLIENT_SECRET)
+            .userType(DEFAULT_USER_TYPE)
+            .email(DEFAULT_EMAIL)
+            .password(DEFAULT_PASSWORD)
+            .jsonData(DEFAULT_JSON_DATA)
+            .jsonDataContentType(DEFAULT_JSON_DATA_CONTENT_TYPE)
             .scopes(DEFAULT_SCOPES)
             .authUrl(DEFAULT_AUTH_URL)
             .tokenUrl(DEFAULT_TOKEN_URL)
             .apiUrl(DEFAULT_API_URL)
-            .updatedBy(DEFAULT_UPDATED_BY)
-            .createdBy(DEFAULT_CREATED_BY)
-            .jsonData(DEFAULT_JSON_DATA)
-            .jsonDataContentType(DEFAULT_JSON_DATA_CONTENT_TYPE)
             .type(DEFAULT_TYPE);
         return environment;
     }
@@ -129,15 +149,20 @@ public class EnvironmentResourceIT {
             .description(UPDATED_DESCRIPTION)
             .createdOn(UPDATED_CREATED_ON)
             .updatedOn(UPDATED_UPDATED_ON)
+            .updatedBy(UPDATED_UPDATED_BY)
+            .createdBy(UPDATED_CREATED_BY)
             .status(UPDATED_STATUS)
+            .clientId(UPDATED_CLIENT_ID)
+            .clientSecret(UPDATED_CLIENT_SECRET)
+            .userType(UPDATED_USER_TYPE)
+            .email(UPDATED_EMAIL)
+            .password(UPDATED_PASSWORD)
+            .jsonData(UPDATED_JSON_DATA)
+            .jsonDataContentType(UPDATED_JSON_DATA_CONTENT_TYPE)
             .scopes(UPDATED_SCOPES)
             .authUrl(UPDATED_AUTH_URL)
             .tokenUrl(UPDATED_TOKEN_URL)
             .apiUrl(UPDATED_API_URL)
-            .updatedBy(UPDATED_UPDATED_BY)
-            .createdBy(UPDATED_CREATED_BY)
-            .jsonData(UPDATED_JSON_DATA)
-            .jsonDataContentType(UPDATED_JSON_DATA_CONTENT_TYPE)
             .type(UPDATED_TYPE);
         return environment;
     }
@@ -166,15 +191,20 @@ public class EnvironmentResourceIT {
         assertThat(testEnvironment.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testEnvironment.getCreatedOn()).isEqualTo(DEFAULT_CREATED_ON);
         assertThat(testEnvironment.getUpdatedOn()).isEqualTo(DEFAULT_UPDATED_ON);
+        assertThat(testEnvironment.getUpdatedBy()).isEqualTo(DEFAULT_UPDATED_BY);
+        assertThat(testEnvironment.getCreatedBy()).isEqualTo(DEFAULT_CREATED_BY);
         assertThat(testEnvironment.getStatus()).isEqualTo(DEFAULT_STATUS);
+        assertThat(testEnvironment.getClientId()).isEqualTo(DEFAULT_CLIENT_ID);
+        assertThat(testEnvironment.getClientSecret()).isEqualTo(DEFAULT_CLIENT_SECRET);
+        assertThat(testEnvironment.getUserType()).isEqualTo(DEFAULT_USER_TYPE);
+        assertThat(testEnvironment.getEmail()).isEqualTo(DEFAULT_EMAIL);
+        assertThat(testEnvironment.getPassword()).isEqualTo(DEFAULT_PASSWORD);
+        assertThat(testEnvironment.getJsonData()).isEqualTo(DEFAULT_JSON_DATA);
+        assertThat(testEnvironment.getJsonDataContentType()).isEqualTo(DEFAULT_JSON_DATA_CONTENT_TYPE);
         assertThat(testEnvironment.getScopes()).isEqualTo(DEFAULT_SCOPES);
         assertThat(testEnvironment.getAuthUrl()).isEqualTo(DEFAULT_AUTH_URL);
         assertThat(testEnvironment.getTokenUrl()).isEqualTo(DEFAULT_TOKEN_URL);
         assertThat(testEnvironment.getApiUrl()).isEqualTo(DEFAULT_API_URL);
-        assertThat(testEnvironment.getUpdatedBy()).isEqualTo(DEFAULT_UPDATED_BY);
-        assertThat(testEnvironment.getCreatedBy()).isEqualTo(DEFAULT_CREATED_BY);
-        assertThat(testEnvironment.getJsonData()).isEqualTo(DEFAULT_JSON_DATA);
-        assertThat(testEnvironment.getJsonDataContentType()).isEqualTo(DEFAULT_JSON_DATA_CONTENT_TYPE);
         assertThat(testEnvironment.getType()).isEqualTo(DEFAULT_TYPE);
     }
 
@@ -214,15 +244,20 @@ public class EnvironmentResourceIT {
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].createdOn").value(hasItem(DEFAULT_CREATED_ON.toString())))
             .andExpect(jsonPath("$.[*].updatedOn").value(hasItem(DEFAULT_UPDATED_ON.toString())))
+            .andExpect(jsonPath("$.[*].updatedBy").value(hasItem(DEFAULT_UPDATED_BY)))
+            .andExpect(jsonPath("$.[*].createdBy").value(hasItem(DEFAULT_CREATED_BY)))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
+            .andExpect(jsonPath("$.[*].clientId").value(hasItem(DEFAULT_CLIENT_ID)))
+            .andExpect(jsonPath("$.[*].clientSecret").value(hasItem(DEFAULT_CLIENT_SECRET)))
+            .andExpect(jsonPath("$.[*].userType").value(hasItem(DEFAULT_USER_TYPE)))
+            .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
+            .andExpect(jsonPath("$.[*].password").value(hasItem(DEFAULT_PASSWORD)))
+            .andExpect(jsonPath("$.[*].jsonDataContentType").value(hasItem(DEFAULT_JSON_DATA_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].jsonData").value(hasItem(Base64Utils.encodeToString(DEFAULT_JSON_DATA))))
             .andExpect(jsonPath("$.[*].scopes").value(hasItem(DEFAULT_SCOPES)))
             .andExpect(jsonPath("$.[*].authUrl").value(hasItem(DEFAULT_AUTH_URL)))
             .andExpect(jsonPath("$.[*].tokenUrl").value(hasItem(DEFAULT_TOKEN_URL)))
             .andExpect(jsonPath("$.[*].apiUrl").value(hasItem(DEFAULT_API_URL)))
-            .andExpect(jsonPath("$.[*].updatedBy").value(hasItem(DEFAULT_UPDATED_BY)))
-            .andExpect(jsonPath("$.[*].createdBy").value(hasItem(DEFAULT_CREATED_BY)))
-            .andExpect(jsonPath("$.[*].jsonDataContentType").value(hasItem(DEFAULT_JSON_DATA_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].jsonData").value(hasItem(Base64Utils.encodeToString(DEFAULT_JSON_DATA))))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE)));
     }
     
@@ -241,15 +276,20 @@ public class EnvironmentResourceIT {
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.createdOn").value(DEFAULT_CREATED_ON.toString()))
             .andExpect(jsonPath("$.updatedOn").value(DEFAULT_UPDATED_ON.toString()))
+            .andExpect(jsonPath("$.updatedBy").value(DEFAULT_UPDATED_BY))
+            .andExpect(jsonPath("$.createdBy").value(DEFAULT_CREATED_BY))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS))
+            .andExpect(jsonPath("$.clientId").value(DEFAULT_CLIENT_ID))
+            .andExpect(jsonPath("$.clientSecret").value(DEFAULT_CLIENT_SECRET))
+            .andExpect(jsonPath("$.userType").value(DEFAULT_USER_TYPE))
+            .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
+            .andExpect(jsonPath("$.password").value(DEFAULT_PASSWORD))
+            .andExpect(jsonPath("$.jsonDataContentType").value(DEFAULT_JSON_DATA_CONTENT_TYPE))
+            .andExpect(jsonPath("$.jsonData").value(Base64Utils.encodeToString(DEFAULT_JSON_DATA)))
             .andExpect(jsonPath("$.scopes").value(DEFAULT_SCOPES))
             .andExpect(jsonPath("$.authUrl").value(DEFAULT_AUTH_URL))
             .andExpect(jsonPath("$.tokenUrl").value(DEFAULT_TOKEN_URL))
             .andExpect(jsonPath("$.apiUrl").value(DEFAULT_API_URL))
-            .andExpect(jsonPath("$.updatedBy").value(DEFAULT_UPDATED_BY))
-            .andExpect(jsonPath("$.createdBy").value(DEFAULT_CREATED_BY))
-            .andExpect(jsonPath("$.jsonDataContentType").value(DEFAULT_JSON_DATA_CONTENT_TYPE))
-            .andExpect(jsonPath("$.jsonData").value(Base64Utils.encodeToString(DEFAULT_JSON_DATA)))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE));
     }
     @Test
@@ -277,15 +317,20 @@ public class EnvironmentResourceIT {
             .description(UPDATED_DESCRIPTION)
             .createdOn(UPDATED_CREATED_ON)
             .updatedOn(UPDATED_UPDATED_ON)
+            .updatedBy(UPDATED_UPDATED_BY)
+            .createdBy(UPDATED_CREATED_BY)
             .status(UPDATED_STATUS)
+            .clientId(UPDATED_CLIENT_ID)
+            .clientSecret(UPDATED_CLIENT_SECRET)
+            .userType(UPDATED_USER_TYPE)
+            .email(UPDATED_EMAIL)
+            .password(UPDATED_PASSWORD)
+            .jsonData(UPDATED_JSON_DATA)
+            .jsonDataContentType(UPDATED_JSON_DATA_CONTENT_TYPE)
             .scopes(UPDATED_SCOPES)
             .authUrl(UPDATED_AUTH_URL)
             .tokenUrl(UPDATED_TOKEN_URL)
             .apiUrl(UPDATED_API_URL)
-            .updatedBy(UPDATED_UPDATED_BY)
-            .createdBy(UPDATED_CREATED_BY)
-            .jsonData(UPDATED_JSON_DATA)
-            .jsonDataContentType(UPDATED_JSON_DATA_CONTENT_TYPE)
             .type(UPDATED_TYPE);
         EnvironmentDTO environmentDTO = environmentMapper.toDto(updatedEnvironment);
 
@@ -302,15 +347,20 @@ public class EnvironmentResourceIT {
         assertThat(testEnvironment.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testEnvironment.getCreatedOn()).isEqualTo(UPDATED_CREATED_ON);
         assertThat(testEnvironment.getUpdatedOn()).isEqualTo(UPDATED_UPDATED_ON);
+        assertThat(testEnvironment.getUpdatedBy()).isEqualTo(UPDATED_UPDATED_BY);
+        assertThat(testEnvironment.getCreatedBy()).isEqualTo(UPDATED_CREATED_BY);
         assertThat(testEnvironment.getStatus()).isEqualTo(UPDATED_STATUS);
+        assertThat(testEnvironment.getClientId()).isEqualTo(UPDATED_CLIENT_ID);
+        assertThat(testEnvironment.getClientSecret()).isEqualTo(UPDATED_CLIENT_SECRET);
+        assertThat(testEnvironment.getUserType()).isEqualTo(UPDATED_USER_TYPE);
+        assertThat(testEnvironment.getEmail()).isEqualTo(UPDATED_EMAIL);
+        assertThat(testEnvironment.getPassword()).isEqualTo(UPDATED_PASSWORD);
+        assertThat(testEnvironment.getJsonData()).isEqualTo(UPDATED_JSON_DATA);
+        assertThat(testEnvironment.getJsonDataContentType()).isEqualTo(UPDATED_JSON_DATA_CONTENT_TYPE);
         assertThat(testEnvironment.getScopes()).isEqualTo(UPDATED_SCOPES);
         assertThat(testEnvironment.getAuthUrl()).isEqualTo(UPDATED_AUTH_URL);
         assertThat(testEnvironment.getTokenUrl()).isEqualTo(UPDATED_TOKEN_URL);
         assertThat(testEnvironment.getApiUrl()).isEqualTo(UPDATED_API_URL);
-        assertThat(testEnvironment.getUpdatedBy()).isEqualTo(UPDATED_UPDATED_BY);
-        assertThat(testEnvironment.getCreatedBy()).isEqualTo(UPDATED_CREATED_BY);
-        assertThat(testEnvironment.getJsonData()).isEqualTo(UPDATED_JSON_DATA);
-        assertThat(testEnvironment.getJsonDataContentType()).isEqualTo(UPDATED_JSON_DATA_CONTENT_TYPE);
         assertThat(testEnvironment.getType()).isEqualTo(UPDATED_TYPE);
     }
 

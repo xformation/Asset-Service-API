@@ -3,16 +3,16 @@ package com.synectiks.asset.service.dto;
 import java.io.Serializable;
 
 /**
- * A DTO for the {@link com.synectiks.asset.domain.OuEnvAcMapping} entity.
+ * A DTO for the {@link com.synectiks.asset.domain.OuEnvMapping} entity.
  */
-public class OuEnvAcMappingDTO implements Serializable {
+public class OuEnvMappingDTO implements Serializable {
     
     private Long id;
 
 
     private Long organizationalUnitId;
 
-    private Long envAccountId;
+    private Long environmentId;
     
     public Long getId() {
         return id;
@@ -30,12 +30,12 @@ public class OuEnvAcMappingDTO implements Serializable {
         this.organizationalUnitId = organizationalUnitId;
     }
 
-    public Long getEnvAccountId() {
-        return envAccountId;
+    public Long getEnvironmentId() {
+        return environmentId;
     }
 
-    public void setEnvAccountId(Long envAccountId) {
-        this.envAccountId = envAccountId;
+    public void setEnvironmentId(Long environmentId) {
+        this.environmentId = environmentId;
     }
 
     @Override
@@ -43,11 +43,11 @@ public class OuEnvAcMappingDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof OuEnvAcMappingDTO)) {
+        if (!(o instanceof OuEnvMappingDTO)) {
             return false;
         }
 
-        return id != null && id.equals(((OuEnvAcMappingDTO) o).id);
+        return id != null && id.equals(((OuEnvMappingDTO) o).id);
     }
 
     @Override
@@ -58,10 +58,10 @@ public class OuEnvAcMappingDTO implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "OuEnvAcMappingDTO{" +
+        return "OuEnvMappingDTO{" +
             "id=" + getId() +
             ", organizationalUnitId=" + getOrganizationalUnitId() +
-            ", envAccountId=" + getEnvAccountId() +
+            ", environmentId=" + getEnvironmentId() +
             "}";
     }
 }

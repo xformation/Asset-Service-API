@@ -49,7 +49,15 @@ public class EnvironmentController {
 			@RequestParam(required = false) String tokenUrl, 
 			@RequestParam(required = false) String apiUrl,
 			@RequestParam(required = false) String description,
-			@RequestParam(required = false) String type
+			@RequestParam(required = false) String type,
+			
+			@RequestParam(required = false) String email,
+			@RequestParam(required = false) String password,
+			@RequestParam(required = false) String clientId,
+			@RequestParam(required = false) String clientSecret,
+			@RequestParam(required = false) String userType,
+			@RequestParam(required = false) String status
+			
 			) throws URISyntaxException {
 		logger.info("Adding environment");
 		Environment environment = new Environment();
@@ -60,6 +68,15 @@ public class EnvironmentController {
 		environment.setScopes(scopes);
 		environment.setApiUrl(apiUrl);
 		environment.setType(type);
+		
+		environment.setEmail(email);
+		environment.setPassword(password);
+		environment.setClientId(clientId);
+		environment.setClientSecret(clientSecret);
+		environment.setUserType(userType);
+		environment.setStatus(status);
+		
+		
 		Instant now = Instant.now();
 		environment.setCreatedOn(now);
 		environment.setUpdatedOn(now);

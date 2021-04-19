@@ -21,8 +21,28 @@ public class EnvironmentDTO implements Serializable {
 
     private Instant updatedOn;
 
+    private String updatedBy;
+
+    private String createdBy;
+
     private String status;
 
+    @Size(max = 1000)
+    private String clientId;
+
+    @Size(max = 2000)
+    private String clientSecret;
+
+    private String userType;
+
+    private String email;
+
+    private String password;
+
+    @Lob
+    private byte[] jsonData;
+
+    private String jsonDataContentType;
     private String scopes;
 
     private String authUrl;
@@ -31,14 +51,6 @@ public class EnvironmentDTO implements Serializable {
 
     private String apiUrl;
 
-    private String updatedBy;
-
-    private String createdBy;
-
-    @Lob
-    private byte[] jsonData;
-
-    private String jsonDataContentType;
     private String type;
 
     
@@ -82,12 +94,84 @@ public class EnvironmentDTO implements Serializable {
         this.updatedOn = updatedOn;
     }
 
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public String getClientSecret() {
+        return clientSecret;
+    }
+
+    public void setClientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public byte[] getJsonData() {
+        return jsonData;
+    }
+
+    public void setJsonData(byte[] jsonData) {
+        this.jsonData = jsonData;
+    }
+
+    public String getJsonDataContentType() {
+        return jsonDataContentType;
+    }
+
+    public void setJsonDataContentType(String jsonDataContentType) {
+        this.jsonDataContentType = jsonDataContentType;
     }
 
     public String getScopes() {
@@ -120,38 +204,6 @@ public class EnvironmentDTO implements Serializable {
 
     public void setApiUrl(String apiUrl) {
         this.apiUrl = apiUrl;
-    }
-
-    public String getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public byte[] getJsonData() {
-        return jsonData;
-    }
-
-    public void setJsonData(byte[] jsonData) {
-        this.jsonData = jsonData;
-    }
-
-    public String getJsonDataContentType() {
-        return jsonDataContentType;
-    }
-
-    public void setJsonDataContentType(String jsonDataContentType) {
-        this.jsonDataContentType = jsonDataContentType;
     }
 
     public String getType() {
@@ -188,14 +240,19 @@ public class EnvironmentDTO implements Serializable {
             ", description='" + getDescription() + "'" +
             ", createdOn='" + getCreatedOn() + "'" +
             ", updatedOn='" + getUpdatedOn() + "'" +
+            ", updatedBy='" + getUpdatedBy() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
             ", status='" + getStatus() + "'" +
+            ", clientId='" + getClientId() + "'" +
+            ", clientSecret='" + getClientSecret() + "'" +
+            ", userType='" + getUserType() + "'" +
+            ", email='" + getEmail() + "'" +
+            ", password='" + getPassword() + "'" +
+            ", jsonData='" + getJsonData() + "'" +
             ", scopes='" + getScopes() + "'" +
             ", authUrl='" + getAuthUrl() + "'" +
             ", tokenUrl='" + getTokenUrl() + "'" +
             ", apiUrl='" + getApiUrl() + "'" +
-            ", updatedBy='" + getUpdatedBy() + "'" +
-            ", createdBy='" + getCreatedBy() + "'" +
-            ", jsonData='" + getJsonData() + "'" +
             ", type='" + getType() + "'" +
             "}";
     }

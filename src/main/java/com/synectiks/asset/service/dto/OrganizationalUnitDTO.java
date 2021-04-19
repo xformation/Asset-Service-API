@@ -26,6 +26,8 @@ public class OrganizationalUnitDTO implements Serializable {
 
     private String updatedBy;
 
+
+    private Long organizationId;
     
     public Long getId() {
         return id;
@@ -91,6 +93,14 @@ public class OrganizationalUnitDTO implements Serializable {
         this.updatedBy = updatedBy;
     }
 
+    public Long getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(Long organizationId) {
+        this.organizationId = organizationId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -120,6 +130,7 @@ public class OrganizationalUnitDTO implements Serializable {
             ", status='" + getStatus() + "'" +
             ", createdBy='" + getCreatedBy() + "'" +
             ", updatedBy='" + getUpdatedBy() + "'" +
+            ", organizationId=" + getOrganizationId() +
             "}";
     }
 }

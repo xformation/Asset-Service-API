@@ -4,15 +4,15 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     <!--
-        Added the constraints for entity Input.
+        Added the constraints for entity OrganizationalUnit.
     -->
-    <changeSet id="20210322102839-2" author="jhipster">
+    <changeSet id="20210402072002-2" author="jhipster">
         
-        <addForeignKeyConstraint baseColumnNames="env_account_id"
-                                 baseTableName="input"
-                                 constraintName="fk_input_env_account_id"
+        <addForeignKeyConstraint baseColumnNames="organization_id"
+                                 baseTableName="organizational_unit"
+                                 constraintName="fk_organizational_unit_organization_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="env_account"/>
+                                 referencedTableName="organization"/>
 
     </changeSet>
 </databaseChangeLog>

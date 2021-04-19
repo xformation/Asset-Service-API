@@ -8,10 +8,10 @@
 
     
     <!--
-        Added the entity Input.
+        Added the entity Environment.
     -->
-    <changeSet id="20210322102839-1" author="jhipster">
-        <createTable tableName="input">
+    <changeSet id="20210402071502-1" author="jhipster">
+        <createTable tableName="environment">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -27,81 +27,60 @@
             <column name="updated_on" type="datetime">
                 <constraints nullable="true" />
             </column>
-            <column name="status" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="source" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="type" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="url" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="user_id" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="password" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="database" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="input_data" type="longblob">
-                <constraints nullable="true" />
-            </column>
-            <column name="input_data_content_type" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="access" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="basic_auth" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="basic_auth_user" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="basic_auth_password" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="with_credentials" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="secure_input_data" type="longblob">
-                <constraints nullable="true" />
-            </column>
-            <column name="secure_input_data_content_type" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="dapr_pub_sub_name" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="dapr_topic" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="dapr_route" type="varchar(255)">
+            <column name="updated_by" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="created_by" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="updated_by" type="varchar(255)">
+            <column name="status" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="env_account_id" type="bigint">
+            <column name="client_id" type="varchar(1000)">
+                <constraints nullable="true" />
+            </column>
+            <column name="client_secret" type="varchar(2000)">
+                <constraints nullable="true" />
+            </column>
+            <column name="user_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="email" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="json_data" type="longblob">
+                <constraints nullable="true" />
+            </column>
+            <column name="json_data_content_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="scopes" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="auth_url" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="token_url" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="api_url" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="type" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
-        <dropDefaultValue tableName="input" columnName="created_on" columnDataType="datetime"/>
-        <dropDefaultValue tableName="input" columnName="updated_on" columnDataType="datetime"/>
+        <dropDefaultValue tableName="environment" columnName="created_on" columnDataType="datetime"/>
+        <dropDefaultValue tableName="environment" columnName="updated_on" columnDataType="datetime"/>
     </changeSet>
 
-    <changeSet id="20210322102839-1-relations" author="jhipster">
+    <!-- <changeSet id="20210402071502-1-relations" author="jhipster">
 
-    </changeSet>
+    </changeSet> -->
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
     <!--
@@ -112,37 +91,31 @@
           This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
           Spring Boot configuration key.
     -->
-    <!-- <changeSet id="20210322102839-1-data" author="jhipster" context="faker">
+    <!-- <changeSet id="20210402071502-1-data" author="jhipster" context="faker">
         <loadData
-                  file="config/liquibase/fake-data/input.csv"
+                  file="config/liquibase/fake-data/environment.csv"
                   separator=";"
-                  tableName="input">
+                  tableName="environment">
             <column name="id" type="numeric"/>
             <column name="name" type="string"/>
             <column name="description" type="string"/>
             <column name="created_on" type="datetime"/>
             <column name="updated_on" type="datetime"/>
-            <column name="status" type="string"/>
-            <column name="source" type="string"/>
-            <column name="type" type="string"/>
-            <column name="url" type="string"/>
-            <column name="user_id" type="string"/>
-            <column name="password" type="string"/>
-            <column name="database" type="string"/>
-            <column name="input_data" type="blob"/>
-            <column name="input_data_content_type" type="string"/>
-            <column name="access" type="string"/>
-            <column name="basic_auth" type="string"/>
-            <column name="basic_auth_user" type="string"/>
-            <column name="basic_auth_password" type="string"/>
-            <column name="with_credentials" type="string"/>
-            <column name="secure_input_data" type="blob"/>
-            <column name="secure_input_data_content_type" type="string"/>
-            <column name="dapr_pub_sub_name" type="string"/>
-            <column name="dapr_topic" type="string"/>
-            <column name="dapr_route" type="string"/>
-            <column name="created_by" type="string"/>
             <column name="updated_by" type="string"/>
+            <column name="created_by" type="string"/>
+            <column name="status" type="string"/>
+            <column name="client_id" type="string"/>
+            <column name="client_secret" type="string"/>
+            <column name="user_type" type="string"/>
+            <column name="email" type="string"/>
+            <column name="password" type="string"/>
+            <column name="json_data" type="blob"/>
+            <column name="json_data_content_type" type="string"/>
+            <column name="scopes" type="string"/>
+            <column name="auth_url" type="string"/>
+            <column name="token_url" type="string"/>
+            <column name="api_url" type="string"/>
+            <column name="type" type="string"/>
             jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here
         </loadData>
     </changeSet> -->
