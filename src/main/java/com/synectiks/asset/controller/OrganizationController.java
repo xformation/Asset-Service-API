@@ -45,7 +45,7 @@ public class OrganizationController {
 		return list;
 	}
 	@GetMapping("/getAllOrganizationalUnit")
-	private List<OrganizationalUnit> getAllOrganizationalUnit() {
+	private List<OrganizationalUnit> getAll0() {
 
 		List<OrganizationalUnit> list = organizationalUnitRepository.findAll(Sort.by(Direction.DESC, "id"));
 
