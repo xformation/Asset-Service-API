@@ -6,6 +6,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.synectiks.asset.domain.Environment;
+import com.synectiks.asset.domain.Organization;
 import com.synectiks.asset.repository.EnvironmentRepository;
+import com.synectiks.asset.repository.OrganizationRepository;
 
 import io.github.jhipster.web.util.HeaderUtil;
 
@@ -40,10 +43,14 @@ public class EnvironmentController {
 
 	@Autowired
 	private EnvironmentRepository environmentRepository;
+	
+	@Autowired
+	private OrganizationRepository organizationRepository;
 
 	@PostMapping("/addEnvironment")
 	public ResponseEntity<List<Environment>> addEnvironment(
 			@RequestParam(required = false) String name,
+			@RequestParam(required = false) String oganizationName,
 			@RequestParam(required = false) String scopes, 
 			@RequestParam(required = false) String authUrl,
 			@RequestParam(required = false) String tokenUrl, 
@@ -62,6 +69,7 @@ public class EnvironmentController {
 		logger.info("Adding environment");
 		Environment environment = new Environment();
 		environment.setName(name);
+		
 		environment.setDescription(description);
 		environment.setAuthUrl(authUrl);
 		environment.setTokenUrl(tokenUrl);
@@ -81,7 +89,15 @@ public class EnvironmentController {
 		environment.setCreatedOn(now);
 		environment.setUpdatedOn(now);
 		environment = environmentRepository.save(environment);
+		
+		if(!StringUtils.isBlank(oganizationName)){
+			Organization oz = new Organization();
+			oz.setName(oganizationName);
+			oz.setEnvironment(environment);
+			organizationRepository.save(oz);
+		}
 		List<Environment> list = getAllEnvironment();
+		
 		logger.info("Adding environment completed");
 		return ResponseEntity
 				.created(new URI("/api/addEnvironment/" + environment.getId())).headers(HeaderUtil
