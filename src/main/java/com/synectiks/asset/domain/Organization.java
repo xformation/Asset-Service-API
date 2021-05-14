@@ -1,12 +1,21 @@
 package com.synectiks.asset.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A Organization.
@@ -29,26 +38,40 @@ public class Organization implements Serializable {
     @Column(name = "description", length = 5000)
     private String description;
 
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "fax")
+    private String fax;
+
+    @Column(name = "date_of_establishment")
+    private Instant dateOfEstablishment;
+
+    @Column(name = "status")
+    private String status;
+
     @Column(name = "created_on")
     private Instant createdOn;
 
     @Column(name = "updated_on")
     private Instant updatedOn;
 
-    @Column(name = "status")
-    private String status;
+    @Column(name = "updated_by")
+    private String updatedBy;
 
     @Column(name = "created_by")
     private String createdBy;
 
-    @Column(name = "updated_by")
-    private String updatedBy;
-
-    @ManyToOne
-    @JsonIgnoreProperties(value = "organizations", allowSetters = true)
-    private Environment environment;
-
-    // jhipster-needle-entity-add-field - JHipster will add fields here
+    @Transient
+    @JsonProperty
+    private List<OrganizationalUnit> organizationalUnitList;
+    
     public Long getId() {
         return id;
     }
@@ -83,6 +106,84 @@ public class Organization implements Serializable {
         this.description = description;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public Organization phone(String phone) {
+        this.phone = phone;
+        return this;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Organization email(String email) {
+        this.email = email;
+        return this;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public Organization address(String address) {
+        this.address = address;
+        return this;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getFax() {
+        return fax;
+    }
+
+    public Organization fax(String fax) {
+        this.fax = fax;
+        return this;
+    }
+
+    public void setFax(String fax) {
+        this.fax = fax;
+    }
+
+    public Instant getDateOfEstablishment() {
+        return dateOfEstablishment;
+    }
+
+    public Organization dateOfEstablishment(Instant dateOfEstablishment) {
+        this.dateOfEstablishment = dateOfEstablishment;
+        return this;
+    }
+
+    public void setDateOfEstablishment(Instant dateOfEstablishment) {
+        this.dateOfEstablishment = dateOfEstablishment;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public Organization status(String status) {
+        this.status = status;
+        return this;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public Instant getCreatedOn() {
         return createdOn;
     }
@@ -109,32 +210,6 @@ public class Organization implements Serializable {
         this.updatedOn = updatedOn;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public Organization status(String status) {
-        this.status = status;
-        return this;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public Organization createdBy(String createdBy) {
-        this.createdBy = createdBy;
-        return this;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
     public String getUpdatedBy() {
         return updatedBy;
     }
@@ -148,17 +223,17 @@ public class Organization implements Serializable {
         this.updatedBy = updatedBy;
     }
 
-    public Environment getEnvironment() {
-        return environment;
+    public String getCreatedBy() {
+        return createdBy;
     }
 
-    public Organization environment(Environment environment) {
-        this.environment = environment;
+    public Organization createdBy(String createdBy) {
+        this.createdBy = createdBy;
         return this;
     }
 
-    public void setEnvironment(Environment environment) {
-        this.environment = environment;
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -185,11 +260,24 @@ public class Organization implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
+            ", phone='" + getPhone() + "'" +
+            ", email='" + getEmail() + "'" +
+            ", address='" + getAddress() + "'" +
+            ", fax='" + getFax() + "'" +
+            ", dateOfEstablishment='" + getDateOfEstablishment() + "'" +
+            ", status='" + getStatus() + "'" +
             ", createdOn='" + getCreatedOn() + "'" +
             ", updatedOn='" + getUpdatedOn() + "'" +
-            ", status='" + getStatus() + "'" +
-            ", createdBy='" + getCreatedBy() + "'" +
             ", updatedBy='" + getUpdatedBy() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
             "}";
     }
+
+	public List<OrganizationalUnit> getOrganizationalUnitList() {
+		return organizationalUnitList;
+	}
+
+	public void setOrganizationalUnitList(List<OrganizationalUnit> organizationalUnitList) {
+		this.organizationalUnitList = organizationalUnitList;
+	}
 }

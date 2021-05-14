@@ -16,15 +16,15 @@ public class OrganizationalUnitDTO implements Serializable {
     @Size(max = 5000)
     private String description;
 
+    private String status;
+
     private Instant createdOn;
 
     private Instant updatedOn;
 
-    private String status;
+    private String updatedBy;
 
     private String createdBy;
-
-    private String updatedBy;
 
 
     private Long organizationId;
@@ -53,6 +53,14 @@ public class OrganizationalUnitDTO implements Serializable {
         this.description = description;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public Instant getCreatedOn() {
         return createdOn;
     }
@@ -69,12 +77,12 @@ public class OrganizationalUnitDTO implements Serializable {
         this.updatedOn = updatedOn;
     }
 
-    public String getStatus() {
-        return status;
+    public String getUpdatedBy() {
+        return updatedBy;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
     }
 
     public String getCreatedBy() {
@@ -83,14 +91,6 @@ public class OrganizationalUnitDTO implements Serializable {
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
-    }
-
-    public String getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
     }
 
     public Long getOrganizationId() {
@@ -125,11 +125,11 @@ public class OrganizationalUnitDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
+            ", status='" + getStatus() + "'" +
             ", createdOn='" + getCreatedOn() + "'" +
             ", updatedOn='" + getUpdatedOn() + "'" +
-            ", status='" + getStatus() + "'" +
-            ", createdBy='" + getCreatedBy() + "'" +
             ", updatedBy='" + getUpdatedBy() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
             ", organizationId=" + getOrganizationId() +
             "}";
     }

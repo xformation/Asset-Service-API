@@ -3,29 +3,31 @@ package com.synectiks.asset.service.dto;
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import javax.persistence.Lob;
 
 /**
- * A DTO for the {@link com.synectiks.asset.domain.Organization} entity.
+ * A DTO for the {@link com.synectiks.asset.domain.CloudAsset} entity.
  */
-public class OrganizationDTO implements Serializable {
+public class CloudAssetDTO implements Serializable {
     
     private Long id;
+
+    private String accountId;
+
+    private String type;
 
     private String name;
 
     @Size(max = 5000)
     private String description;
 
-    private String phone;
+    @Size(max = 1000)
+    private String sourceJsonRef;
 
-    private String email;
+    @Lob
+    private byte[] sourceJson;
 
-    private String address;
-
-    private String fax;
-
-    private Instant dateOfEstablishment;
-
+    private String sourceJsonContentType;
     private String status;
 
     private Instant createdOn;
@@ -45,6 +47,22 @@ public class OrganizationDTO implements Serializable {
         this.id = id;
     }
 
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public String getName() {
         return name;
     }
@@ -61,44 +79,28 @@ public class OrganizationDTO implements Serializable {
         this.description = description;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getSourceJsonRef() {
+        return sourceJsonRef;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setSourceJsonRef(String sourceJsonRef) {
+        this.sourceJsonRef = sourceJsonRef;
     }
 
-    public String getEmail() {
-        return email;
+    public byte[] getSourceJson() {
+        return sourceJson;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setSourceJson(byte[] sourceJson) {
+        this.sourceJson = sourceJson;
     }
 
-    public String getAddress() {
-        return address;
+    public String getSourceJsonContentType() {
+        return sourceJsonContentType;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getFax() {
-        return fax;
-    }
-
-    public void setFax(String fax) {
-        this.fax = fax;
-    }
-
-    public Instant getDateOfEstablishment() {
-        return dateOfEstablishment;
-    }
-
-    public void setDateOfEstablishment(Instant dateOfEstablishment) {
-        this.dateOfEstablishment = dateOfEstablishment;
+    public void setSourceJsonContentType(String sourceJsonContentType) {
+        this.sourceJsonContentType = sourceJsonContentType;
     }
 
     public String getStatus() {
@@ -146,11 +148,11 @@ public class OrganizationDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof OrganizationDTO)) {
+        if (!(o instanceof CloudAssetDTO)) {
             return false;
         }
 
-        return id != null && id.equals(((OrganizationDTO) o).id);
+        return id != null && id.equals(((CloudAssetDTO) o).id);
     }
 
     @Override
@@ -161,15 +163,14 @@ public class OrganizationDTO implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "OrganizationDTO{" +
+        return "CloudAssetDTO{" +
             "id=" + getId() +
+            ", accountId='" + getAccountId() + "'" +
+            ", type='" + getType() + "'" +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
-            ", phone='" + getPhone() + "'" +
-            ", email='" + getEmail() + "'" +
-            ", address='" + getAddress() + "'" +
-            ", fax='" + getFax() + "'" +
-            ", dateOfEstablishment='" + getDateOfEstablishment() + "'" +
+            ", sourceJsonRef='" + getSourceJsonRef() + "'" +
+            ", sourceJson='" + getSourceJson() + "'" +
             ", status='" + getStatus() + "'" +
             ", createdOn='" + getCreatedOn() + "'" +
             ", updatedOn='" + getUpdatedOn() + "'" +

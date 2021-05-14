@@ -40,20 +40,20 @@ public class OrganizationalUnitResourceIT {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
+    private static final String DEFAULT_STATUS = "AAAAAAAAAA";
+    private static final String UPDATED_STATUS = "BBBBBBBBBB";
+
     private static final Instant DEFAULT_CREATED_ON = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_CREATED_ON = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final Instant DEFAULT_UPDATED_ON = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_UPDATED_ON = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
-    private static final String DEFAULT_STATUS = "AAAAAAAAAA";
-    private static final String UPDATED_STATUS = "BBBBBBBBBB";
+    private static final String DEFAULT_UPDATED_BY = "AAAAAAAAAA";
+    private static final String UPDATED_UPDATED_BY = "BBBBBBBBBB";
 
     private static final String DEFAULT_CREATED_BY = "AAAAAAAAAA";
     private static final String UPDATED_CREATED_BY = "BBBBBBBBBB";
-
-    private static final String DEFAULT_UPDATED_BY = "AAAAAAAAAA";
-    private static final String UPDATED_UPDATED_BY = "BBBBBBBBBB";
 
     @Autowired
     private OrganizationalUnitRepository organizationalUnitRepository;
@@ -82,11 +82,11 @@ public class OrganizationalUnitResourceIT {
         OrganizationalUnit organizationalUnit = new OrganizationalUnit()
             .name(DEFAULT_NAME)
             .description(DEFAULT_DESCRIPTION)
+            .status(DEFAULT_STATUS)
             .createdOn(DEFAULT_CREATED_ON)
             .updatedOn(DEFAULT_UPDATED_ON)
-            .status(DEFAULT_STATUS)
-            .createdBy(DEFAULT_CREATED_BY)
-            .updatedBy(DEFAULT_UPDATED_BY);
+            .updatedBy(DEFAULT_UPDATED_BY)
+            .createdBy(DEFAULT_CREATED_BY);
         return organizationalUnit;
     }
     /**
@@ -99,11 +99,11 @@ public class OrganizationalUnitResourceIT {
         OrganizationalUnit organizationalUnit = new OrganizationalUnit()
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION)
+            .status(UPDATED_STATUS)
             .createdOn(UPDATED_CREATED_ON)
             .updatedOn(UPDATED_UPDATED_ON)
-            .status(UPDATED_STATUS)
-            .createdBy(UPDATED_CREATED_BY)
-            .updatedBy(UPDATED_UPDATED_BY);
+            .updatedBy(UPDATED_UPDATED_BY)
+            .createdBy(UPDATED_CREATED_BY);
         return organizationalUnit;
     }
 
@@ -129,11 +129,11 @@ public class OrganizationalUnitResourceIT {
         OrganizationalUnit testOrganizationalUnit = organizationalUnitList.get(organizationalUnitList.size() - 1);
         assertThat(testOrganizationalUnit.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testOrganizationalUnit.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testOrganizationalUnit.getStatus()).isEqualTo(DEFAULT_STATUS);
         assertThat(testOrganizationalUnit.getCreatedOn()).isEqualTo(DEFAULT_CREATED_ON);
         assertThat(testOrganizationalUnit.getUpdatedOn()).isEqualTo(DEFAULT_UPDATED_ON);
-        assertThat(testOrganizationalUnit.getStatus()).isEqualTo(DEFAULT_STATUS);
-        assertThat(testOrganizationalUnit.getCreatedBy()).isEqualTo(DEFAULT_CREATED_BY);
         assertThat(testOrganizationalUnit.getUpdatedBy()).isEqualTo(DEFAULT_UPDATED_BY);
+        assertThat(testOrganizationalUnit.getCreatedBy()).isEqualTo(DEFAULT_CREATED_BY);
     }
 
     @Test
@@ -170,11 +170,11 @@ public class OrganizationalUnitResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(organizationalUnit.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
             .andExpect(jsonPath("$.[*].createdOn").value(hasItem(DEFAULT_CREATED_ON.toString())))
             .andExpect(jsonPath("$.[*].updatedOn").value(hasItem(DEFAULT_UPDATED_ON.toString())))
-            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
-            .andExpect(jsonPath("$.[*].createdBy").value(hasItem(DEFAULT_CREATED_BY)))
-            .andExpect(jsonPath("$.[*].updatedBy").value(hasItem(DEFAULT_UPDATED_BY)));
+            .andExpect(jsonPath("$.[*].updatedBy").value(hasItem(DEFAULT_UPDATED_BY)))
+            .andExpect(jsonPath("$.[*].createdBy").value(hasItem(DEFAULT_CREATED_BY)));
     }
     
     @Test
@@ -190,11 +190,11 @@ public class OrganizationalUnitResourceIT {
             .andExpect(jsonPath("$.id").value(organizationalUnit.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
+            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS))
             .andExpect(jsonPath("$.createdOn").value(DEFAULT_CREATED_ON.toString()))
             .andExpect(jsonPath("$.updatedOn").value(DEFAULT_UPDATED_ON.toString()))
-            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS))
-            .andExpect(jsonPath("$.createdBy").value(DEFAULT_CREATED_BY))
-            .andExpect(jsonPath("$.updatedBy").value(DEFAULT_UPDATED_BY));
+            .andExpect(jsonPath("$.updatedBy").value(DEFAULT_UPDATED_BY))
+            .andExpect(jsonPath("$.createdBy").value(DEFAULT_CREATED_BY));
     }
     @Test
     @Transactional
@@ -219,11 +219,11 @@ public class OrganizationalUnitResourceIT {
         updatedOrganizationalUnit
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION)
+            .status(UPDATED_STATUS)
             .createdOn(UPDATED_CREATED_ON)
             .updatedOn(UPDATED_UPDATED_ON)
-            .status(UPDATED_STATUS)
-            .createdBy(UPDATED_CREATED_BY)
-            .updatedBy(UPDATED_UPDATED_BY);
+            .updatedBy(UPDATED_UPDATED_BY)
+            .createdBy(UPDATED_CREATED_BY);
         OrganizationalUnitDTO organizationalUnitDTO = organizationalUnitMapper.toDto(updatedOrganizationalUnit);
 
         restOrganizationalUnitMockMvc.perform(put("/api/organizational-units")
@@ -237,11 +237,11 @@ public class OrganizationalUnitResourceIT {
         OrganizationalUnit testOrganizationalUnit = organizationalUnitList.get(organizationalUnitList.size() - 1);
         assertThat(testOrganizationalUnit.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testOrganizationalUnit.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testOrganizationalUnit.getStatus()).isEqualTo(UPDATED_STATUS);
         assertThat(testOrganizationalUnit.getCreatedOn()).isEqualTo(UPDATED_CREATED_ON);
         assertThat(testOrganizationalUnit.getUpdatedOn()).isEqualTo(UPDATED_UPDATED_ON);
-        assertThat(testOrganizationalUnit.getStatus()).isEqualTo(UPDATED_STATUS);
-        assertThat(testOrganizationalUnit.getCreatedBy()).isEqualTo(UPDATED_CREATED_BY);
         assertThat(testOrganizationalUnit.getUpdatedBy()).isEqualTo(UPDATED_UPDATED_BY);
+        assertThat(testOrganizationalUnit.getCreatedBy()).isEqualTo(UPDATED_CREATED_BY);
     }
 
     @Test

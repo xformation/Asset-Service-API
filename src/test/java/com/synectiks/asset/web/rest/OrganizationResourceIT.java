@@ -40,20 +40,35 @@ public class OrganizationResourceIT {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
+    private static final String DEFAULT_PHONE = "AAAAAAAAAA";
+    private static final String UPDATED_PHONE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_EMAIL = "AAAAAAAAAA";
+    private static final String UPDATED_EMAIL = "BBBBBBBBBB";
+
+    private static final String DEFAULT_ADDRESS = "AAAAAAAAAA";
+    private static final String UPDATED_ADDRESS = "BBBBBBBBBB";
+
+    private static final String DEFAULT_FAX = "AAAAAAAAAA";
+    private static final String UPDATED_FAX = "BBBBBBBBBB";
+
+    private static final Instant DEFAULT_DATE_OF_ESTABLISHMENT = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_DATE_OF_ESTABLISHMENT = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final String DEFAULT_STATUS = "AAAAAAAAAA";
+    private static final String UPDATED_STATUS = "BBBBBBBBBB";
+
     private static final Instant DEFAULT_CREATED_ON = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_CREATED_ON = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final Instant DEFAULT_UPDATED_ON = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_UPDATED_ON = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
-    private static final String DEFAULT_STATUS = "AAAAAAAAAA";
-    private static final String UPDATED_STATUS = "BBBBBBBBBB";
+    private static final String DEFAULT_UPDATED_BY = "AAAAAAAAAA";
+    private static final String UPDATED_UPDATED_BY = "BBBBBBBBBB";
 
     private static final String DEFAULT_CREATED_BY = "AAAAAAAAAA";
     private static final String UPDATED_CREATED_BY = "BBBBBBBBBB";
-
-    private static final String DEFAULT_UPDATED_BY = "AAAAAAAAAA";
-    private static final String UPDATED_UPDATED_BY = "BBBBBBBBBB";
 
     @Autowired
     private OrganizationRepository organizationRepository;
@@ -82,11 +97,16 @@ public class OrganizationResourceIT {
         Organization organization = new Organization()
             .name(DEFAULT_NAME)
             .description(DEFAULT_DESCRIPTION)
+            .phone(DEFAULT_PHONE)
+            .email(DEFAULT_EMAIL)
+            .address(DEFAULT_ADDRESS)
+            .fax(DEFAULT_FAX)
+            .dateOfEstablishment(DEFAULT_DATE_OF_ESTABLISHMENT)
+            .status(DEFAULT_STATUS)
             .createdOn(DEFAULT_CREATED_ON)
             .updatedOn(DEFAULT_UPDATED_ON)
-            .status(DEFAULT_STATUS)
-            .createdBy(DEFAULT_CREATED_BY)
-            .updatedBy(DEFAULT_UPDATED_BY);
+            .updatedBy(DEFAULT_UPDATED_BY)
+            .createdBy(DEFAULT_CREATED_BY);
         return organization;
     }
     /**
@@ -99,11 +119,16 @@ public class OrganizationResourceIT {
         Organization organization = new Organization()
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION)
+            .phone(UPDATED_PHONE)
+            .email(UPDATED_EMAIL)
+            .address(UPDATED_ADDRESS)
+            .fax(UPDATED_FAX)
+            .dateOfEstablishment(UPDATED_DATE_OF_ESTABLISHMENT)
+            .status(UPDATED_STATUS)
             .createdOn(UPDATED_CREATED_ON)
             .updatedOn(UPDATED_UPDATED_ON)
-            .status(UPDATED_STATUS)
-            .createdBy(UPDATED_CREATED_BY)
-            .updatedBy(UPDATED_UPDATED_BY);
+            .updatedBy(UPDATED_UPDATED_BY)
+            .createdBy(UPDATED_CREATED_BY);
         return organization;
     }
 
@@ -129,11 +154,16 @@ public class OrganizationResourceIT {
         Organization testOrganization = organizationList.get(organizationList.size() - 1);
         assertThat(testOrganization.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testOrganization.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testOrganization.getPhone()).isEqualTo(DEFAULT_PHONE);
+        assertThat(testOrganization.getEmail()).isEqualTo(DEFAULT_EMAIL);
+        assertThat(testOrganization.getAddress()).isEqualTo(DEFAULT_ADDRESS);
+        assertThat(testOrganization.getFax()).isEqualTo(DEFAULT_FAX);
+        assertThat(testOrganization.getDateOfEstablishment()).isEqualTo(DEFAULT_DATE_OF_ESTABLISHMENT);
+        assertThat(testOrganization.getStatus()).isEqualTo(DEFAULT_STATUS);
         assertThat(testOrganization.getCreatedOn()).isEqualTo(DEFAULT_CREATED_ON);
         assertThat(testOrganization.getUpdatedOn()).isEqualTo(DEFAULT_UPDATED_ON);
-        assertThat(testOrganization.getStatus()).isEqualTo(DEFAULT_STATUS);
-        assertThat(testOrganization.getCreatedBy()).isEqualTo(DEFAULT_CREATED_BY);
         assertThat(testOrganization.getUpdatedBy()).isEqualTo(DEFAULT_UPDATED_BY);
+        assertThat(testOrganization.getCreatedBy()).isEqualTo(DEFAULT_CREATED_BY);
     }
 
     @Test
@@ -170,11 +200,16 @@ public class OrganizationResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(organization.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].phone").value(hasItem(DEFAULT_PHONE)))
+            .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
+            .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS)))
+            .andExpect(jsonPath("$.[*].fax").value(hasItem(DEFAULT_FAX)))
+            .andExpect(jsonPath("$.[*].dateOfEstablishment").value(hasItem(DEFAULT_DATE_OF_ESTABLISHMENT.toString())))
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
             .andExpect(jsonPath("$.[*].createdOn").value(hasItem(DEFAULT_CREATED_ON.toString())))
             .andExpect(jsonPath("$.[*].updatedOn").value(hasItem(DEFAULT_UPDATED_ON.toString())))
-            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
-            .andExpect(jsonPath("$.[*].createdBy").value(hasItem(DEFAULT_CREATED_BY)))
-            .andExpect(jsonPath("$.[*].updatedBy").value(hasItem(DEFAULT_UPDATED_BY)));
+            .andExpect(jsonPath("$.[*].updatedBy").value(hasItem(DEFAULT_UPDATED_BY)))
+            .andExpect(jsonPath("$.[*].createdBy").value(hasItem(DEFAULT_CREATED_BY)));
     }
     
     @Test
@@ -190,11 +225,16 @@ public class OrganizationResourceIT {
             .andExpect(jsonPath("$.id").value(organization.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
+            .andExpect(jsonPath("$.phone").value(DEFAULT_PHONE))
+            .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
+            .andExpect(jsonPath("$.address").value(DEFAULT_ADDRESS))
+            .andExpect(jsonPath("$.fax").value(DEFAULT_FAX))
+            .andExpect(jsonPath("$.dateOfEstablishment").value(DEFAULT_DATE_OF_ESTABLISHMENT.toString()))
+            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS))
             .andExpect(jsonPath("$.createdOn").value(DEFAULT_CREATED_ON.toString()))
             .andExpect(jsonPath("$.updatedOn").value(DEFAULT_UPDATED_ON.toString()))
-            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS))
-            .andExpect(jsonPath("$.createdBy").value(DEFAULT_CREATED_BY))
-            .andExpect(jsonPath("$.updatedBy").value(DEFAULT_UPDATED_BY));
+            .andExpect(jsonPath("$.updatedBy").value(DEFAULT_UPDATED_BY))
+            .andExpect(jsonPath("$.createdBy").value(DEFAULT_CREATED_BY));
     }
     @Test
     @Transactional
@@ -219,11 +259,16 @@ public class OrganizationResourceIT {
         updatedOrganization
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION)
+            .phone(UPDATED_PHONE)
+            .email(UPDATED_EMAIL)
+            .address(UPDATED_ADDRESS)
+            .fax(UPDATED_FAX)
+            .dateOfEstablishment(UPDATED_DATE_OF_ESTABLISHMENT)
+            .status(UPDATED_STATUS)
             .createdOn(UPDATED_CREATED_ON)
             .updatedOn(UPDATED_UPDATED_ON)
-            .status(UPDATED_STATUS)
-            .createdBy(UPDATED_CREATED_BY)
-            .updatedBy(UPDATED_UPDATED_BY);
+            .updatedBy(UPDATED_UPDATED_BY)
+            .createdBy(UPDATED_CREATED_BY);
         OrganizationDTO organizationDTO = organizationMapper.toDto(updatedOrganization);
 
         restOrganizationMockMvc.perform(put("/api/organizations")
@@ -237,11 +282,16 @@ public class OrganizationResourceIT {
         Organization testOrganization = organizationList.get(organizationList.size() - 1);
         assertThat(testOrganization.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testOrganization.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testOrganization.getPhone()).isEqualTo(UPDATED_PHONE);
+        assertThat(testOrganization.getEmail()).isEqualTo(UPDATED_EMAIL);
+        assertThat(testOrganization.getAddress()).isEqualTo(UPDATED_ADDRESS);
+        assertThat(testOrganization.getFax()).isEqualTo(UPDATED_FAX);
+        assertThat(testOrganization.getDateOfEstablishment()).isEqualTo(UPDATED_DATE_OF_ESTABLISHMENT);
+        assertThat(testOrganization.getStatus()).isEqualTo(UPDATED_STATUS);
         assertThat(testOrganization.getCreatedOn()).isEqualTo(UPDATED_CREATED_ON);
         assertThat(testOrganization.getUpdatedOn()).isEqualTo(UPDATED_UPDATED_ON);
-        assertThat(testOrganization.getStatus()).isEqualTo(UPDATED_STATUS);
-        assertThat(testOrganization.getCreatedBy()).isEqualTo(UPDATED_CREATED_BY);
         assertThat(testOrganization.getUpdatedBy()).isEqualTo(UPDATED_UPDATED_BY);
+        assertThat(testOrganization.getCreatedBy()).isEqualTo(UPDATED_CREATED_BY);
     }
 
     @Test

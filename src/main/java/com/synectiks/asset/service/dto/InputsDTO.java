@@ -5,26 +5,24 @@ import javax.validation.constraints.*;
 import java.io.Serializable;
 
 /**
- * A DTO for the {@link com.synectiks.asset.domain.Organization} entity.
+ * A DTO for the {@link com.synectiks.asset.domain.Inputs} entity.
  */
-public class OrganizationDTO implements Serializable {
+public class InputsDTO implements Serializable {
     
     private Long id;
+
+    private String accountId;
+
+    private String tenantId;
+
+    private String inputSource;
+
+    private String inputSourceId;
 
     private String name;
 
     @Size(max = 5000)
     private String description;
-
-    private String phone;
-
-    private String email;
-
-    private String address;
-
-    private String fax;
-
-    private Instant dateOfEstablishment;
 
     private String status;
 
@@ -45,6 +43,38 @@ public class OrganizationDTO implements Serializable {
         this.id = id;
     }
 
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    public String getInputSource() {
+        return inputSource;
+    }
+
+    public void setInputSource(String inputSource) {
+        this.inputSource = inputSource;
+    }
+
+    public String getInputSourceId() {
+        return inputSourceId;
+    }
+
+    public void setInputSourceId(String inputSourceId) {
+        this.inputSourceId = inputSourceId;
+    }
+
     public String getName() {
         return name;
     }
@@ -59,46 +89,6 @@ public class OrganizationDTO implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getFax() {
-        return fax;
-    }
-
-    public void setFax(String fax) {
-        this.fax = fax;
-    }
-
-    public Instant getDateOfEstablishment() {
-        return dateOfEstablishment;
-    }
-
-    public void setDateOfEstablishment(Instant dateOfEstablishment) {
-        this.dateOfEstablishment = dateOfEstablishment;
     }
 
     public String getStatus() {
@@ -146,11 +136,11 @@ public class OrganizationDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof OrganizationDTO)) {
+        if (!(o instanceof InputsDTO)) {
             return false;
         }
 
-        return id != null && id.equals(((OrganizationDTO) o).id);
+        return id != null && id.equals(((InputsDTO) o).id);
     }
 
     @Override
@@ -161,15 +151,14 @@ public class OrganizationDTO implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "OrganizationDTO{" +
+        return "InputsDTO{" +
             "id=" + getId() +
+            ", accountId='" + getAccountId() + "'" +
+            ", tenantId='" + getTenantId() + "'" +
+            ", inputSource='" + getInputSource() + "'" +
+            ", inputSourceId='" + getInputSourceId() + "'" +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
-            ", phone='" + getPhone() + "'" +
-            ", email='" + getEmail() + "'" +
-            ", address='" + getAddress() + "'" +
-            ", fax='" + getFax() + "'" +
-            ", dateOfEstablishment='" + getDateOfEstablishment() + "'" +
             ", status='" + getStatus() + "'" +
             ", createdOn='" + getCreatedOn() + "'" +
             ", updatedOn='" + getUpdatedOn() + "'" +

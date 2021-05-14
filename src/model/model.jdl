@@ -1,94 +1,113 @@
-entity Environment {
+entity Accounts {
    name String
    description String maxlength(5000)
+   accountId String
+   tenantId String
+   accessKey String
+   secretKey String
+   region String
+   bucket String
+   email String
+   password String
+   cloudType String
+   sourceJsonRef String maxlength(1000)
+   sourceJson Blob
+   status String
    createdOn Instant
    updatedOn Instant
    updatedBy String
    createdBy String   
-   status String
-   clientId String maxlength(1000)
-   clientSecret String maxlength(2000)
-   userType String
-   email String
-   password String
-   jsonData Blob
-   scopes String
-   authUrl String
-   tokenUrl String
-   apiUrl String
-   type String
 }
 
-entity Input {
+entity Inputs {
+   accountId String
+   tenantId String
+   inputSource String
+   inputSourceId String
    name String
    description String maxlength(5000)
-   createdOn Instant
-   updatedOn Instant 
    status String
-   source String
-   type String
-   url String
-   userId String
-   password String
-   database String
-   inputData Blob
-   access String
-   basicAuth String
-   basicAuthUser String
-   basicAuthPassword String
-   withCredentials String
-   secureInputData Blob
-   daprPubSubName String
-   daprTopic String
-   daprRoute String
-   createdBy String
+   createdOn Instant
+   updatedOn Instant
    updatedBy String
+   createdBy String 
 }
 
-entity Dashboard {
+entity CloudAsset {
+   accountId String
+   type String
    name String
    description String maxlength(5000)
-   createdOn Instant
-   updatedOn Instant 
+   sourceJsonRef String maxlength(1000)
+   sourceJson Blob
    status String
-   isMonitored  String maxlength(3)
-   jsonData Blob
-   createdBy String
+   createdOn Instant
+   updatedOn Instant
    updatedBy String
+   createdBy String
+}
+
+entity AssetDetails {
+   name String
+   description String maxlength(5000)
+   totalInstances Integer
+   viewJsonRef String maxlength(1000)
+   viewJson Blob
+   sourceJsonRef String maxlength(1000)
+   sourceJson Blob
+   status String
+   createdOn Instant
+   updatedOn Instant
+   updatedBy String
+   createdBy String
+}
+
+entity ApplicationAssets {
+   tenantId String
+   dashboardUuid String
+   cloudType String
+   elementType String
+   inputType String
+   dashboardNature String
+   status String
+   createdOn Instant
+   updatedOn Instant
+   updatedBy String
+   createdBy String
 }
 
 entity Organization {
    name String
    description String maxlength(5000)
-   createdOn Instant
-   updatedOn Instant 
+   phone String
+   email String
+   address String
+   fax String
+   dateOfEstablishment Instant
    status String
-   createdBy String
+   createdOn Instant
+   updatedOn Instant
    updatedBy String
+   createdBy String
 }
 
 entity OrganizationalUnit {
    name String
    description String maxlength(5000)
-   createdOn Instant
-   updatedOn Instant 
    status String
-   createdBy String
+   createdOn Instant
+   updatedOn Instant
    updatedBy String
+   createdBy String
 }
 
-entity OuEnvMapping {
-   
-}
 
 
 relationship ManyToOne {
-	Organization{environment} to Environment,
+	Accounts{organization} to Organization,
+	Accounts{organizationalUnit} to OrganizationalUnit,
 	OrganizationalUnit{organization} to Organization,
-	Input{environment} to Environment,
-	Dashboard{input} to Input,
-	OuEnvMapping{organizationalUnit} to OrganizationalUnit,
-	OuEnvMapping{environment} to Environment
+	AssetDetails{cloudAsset} to CloudAsset
 }
 
 dto * with mapstruct service all with serviceImpl

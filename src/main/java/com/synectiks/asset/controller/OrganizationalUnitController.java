@@ -5,10 +5,11 @@ import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,7 +26,9 @@ import io.github.jhipster.web.util.HeaderUtil;
 @RequestMapping("/api")
 public class OrganizationalUnitController {
 
-private static final String ENTITY_NAME = "OrganizationalUnit";
+	private static final Logger logger = LoggerFactory.getLogger(OrganizationalUnitController.class);
+	
+	private static final String ENTITY_NAME = "OrganizationalUnit";
 	
 	@Value("${jhipster.clientApp.name}")
 	private String applicationName;
@@ -36,14 +39,12 @@ private static final String ENTITY_NAME = "OrganizationalUnit";
 	@Autowired
 	private OrganizationalUnitRepository organizationalUnitRepository;
 	
-	@PostMapping("/addOrganizationUnit{id}")
-	public ResponseEntity<OrganizationalUnit> addOrganizationUnit(
-			Long id, 
-			@RequestParam(required = false)String name
-			) throws URISyntaxException {
+	@PostMapping("/addOrganizationUnit{orgId}")
+	public ResponseEntity<OrganizationalUnit> addOrganizationUnit(Long orgId,  @RequestParam String name ) throws URISyntaxException {
 	
-		Optional<Organization> oRg = organizationRepository.findById(id);
+		Optional<Organization> oRg = organizationRepository.findById(orgId);
 		if(!oRg.isPresent()) {
+			logger.error("Cannot add organization unit. Parent organization not found");
 			return ResponseEntity
 					.created(new URI("/api/addOrganizationUnit")).headers(HeaderUtil
 							.createEntityCreationAlert(applicationName, false, ENTITY_NAME, null))
@@ -57,12 +58,11 @@ private static final String ENTITY_NAME = "OrganizationalUnit";
 		ou.setCreatedOn(now);
 		ou.setUpdatedOn(now);
 		ou = organizationalUnitRepository.save(ou);
+		logger.info("Organization unit added successfully. New organization unit : "+ou.toString());
 		return ResponseEntity
 				.created(new URI("/api/addOrganizationUnit/" + ou.getId())).headers(HeaderUtil
 						.createEntityCreationAlert(applicationName, false, ENTITY_NAME, ou.getId().toString()))
 				.body(ou);
+	}
 	
-	
-	
-  }
 }

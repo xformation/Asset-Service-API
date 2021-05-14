@@ -1,6 +1,5 @@
 package com.synectiks.asset.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -9,11 +8,11 @@ import java.io.Serializable;
 import java.time.Instant;
 
 /**
- * A OrganizationalUnit.
+ * A CloudAsset.
  */
 @Entity
-@Table(name = "organizational_unit")
-public class OrganizationalUnit implements Serializable {
+@Table(name = "cloud_asset")
+public class CloudAsset implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,12 +21,29 @@ public class OrganizationalUnit implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
+    @Column(name = "account_id")
+    private String accountId;
+
+    @Column(name = "type")
+    private String type;
+
     @Column(name = "name")
     private String name;
 
     @Size(max = 5000)
     @Column(name = "description", length = 5000)
     private String description;
+
+    @Size(max = 1000)
+    @Column(name = "source_json_ref", length = 1000)
+    private String sourceJsonRef;
+
+    @Lob
+    @Column(name = "source_json")
+    private byte[] sourceJson;
+
+    @Column(name = "source_json_content_type")
+    private String sourceJsonContentType;
 
     @Column(name = "status")
     private String status;
@@ -44,10 +60,6 @@ public class OrganizationalUnit implements Serializable {
     @Column(name = "created_by")
     private String createdBy;
 
-    @ManyToOne
-    @JsonIgnoreProperties(value = "organizationalUnits", allowSetters = true)
-    private Organization organization;
-
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
@@ -57,11 +69,37 @@ public class OrganizationalUnit implements Serializable {
         this.id = id;
     }
 
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public CloudAsset accountId(String accountId) {
+        this.accountId = accountId;
+        return this;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public CloudAsset type(String type) {
+        this.type = type;
+        return this;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public String getName() {
         return name;
     }
 
-    public OrganizationalUnit name(String name) {
+    public CloudAsset name(String name) {
         this.name = name;
         return this;
     }
@@ -74,7 +112,7 @@ public class OrganizationalUnit implements Serializable {
         return description;
     }
 
-    public OrganizationalUnit description(String description) {
+    public CloudAsset description(String description) {
         this.description = description;
         return this;
     }
@@ -83,11 +121,50 @@ public class OrganizationalUnit implements Serializable {
         this.description = description;
     }
 
+    public String getSourceJsonRef() {
+        return sourceJsonRef;
+    }
+
+    public CloudAsset sourceJsonRef(String sourceJsonRef) {
+        this.sourceJsonRef = sourceJsonRef;
+        return this;
+    }
+
+    public void setSourceJsonRef(String sourceJsonRef) {
+        this.sourceJsonRef = sourceJsonRef;
+    }
+
+    public byte[] getSourceJson() {
+        return sourceJson;
+    }
+
+    public CloudAsset sourceJson(byte[] sourceJson) {
+        this.sourceJson = sourceJson;
+        return this;
+    }
+
+    public void setSourceJson(byte[] sourceJson) {
+        this.sourceJson = sourceJson;
+    }
+
+    public String getSourceJsonContentType() {
+        return sourceJsonContentType;
+    }
+
+    public CloudAsset sourceJsonContentType(String sourceJsonContentType) {
+        this.sourceJsonContentType = sourceJsonContentType;
+        return this;
+    }
+
+    public void setSourceJsonContentType(String sourceJsonContentType) {
+        this.sourceJsonContentType = sourceJsonContentType;
+    }
+
     public String getStatus() {
         return status;
     }
 
-    public OrganizationalUnit status(String status) {
+    public CloudAsset status(String status) {
         this.status = status;
         return this;
     }
@@ -100,7 +177,7 @@ public class OrganizationalUnit implements Serializable {
         return createdOn;
     }
 
-    public OrganizationalUnit createdOn(Instant createdOn) {
+    public CloudAsset createdOn(Instant createdOn) {
         this.createdOn = createdOn;
         return this;
     }
@@ -113,7 +190,7 @@ public class OrganizationalUnit implements Serializable {
         return updatedOn;
     }
 
-    public OrganizationalUnit updatedOn(Instant updatedOn) {
+    public CloudAsset updatedOn(Instant updatedOn) {
         this.updatedOn = updatedOn;
         return this;
     }
@@ -126,7 +203,7 @@ public class OrganizationalUnit implements Serializable {
         return updatedBy;
     }
 
-    public OrganizationalUnit updatedBy(String updatedBy) {
+    public CloudAsset updatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
         return this;
     }
@@ -139,26 +216,13 @@ public class OrganizationalUnit implements Serializable {
         return createdBy;
     }
 
-    public OrganizationalUnit createdBy(String createdBy) {
+    public CloudAsset createdBy(String createdBy) {
         this.createdBy = createdBy;
         return this;
     }
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
-    }
-
-    public Organization getOrganization() {
-        return organization;
-    }
-
-    public OrganizationalUnit organization(Organization organization) {
-        this.organization = organization;
-        return this;
-    }
-
-    public void setOrganization(Organization organization) {
-        this.organization = organization;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -167,10 +231,10 @@ public class OrganizationalUnit implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof OrganizationalUnit)) {
+        if (!(o instanceof CloudAsset)) {
             return false;
         }
-        return id != null && id.equals(((OrganizationalUnit) o).id);
+        return id != null && id.equals(((CloudAsset) o).id);
     }
 
     @Override
@@ -181,10 +245,15 @@ public class OrganizationalUnit implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "OrganizationalUnit{" +
+        return "CloudAsset{" +
             "id=" + getId() +
+            ", accountId='" + getAccountId() + "'" +
+            ", type='" + getType() + "'" +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
+            ", sourceJsonRef='" + getSourceJsonRef() + "'" +
+            ", sourceJson='" + getSourceJson() + "'" +
+            ", sourceJsonContentType='" + getSourceJsonContentType() + "'" +
             ", status='" + getStatus() + "'" +
             ", createdOn='" + getCreatedOn() + "'" +
             ", updatedOn='" + getUpdatedOn() + "'" +

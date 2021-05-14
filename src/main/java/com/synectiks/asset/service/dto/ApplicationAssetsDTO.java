@@ -1,30 +1,26 @@
 package com.synectiks.asset.service.dto;
 
 import java.time.Instant;
-import javax.validation.constraints.*;
 import java.io.Serializable;
 
 /**
- * A DTO for the {@link com.synectiks.asset.domain.Organization} entity.
+ * A DTO for the {@link com.synectiks.asset.domain.ApplicationAssets} entity.
  */
-public class OrganizationDTO implements Serializable {
+public class ApplicationAssetsDTO implements Serializable {
     
     private Long id;
 
-    private String name;
+    private String tenantId;
 
-    @Size(max = 5000)
-    private String description;
+    private String dashboardUuid;
 
-    private String phone;
+    private String cloudType;
 
-    private String email;
+    private String elementType;
 
-    private String address;
+    private String inputType;
 
-    private String fax;
-
-    private Instant dateOfEstablishment;
+    private String dashboardNature;
 
     private String status;
 
@@ -45,60 +41,52 @@ public class OrganizationDTO implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTenantId() {
+        return tenantId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDashboardUuid() {
+        return dashboardUuid;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDashboardUuid(String dashboardUuid) {
+        this.dashboardUuid = dashboardUuid;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getCloudType() {
+        return cloudType;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setCloudType(String cloudType) {
+        this.cloudType = cloudType;
     }
 
-    public String getEmail() {
-        return email;
+    public String getElementType() {
+        return elementType;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setElementType(String elementType) {
+        this.elementType = elementType;
     }
 
-    public String getAddress() {
-        return address;
+    public String getInputType() {
+        return inputType;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setInputType(String inputType) {
+        this.inputType = inputType;
     }
 
-    public String getFax() {
-        return fax;
+    public String getDashboardNature() {
+        return dashboardNature;
     }
 
-    public void setFax(String fax) {
-        this.fax = fax;
-    }
-
-    public Instant getDateOfEstablishment() {
-        return dateOfEstablishment;
-    }
-
-    public void setDateOfEstablishment(Instant dateOfEstablishment) {
-        this.dateOfEstablishment = dateOfEstablishment;
+    public void setDashboardNature(String dashboardNature) {
+        this.dashboardNature = dashboardNature;
     }
 
     public String getStatus() {
@@ -146,11 +134,11 @@ public class OrganizationDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof OrganizationDTO)) {
+        if (!(o instanceof ApplicationAssetsDTO)) {
             return false;
         }
 
-        return id != null && id.equals(((OrganizationDTO) o).id);
+        return id != null && id.equals(((ApplicationAssetsDTO) o).id);
     }
 
     @Override
@@ -161,15 +149,14 @@ public class OrganizationDTO implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "OrganizationDTO{" +
+        return "ApplicationAssetsDTO{" +
             "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", phone='" + getPhone() + "'" +
-            ", email='" + getEmail() + "'" +
-            ", address='" + getAddress() + "'" +
-            ", fax='" + getFax() + "'" +
-            ", dateOfEstablishment='" + getDateOfEstablishment() + "'" +
+            ", tenantId='" + getTenantId() + "'" +
+            ", dashboardUuid='" + getDashboardUuid() + "'" +
+            ", cloudType='" + getCloudType() + "'" +
+            ", elementType='" + getElementType() + "'" +
+            ", inputType='" + getInputType() + "'" +
+            ", dashboardNature='" + getDashboardNature() + "'" +
             ", status='" + getStatus() + "'" +
             ", createdOn='" + getCreatedOn() + "'" +
             ", updatedOn='" + getUpdatedOn() + "'" +

@@ -1,6 +1,5 @@
 package com.synectiks.asset.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -9,11 +8,11 @@ import java.io.Serializable;
 import java.time.Instant;
 
 /**
- * A OrganizationalUnit.
+ * A Inputs.
  */
 @Entity
-@Table(name = "organizational_unit")
-public class OrganizationalUnit implements Serializable {
+@Table(name = "inputs")
+public class Inputs implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -21,6 +20,18 @@ public class OrganizationalUnit implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
+
+    @Column(name = "account_id")
+    private String accountId;
+
+    @Column(name = "tenant_id")
+    private String tenantId;
+
+    @Column(name = "input_source")
+    private String inputSource;
+
+    @Column(name = "input_source_id")
+    private String inputSourceId;
 
     @Column(name = "name")
     private String name;
@@ -44,10 +55,6 @@ public class OrganizationalUnit implements Serializable {
     @Column(name = "created_by")
     private String createdBy;
 
-    @ManyToOne
-    @JsonIgnoreProperties(value = "organizationalUnits", allowSetters = true)
-    private Organization organization;
-
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
@@ -57,11 +64,63 @@ public class OrganizationalUnit implements Serializable {
         this.id = id;
     }
 
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public Inputs accountId(String accountId) {
+        this.accountId = accountId;
+        return this;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public Inputs tenantId(String tenantId) {
+        this.tenantId = tenantId;
+        return this;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    public String getInputSource() {
+        return inputSource;
+    }
+
+    public Inputs inputSource(String inputSource) {
+        this.inputSource = inputSource;
+        return this;
+    }
+
+    public void setInputSource(String inputSource) {
+        this.inputSource = inputSource;
+    }
+
+    public String getInputSourceId() {
+        return inputSourceId;
+    }
+
+    public Inputs inputSourceId(String inputSourceId) {
+        this.inputSourceId = inputSourceId;
+        return this;
+    }
+
+    public void setInputSourceId(String inputSourceId) {
+        this.inputSourceId = inputSourceId;
+    }
+
     public String getName() {
         return name;
     }
 
-    public OrganizationalUnit name(String name) {
+    public Inputs name(String name) {
         this.name = name;
         return this;
     }
@@ -74,7 +133,7 @@ public class OrganizationalUnit implements Serializable {
         return description;
     }
 
-    public OrganizationalUnit description(String description) {
+    public Inputs description(String description) {
         this.description = description;
         return this;
     }
@@ -87,7 +146,7 @@ public class OrganizationalUnit implements Serializable {
         return status;
     }
 
-    public OrganizationalUnit status(String status) {
+    public Inputs status(String status) {
         this.status = status;
         return this;
     }
@@ -100,7 +159,7 @@ public class OrganizationalUnit implements Serializable {
         return createdOn;
     }
 
-    public OrganizationalUnit createdOn(Instant createdOn) {
+    public Inputs createdOn(Instant createdOn) {
         this.createdOn = createdOn;
         return this;
     }
@@ -113,7 +172,7 @@ public class OrganizationalUnit implements Serializable {
         return updatedOn;
     }
 
-    public OrganizationalUnit updatedOn(Instant updatedOn) {
+    public Inputs updatedOn(Instant updatedOn) {
         this.updatedOn = updatedOn;
         return this;
     }
@@ -126,7 +185,7 @@ public class OrganizationalUnit implements Serializable {
         return updatedBy;
     }
 
-    public OrganizationalUnit updatedBy(String updatedBy) {
+    public Inputs updatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
         return this;
     }
@@ -139,26 +198,13 @@ public class OrganizationalUnit implements Serializable {
         return createdBy;
     }
 
-    public OrganizationalUnit createdBy(String createdBy) {
+    public Inputs createdBy(String createdBy) {
         this.createdBy = createdBy;
         return this;
     }
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
-    }
-
-    public Organization getOrganization() {
-        return organization;
-    }
-
-    public OrganizationalUnit organization(Organization organization) {
-        this.organization = organization;
-        return this;
-    }
-
-    public void setOrganization(Organization organization) {
-        this.organization = organization;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -167,10 +213,10 @@ public class OrganizationalUnit implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof OrganizationalUnit)) {
+        if (!(o instanceof Inputs)) {
             return false;
         }
-        return id != null && id.equals(((OrganizationalUnit) o).id);
+        return id != null && id.equals(((Inputs) o).id);
     }
 
     @Override
@@ -181,8 +227,12 @@ public class OrganizationalUnit implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "OrganizationalUnit{" +
+        return "Inputs{" +
             "id=" + getId() +
+            ", accountId='" + getAccountId() + "'" +
+            ", tenantId='" + getTenantId() + "'" +
+            ", inputSource='" + getInputSource() + "'" +
+            ", inputSourceId='" + getInputSourceId() + "'" +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
             ", status='" + getStatus() + "'" +
