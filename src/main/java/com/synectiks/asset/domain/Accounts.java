@@ -1,12 +1,23 @@
 package com.synectiks.asset.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A Accounts.
@@ -90,7 +101,10 @@ public class Accounts implements Serializable {
     @JsonIgnoreProperties(value = "accounts", allowSetters = true)
     private OrganizationalUnit organizationalUnit;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here
+    @Transient
+    @JsonProperty
+    private List<Asset> assetList;
+    
     public Long getId() {
         return id;
     }
@@ -415,4 +429,12 @@ public class Accounts implements Serializable {
             ", createdBy='" + getCreatedBy() + "'" +
             "}";
     }
+
+	public List<Asset> getAssetList() {
+		return assetList;
+	}
+
+	public void setAssetList(List<Asset> assetList) {
+		this.assetList = assetList;
+	}
 }

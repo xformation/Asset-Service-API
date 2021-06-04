@@ -3,13 +3,19 @@ package com.synectiks.asset.controller;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,8 +45,8 @@ public class OrganizationalUnitController {
 	@Autowired
 	private OrganizationalUnitRepository organizationalUnitRepository;
 	
-	@PostMapping("/addOrganizationUnit{orgId}")
-	public ResponseEntity<OrganizationalUnit> addOrganizationUnit(Long orgId,  @RequestParam String name ) throws URISyntaxException {
+	@PostMapping("/addOrganizationUnit/{orgId}/{ouName}")
+	public ResponseEntity<OrganizationalUnit> addOrganizationUnit(@PathVariable Long orgId,  @PathVariable String ouName ) throws URISyntaxException {
 	
 		Optional<Organization> oRg = organizationRepository.findById(orgId);
 		if(!oRg.isPresent()) {
@@ -53,7 +59,7 @@ public class OrganizationalUnitController {
 		
 		OrganizationalUnit ou = new OrganizationalUnit();
 		ou.setOrganization(oRg.get());
-		ou.setName(name);
+		ou.setName(ouName);
 		Instant now = Instant.now();
 		ou.setCreatedOn(now);
 		ou.setUpdatedOn(now);
@@ -63,6 +69,26 @@ public class OrganizationalUnitController {
 				.created(new URI("/api/addOrganizationUnit/" + ou.getId())).headers(HeaderUtil
 						.createEntityCreationAlert(applicationName, false, ENTITY_NAME, ou.getId().toString()))
 				.body(ou);
+	}
+	
+	@GetMapping("/getAllOrgUnits")
+	private List<OrganizationalUnit> getAllOrganizationalUnits() {
+		List<OrganizationalUnit> list = organizationalUnitRepository.findAll(Sort.by(Direction.DESC, "name"));
+		return list;
+	}
+	
+	@GetMapping("/getAllOrgUnitsByOrgId")
+	private List<OrganizationalUnit> getAllOrganizationalUnits(@RequestParam Long organizationId) {
+		Optional<Organization> oo = organizationRepository.findById(organizationId);
+		List<OrganizationalUnit> ouList = new ArrayList<>();
+		if(oo.isPresent()) {
+			Organization org = oo.get();
+			OrganizationalUnit ou = new OrganizationalUnit();
+			ou.setOrganization(org);
+			ouList = organizationalUnitRepository.findAll(Sort.by(Direction.DESC, "name"));
+		}
+		
+		return ouList;
 	}
 	
 }

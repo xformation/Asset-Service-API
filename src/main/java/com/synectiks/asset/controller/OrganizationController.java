@@ -1,6 +1,7 @@
 package com.synectiks.asset.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,20 +43,28 @@ public class OrganizationController {
 	private List<Organization> getAllOrganization() {
 		List<Organization> list = organizationRepository.findAll(Sort.by(Direction.DESC, "id"));
 		for(Organization org: list) {
-			
+			OrganizationalUnit ou = new OrganizationalUnit();
+			ou.setOrganization(org);
+			List<OrganizationalUnit> ouList = organizationalUnitRepository.findAll(Sort.by(Direction.DESC, "name"));
+			org.setOrganizationalUnitList(ouList);
 		}
 		return list;
 	}
 	
-	@GetMapping("/getAllOrganizationalUnits")
-	private List<OrganizationalUnit> getAllOrganizationalUnits() {
-		List<OrganizationalUnit> list = organizationalUnitRepository.findAll(Sort.by(Direction.DESC, "id"));
-		return list;
-	}
+	@GetMapping("/getOrganization/{id}")
+    public ResponseEntity<Organization> getOrganization(@PathVariable Long id) {
+		logger.debug("REST request to get Organization : {}", id);
+		Optional<Organization> oo = organizationRepository.findById(id);
+		if(oo.isPresent()) {
+			Organization org = oo.get();
+			OrganizationalUnit ou = new OrganizationalUnit();
+			ou.setOrganization(org);
+			List<OrganizationalUnit> ouList = organizationalUnitRepository.findAll(Sort.by(Direction.DESC, "name"));
+			org.setOrganizationalUnitList(ouList);
+			return ResponseEntity.status(HttpStatus.OK).body(org);
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
 	
-	@GetMapping("/getAllOrganizationalUnits/{orgId}")
-	private List<OrganizationalUnit> getAllOrganizationalUnits(Long orgId) {
-		List<OrganizationalUnit> list = organizationalUnitRepository.findAll(Sort.by(Direction.DESC, "id"));
-		return list;
-	}
+	
 }

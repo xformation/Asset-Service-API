@@ -6,7 +6,10 @@ package com.synectiks.asset.config;
 public final class Constants {
 
     public static final String SYSTEM_ACCOUNT = "system";
-
+    public static final String ACTIVE = "ACTIVE";
+    public static final String DEACTIVE = "DEACTIVE";
+    
+    
     private Constants() {
     }
 }
