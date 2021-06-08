@@ -5,6 +5,8 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Arrays;
 
+import javax.persistence.Column;
+
 
 public class Asset implements Serializable {
 
@@ -27,6 +29,12 @@ public class Asset implements Serializable {
     private String instance;
     private boolean isOpened = false;
     private Asset[] subData;
+    
+    private String tenantId;
+    private String dashboardUuid;
+    private String elementType;
+    private String inputType;
+    private String dashboardNature;
     
 	public Long getId() {
 		return id;
@@ -131,14 +139,42 @@ public class Asset implements Serializable {
 		this.subData = subData;
 	}
 	
+	public String getTenantId() {
+		return tenantId;
+	}
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
+	}
+	public String getDashboardUuid() {
+		return dashboardUuid;
+	}
+	public void setDashboardUuid(String dashboardUuid) {
+		this.dashboardUuid = dashboardUuid;
+	}
+	public String getElementType() {
+		return elementType;
+	}
+	public void setElementType(String elementType) {
+		this.elementType = elementType;
+	}
+	public String getInputType() {
+		return inputType;
+	}
+	public void setInputType(String inputType) {
+		this.inputType = inputType;
+	}
+	public String getDashboardNature() {
+		return dashboardNature;
+	}
+	public void setDashboardNature(String dashboardNature) {
+		this.dashboardNature = dashboardNature;
+	}
+	
 	@Override
 	public int hashCode() {
-		final int prime = 41;
+		final int prime = 37;
 		int result = 1;
-		result = prime * result + ((accountId == null) ? 0 : accountId.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((title == null) ? 0 : title.hashCode());
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
 	
@@ -151,25 +187,10 @@ public class Asset implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Asset other = (Asset) obj;
-		if (accountId == null) {
-			if (other.accountId != null)
-				return false;
-		} else if (!accountId.equals(other.accountId))
-			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
-			return false;
-		if (title == null) {
-			if (other.title != null)
-				return false;
-		} else if (!title.equals(other.title))
-			return false;
-		if (type == null) {
-			if (other.type != null)
-				return false;
-		} else if (!type.equals(other.type))
 			return false;
 		return true;
 	}
@@ -177,10 +198,11 @@ public class Asset implements Serializable {
 	@Override
 	public String toString() {
 		return "Asset [id=" + id + ", accountId=" + accountId + ", type=" + type + ", title=" + title + ", description="
-				+ description + ", sourceJsonRef=" + sourceJsonRef + ", status=" + status + ", createdOn=" + createdOn
-				+ ", updatedOn=" + updatedOn + ", updatedBy=" + updatedBy + ", createdBy=" + createdBy + ", unit="
-				+ unit + ", instance=" + instance + ", isOpened=" + isOpened + ", subData=" + Arrays.toString(subData)
-				+ "]";
+				+ description + ", status=" + status + ", createdOn=" + createdOn + ", updatedOn=" + updatedOn
+				+ ", updatedBy=" + updatedBy + ", createdBy=" + createdBy + ", unit=" + unit + ", instance=" + instance
+				+ ", isOpened=" + isOpened + ", subData=" + Arrays.toString(subData) + ", tenantId=" + tenantId
+				+ ", dashboardUuid=" + dashboardUuid + ", elementType=" + elementType + ", inputType=" + inputType
+				+ ", dashboardNature=" + dashboardNature + "]";
 	}
     
     

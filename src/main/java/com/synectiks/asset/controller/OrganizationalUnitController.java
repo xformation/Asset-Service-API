@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.synectiks.asset.config.Constants;
 import com.synectiks.asset.domain.Organization;
 import com.synectiks.asset.domain.OrganizationalUnit;
 import com.synectiks.asset.repository.OrganizationRepository;
@@ -51,24 +53,22 @@ public class OrganizationalUnitController {
 		Optional<Organization> oRg = organizationRepository.findById(orgId);
 		if(!oRg.isPresent()) {
 			logger.error("Cannot add organization unit. Parent organization not found");
-			return ResponseEntity
-					.created(new URI("/api/addOrganizationUnit")).headers(HeaderUtil
-							.createEntityCreationAlert(applicationName, false, ENTITY_NAME, null))
-					.body(null);
+			ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
 		}
 		
 		OrganizationalUnit ou = new OrganizationalUnit();
 		ou.setOrganization(oRg.get());
 		ou.setName(ouName);
+		ou.setDescription(ouName+" department");
+		ou.setStatus("ACTIVE");
 		Instant now = Instant.now();
 		ou.setCreatedOn(now);
 		ou.setUpdatedOn(now);
+		ou.setCreatedBy(Constants.SYSTEM_ACCOUNT);
+		
 		ou = organizationalUnitRepository.save(ou);
 		logger.info("Organization unit added successfully. New organization unit : "+ou.toString());
-		return ResponseEntity
-				.created(new URI("/api/addOrganizationUnit/" + ou.getId())).headers(HeaderUtil
-						.createEntityCreationAlert(applicationName, false, ENTITY_NAME, ou.getId().toString()))
-				.body(ou);
+		return ResponseEntity.status(HttpStatus.OK).body(ou);
 	}
 	
 	@GetMapping("/getAllOrgUnits")
@@ -77,9 +77,9 @@ public class OrganizationalUnitController {
 		return list;
 	}
 	
-	@GetMapping("/getAllOrgUnitsByOrgId")
-	private List<OrganizationalUnit> getAllOrganizationalUnits(@RequestParam Long organizationId) {
-		Optional<Organization> oo = organizationRepository.findById(organizationId);
+	@GetMapping("/getAllOrgUnitsByOrgId/{orgId}")
+	private List<OrganizationalUnit> getAllOrganizationalUnits(@PathVariable Long orgId) {
+		Optional<Organization> oo = organizationRepository.findById(orgId);
 		List<OrganizationalUnit> ouList = new ArrayList<>();
 		if(oo.isPresent()) {
 			Organization org = oo.get();

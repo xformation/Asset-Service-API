@@ -20,6 +20,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -63,8 +64,8 @@ public class AccountsController {
 	@Autowired
 	private OrganizationalUnitRepository organizationalUnitRepository;
 	
-	@GetMapping("/getAccount")
-	public ResponseEntity<Accounts> getAccount(@RequestParam Long id) {
+	@GetMapping("/getAccount/{id}")
+	public ResponseEntity<Accounts> getAccount(@PathVariable Long id) {
 		logger.info("Request to get account by id. Id: "+id);
 		Optional<Accounts> oa = accountsRepository.findById(id);
 		if(oa.isPresent()) {
@@ -190,7 +191,7 @@ public class AccountsController {
 	
 	
 	@PostMapping("/addAccount")
-	public  List<List<Accounts>> addAccount(@RequestBody ObjectNode obj) throws JSONException {
+	public  ResponseEntity<Accounts> addAccount(@RequestBody ObjectNode obj) throws JSONException {
 		
 		Accounts accounts = new Accounts();
 		accounts.setAccountId(getUuid());
@@ -227,7 +228,7 @@ public class AccountsController {
 		accounts.setCreatedOn(now);
 		accounts.setUpdatedOn(now);
 		accounts = accountsRepository.save(accounts);
-		return List;
+		return ResponseEntity.status(HttpStatus.OK).body(accounts);
 	}
 	
 	
@@ -266,10 +267,7 @@ public class AccountsController {
 		 accounts.setUpdatedOn(now);
 		 accounts = accountsRepository.save(accounts);
 		 logger.info("Updating account completed");
-		 return ResponseEntity
-				.created(new URI("/api/updateAccount/" + accounts.getId())).headers(HeaderUtil
-						.createEntityCreationAlert(applicationName, false, ENTITY_NAME, accounts.getId().toString()))
-				.body(accounts);
+		 return ResponseEntity.status(HttpStatus.OK).body(accounts);
 	}
 			
 

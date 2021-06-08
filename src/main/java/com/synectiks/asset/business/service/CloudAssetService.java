@@ -34,7 +34,7 @@ public class CloudAssetService {
 	@Autowired
 	private CloudAssetRepository cloudAssetRepository;
 	
-	public Asset getCloudAsset(@RequestParam Long id) {
+	public Asset getCloudAsset(Long id) {
 		logger.info("Getting cloud asset by id: "+id);
 		Optional<CloudAsset> oca = cloudAssetRepository.findById(id);
 		if(oca.isPresent()) {
@@ -81,9 +81,9 @@ public class CloudAssetService {
 		
 		List<CloudAsset> list = null;
 		if (isFilter) {
-			list = this.cloudAssetRepository.findAll(Example.of(obj), Sort.by(Direction.DESC, "name"));
+			list = this.cloudAssetRepository.findAll(Example.of(obj), Sort.by(Direction.ASC, "name"));
 		} else {
-			list = this.cloudAssetRepository.findAll(Sort.by(Direction.DESC, "name"));
+			list = this.cloudAssetRepository.findAll(Sort.by(Direction.ASC, "name"));
 		}
 		
 		List<Asset> listAsset = new ArrayList<>();
