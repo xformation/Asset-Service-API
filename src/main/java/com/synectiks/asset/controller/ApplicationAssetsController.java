@@ -60,6 +60,6 @@ public class ApplicationAssetsController {
 	public ResponseEntity<String> updatePurchaseInventory(@RequestBody List<ObjectNode> list) {
 		logger.info("Request to update purchased asset inventory");
 		applicationAssetService.updatePurchaseInventory(list);
-		return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Assets updated");
+		return ResponseEntity.status(HttpStatus.OK).body("Assets updated");
 	}
 }

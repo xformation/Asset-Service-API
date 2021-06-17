@@ -15,16 +15,15 @@
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
     	
+	<include file="config/liquibase/changelog/20210326055757_added_entity_Organization.xml" relativeToChangelogFile="false"/>
+	<include file="config/liquibase/changelog/20210326055857_added_entity_OrganizationalUnit.xml" relativeToChangelogFile="false"/>
 	<include file="config/liquibase/changelog/20210513092219_added_entity_Accounts.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210513092319_added_entity_Inputs.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210513092419_added_entity_CloudAsset.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210513092519_added_entity_AssetDetails.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210513092619_added_entity_ApplicationAssets.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210326055757_added_entity_Organization.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210326055857_added_entity_OrganizationalUnit.xml" relativeToChangelogFile="false"/>
-    
+	<include file="config/liquibase/changelog/20210513092319_added_entity_Inputs.xml" relativeToChangelogFile="false"/>
+	<include file="config/liquibase/changelog/20210513092419_added_entity_CloudAsset.xml" relativeToChangelogFile="false"/>
+	<include file="config/liquibase/changelog/20210513092519_added_entity_AssetDetails.xml" relativeToChangelogFile="false"/>
+	<include file="config/liquibase/changelog/20210513092619_added_entity_ApplicationAssets.xml" relativeToChangelogFile="false"/>
+	
 	<include file="config/liquibase/changelog/20210513092219_added_entity_constraints_Accounts.xml" relativeToChangelogFile="false"/>
+	<include file="config/liquibase/changelog/20210326055857_added_entity_constraints_OrganizationalUnit.xml" relativeToChangelogFile="false"/>
 	<include file="config/liquibase/changelog/20210513092519_added_entity_constraints_AssetDetails.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210326055857_added_entity_constraints_OrganizationalUnit.xml" relativeToChangelogFile="false"/>
-	<!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

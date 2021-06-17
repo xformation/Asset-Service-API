@@ -28,7 +28,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.amazonaws.services.s3.AmazonS3;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.synectiks.asset.aws.AwsUtils;
 import com.synectiks.asset.business.service.CloudAssetService;
 import com.synectiks.asset.config.Constants;
 import com.synectiks.asset.domain.Accounts;
@@ -110,71 +112,71 @@ public class AccountsController {
 	 *         of Accounts in body.
 	 */
 	@GetMapping("/searchAccounts")
-	public List<Accounts> searchAccounts(@RequestParam Map<String, String> Accounts) {
+	public List<Accounts> searchAccounts(@RequestParam Map<String, String> reqObj) {
 		logger.info("Request to get accounts on given filter criteria");
-		Accounts obj = new Accounts();
+		Accounts accounts = new Accounts();
 		
 		boolean isFilter = false;
-		if (Accounts.get("id") != null) {
-			obj.setId(Long.parseLong(Accounts.get("id")));
+		if (reqObj.get("id") != null) {
+			accounts.setId(Long.parseLong(reqObj.get("id")));
 			isFilter = true;
 		}
-		if (Accounts.get("name") != null) {
-			obj.setName(Accounts.get("name"));
+		if (reqObj.get("name") != null) {
+			accounts.setName(reqObj.get("name"));
 			isFilter = true;
 		}
-		if (Accounts.get("description") != null) {
-			obj.setDescription(Accounts.get("description"));
+		if (reqObj.get("description") != null) {
+			accounts.setDescription(reqObj.get("description"));
 			isFilter = true;
 		}
-		if (Accounts.get("tenantId") != null) {
-			obj.setTenantId(Accounts.get("tenantId"));
+		if (reqObj.get("tenantId") != null) {
+			accounts.setTenantId(reqObj.get("tenantId"));
 			isFilter = true;
 		}
-		if (Accounts.get("accountId") != null) {
-			obj.setAccountId(Accounts.get("accountId"));
+		if (reqObj.get("accountId") != null) {
+			accounts.setAccountId(reqObj.get("accountId"));
 			isFilter = true;
 		}
-		if (Accounts.get("accessKey") != null) {
-			obj.setAccessKey(Accounts.get("accessKey"));
+		if (reqObj.get("accessKey") != null) {
+			accounts.setAccessKey(reqObj.get("accessKey"));
 			isFilter = true;
 		}
-		if (Accounts.get("secretKey") != null) {
-			obj.setSecretKey(Accounts.get("secretKey"));
+		if (reqObj.get("secretKey") != null) {
+			accounts.setSecretKey(reqObj.get("secretKey"));
 			isFilter = true;
 		}
-		if (Accounts.get("region") != null) {
-			obj.setRegion(Accounts.get("region"));
+		if (reqObj.get("region") != null) {
+			accounts.setRegion(reqObj.get("region"));
 			isFilter = true;
 		}
-		if (Accounts.get("bucket") != null) {
-			obj.setBucket(Accounts.get("bucket"));
+		if (reqObj.get("bucket") != null) {
+			accounts.setBucket(reqObj.get("bucket"));
 			isFilter = true;
 		}
-		if (Accounts.get("email") != null) {
-			obj.setEmail(Accounts.get("email"));
+		if (reqObj.get("email") != null) {
+			accounts.setEmail(reqObj.get("email"));
 			isFilter = true;
 		}
-		if (Accounts.get("password") != null) {
-			obj.setPassword(Accounts.get("password"));
+		if (reqObj.get("password") != null) {
+			accounts.setPassword(reqObj.get("password"));
 			isFilter = true;
 		}
-		if (Accounts.get("cloudType") != null) {
-			obj.setCloudType(Accounts.get("cloudType"));
+		if (reqObj.get("cloudType") != null) {
+			accounts.setCloudType(reqObj.get("cloudType"));
 			isFilter = true;
 		}
-		if (Accounts.get("sourceJsonRef") != null) {
-			obj.setSourceJsonRef(Accounts.get("sourceJsonRef"));
+		if (reqObj.get("sourceJsonRef") != null) {
+			accounts.setSourceJsonRef(reqObj.get("sourceJsonRef"));
 			isFilter = true;
 		}
-		if (Accounts.get("sourceJsonContentType") != null) {
-			obj.setSourceJsonContentType(Accounts.get("sourceJsonContentType"));
+		if (reqObj.get("sourceJsonContentType") != null) {
+			accounts.setSourceJsonContentType(reqObj.get("sourceJsonContentType"));
 			isFilter = true;
 		}
 
 		List<Accounts> list = null;
 		if (isFilter) {
-			list = this.accountsRepository.findAll(Example.of(obj), Sort.by(Direction.DESC, "id"));
+			list = this.accountsRepository.findAll(Example.of(accounts), Sort.by(Direction.DESC, "id"));
 		} else {
 			list = this.accountsRepository.findAll(Sort.by(Direction.DESC, "id"));
 		}
@@ -197,7 +199,9 @@ public class AccountsController {
 		accounts.setAccountId(getUuid());
 		accounts.setName(obj.get("name").asText());
 //		accounts.setDescription(obj.get("description").asText());
-//		accounts.setTenantId(obj.get("tenantId").asText());
+		String account = AwsUtils.getAwsAccountId(obj.get("accessKey").asText(), obj.get("secretKey").asText(), "us-east-1");
+		accounts.setTenantId(account);
+		
 		accounts.setAccessKey(obj.get("accessKey").asText());
 		accounts.setSecretKey(obj.get("secretKey").asText());
 //		accounts.setRegion(obj.get("region").asText());
