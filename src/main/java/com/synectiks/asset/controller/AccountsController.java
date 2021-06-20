@@ -27,11 +27,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
-import com.amazonaws.services.s3.AmazonS3;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.synectiks.asset.aws.AwsUtils;
 import com.synectiks.asset.business.service.CloudAssetService;
+import com.synectiks.asset.business.service.OrganizationService;
+import com.synectiks.asset.config.ApplicationProperties;
 import com.synectiks.asset.config.Constants;
 import com.synectiks.asset.domain.Accounts;
 import com.synectiks.asset.domain.Asset;
@@ -55,13 +57,13 @@ public class AccountsController {
 	private String applicationName;
 	
 	@Autowired
+	OrganizationService organizationService;
+	
+	@Autowired
 	private AccountsRepository accountsRepository;
 	
 	@Autowired
 	CloudAssetService cloudAssetService;
-	
-	@Autowired
-	private OrganizationRepository organizationRepository;
 	
 	@Autowired
 	private OrganizationalUnitRepository organizationalUnitRepository;
@@ -196,29 +198,48 @@ public class AccountsController {
 	public  ResponseEntity<Accounts> addAccount(@RequestBody ObjectNode obj) throws JSONException {
 		
 		Accounts accounts = new Accounts();
-		accounts.setAccountId(getUuid());
 		accounts.setName(obj.get("name").asText());
 //		accounts.setDescription(obj.get("description").asText());
-		String account = AwsUtils.getAwsAccountId(obj.get("accessKey").asText(), obj.get("secretKey").asText(), "us-east-1");
-		accounts.setTenantId(account);
+		
+//		accountId is AWS account id and will be provided from UI to the application. 
+//		if it is not provided from UI then try to get it from WAS with default region us-east-1. 
+		if(obj.get("accountId") != null) {
+			accounts.setAccountId(obj.get("accountId").asText());
+		}else {
+			try {
+				String accountId = AwsUtils.getAwsAccountId(obj.get("accessKey").asText(), obj.get("secretKey").asText(), Constants.DEFAULT_AWS_REGION);
+				accounts.setAccountId(accountId);
+			}catch(Exception e) {
+				logger.warn("AWS connection failed. "+e.getMessage());
+			}
+		}
+		
+//		Tenant id is the organization id of an application user (same for owner and its team). 
+//		get it from security service 
+		Organization org = organizationService.getOrganization(obj.get("userName").asText());
+		if(org != null) {
+			accounts.setTenantId(String.valueOf(org.getId()));
+		}
 		
 		accounts.setAccessKey(obj.get("accessKey").asText());
 		accounts.setSecretKey(obj.get("secretKey").asText());
+		accounts.setCloudType("AWS");
 //		accounts.setRegion(obj.get("region").asText());
 //		accounts.setBucket(obj.get("bucket").asText());
 //		accounts.setEmail(obj.get("email").asText());
 //		accounts.setPassword(obj.get("password").asText());
-		accounts.setCloudType("AWS");
+		
 //		accounts.setSourceJsonRef(obj.get("sourceJsonRef").asText());
 //		accounts.setSourceJsonContentType(obj.get("sourceJsonContentType").asText());
 		
-		Optional<Organization> oo = organizationRepository.findById(obj.get("orgId").asLong());
-		Optional<OrganizationalUnit> oou = organizationalUnitRepository.findById(obj.get("ouId").asLong());
-		if(oo.isPresent()) {
-			accounts.setOrganization(oo.get());
-		}
-		if(oou.isPresent()) {
-			accounts.setOrganizationalUnit(oou.get());
+//		Optional<Organization> oo = organizationRepository.findById(obj.get("orgId").asLong());
+
+		if(org != null) {
+			accounts.setOrganization(org);
+			Optional<OrganizationalUnit> oou = organizationalUnitRepository.findById(org.getId());
+			if(oou.isPresent()) {
+				accounts.setOrganizationalUnit(oou.get());
+			}
 		}
 		
 	 	if (obj.get("user") != null) {
@@ -280,4 +301,5 @@ public class AccountsController {
 		String uuidAsString = uuid.toString();
 		return uuidAsString;
 	}
+	
 }

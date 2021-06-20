@@ -1,6 +1,5 @@
 package com.synectiks.asset.controller;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -19,16 +18,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.synectiks.asset.business.service.OrganizationService;
 import com.synectiks.asset.config.Constants;
 import com.synectiks.asset.domain.Organization;
 import com.synectiks.asset.domain.OrganizationalUnit;
 import com.synectiks.asset.repository.OrganizationRepository;
 import com.synectiks.asset.repository.OrganizationalUnitRepository;
-
-import io.github.jhipster.web.util.HeaderUtil;
 
 @RestController
 @RequestMapping("/api")
@@ -42,6 +39,9 @@ public class OrganizationalUnitController {
 	private String applicationName;
 	
 	@Autowired
+	OrganizationService organizationService;
+	
+	@Autowired
 	private OrganizationRepository organizationRepository;
 	
 	@Autowired
@@ -49,15 +49,15 @@ public class OrganizationalUnitController {
 	
 	@PostMapping("/addOrganizationUnit/{orgId}/{ouName}")
 	public ResponseEntity<OrganizationalUnit> addOrganizationUnit(@PathVariable Long orgId,  @PathVariable String ouName ) throws URISyntaxException {
-	
-		Optional<Organization> oRg = organizationRepository.findById(orgId);
-		if(!oRg.isPresent()) {
+		Organization org = organizationService.getOrganization(orgId);
+		if(org == null) {
 			logger.error("Cannot add organization unit. Parent organization not found");
-			ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
 		}
-		
+		org = organizationRepository.save(org);
 		OrganizationalUnit ou = new OrganizationalUnit();
-		ou.setOrganization(oRg.get());
+		ou.setOrganization(org);
+		ou.setOrganization(org);
 		ou.setName(ouName);
 		ou.setDescription(ouName+" department");
 		ou.setStatus("ACTIVE");

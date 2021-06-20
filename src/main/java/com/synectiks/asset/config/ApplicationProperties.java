@@ -10,4 +10,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
+	private String securityServiceUrl;
+
+	public String getSecurityServiceUrl() {
+		return securityServiceUrl;
+	}
+
+	public void setSecurityServiceUrl(String securityServiceUrl) {
+		this.securityServiceUrl = securityServiceUrl;
+	}
+	
+	
 }
