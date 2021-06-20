@@ -2,14 +2,13 @@ package com.synectiks.asset.controller;
 
 import java.net.URISyntaxException;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
@@ -24,7 +23,6 @@ import com.synectiks.asset.business.service.OrganizationService;
 import com.synectiks.asset.config.Constants;
 import com.synectiks.asset.domain.Organization;
 import com.synectiks.asset.domain.OrganizationalUnit;
-import com.synectiks.asset.repository.OrganizationRepository;
 import com.synectiks.asset.repository.OrganizationalUnitRepository;
 
 @RestController
@@ -42,9 +40,6 @@ public class OrganizationalUnitController {
 	OrganizationService organizationService;
 	
 	@Autowired
-	private OrganizationRepository organizationRepository;
-	
-	@Autowired
 	private OrganizationalUnitRepository organizationalUnitRepository;
 	
 	@PostMapping("/addOrganizationUnit/{orgId}/{ouName}")
@@ -55,7 +50,7 @@ public class OrganizationalUnitController {
 			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
 		}
 		OrganizationalUnit ou = new OrganizationalUnit();
-		ou.setOrganization(org);
+		ou.setOrganizationId(org.getId());
 		ou.setName(ouName);
 		ou.setDescription(ouName+" department");
 		ou.setStatus("ACTIVE");
@@ -71,22 +66,24 @@ public class OrganizationalUnitController {
 	
 	@GetMapping("/getAllOrgUnits")
 	private List<OrganizationalUnit> getAllOrganizationalUnits() {
-		List<OrganizationalUnit> list = organizationalUnitRepository.findAll(Sort.by(Direction.DESC, "name"));
+		List<OrganizationalUnit> list = organizationalUnitRepository.findAll(Sort.by(Direction.ASC, "name"));
 		return list;
 	}
 	
 	@GetMapping("/getAllOrgUnitsByOrgId/{orgId}")
 	private List<OrganizationalUnit> getAllOrganizationalUnits(@PathVariable Long orgId) {
-		Optional<Organization> oo = organizationRepository.findById(orgId);
-		List<OrganizationalUnit> ouList = new ArrayList<>();
-		if(oo.isPresent()) {
-			Organization org = oo.get();
-			OrganizationalUnit ou = new OrganizationalUnit();
-			ou.setOrganization(org);
-			ouList = organizationalUnitRepository.findAll(Sort.by(Direction.DESC, "name"));
-		}
-		
+		OrganizationalUnit ou = new OrganizationalUnit();
+		ou.setOrganizationId(orgId);
+		List<OrganizationalUnit> ouList = organizationalUnitRepository.findAll(Example.of(ou), Sort.by(Direction.ASC, "name"));
 		return ouList;
+	}
+	
+	@GetMapping("/getAllOrgUnits/{userName}")
+	private Organization getAllOrganizationalUnits(@PathVariable String userName) {
+		Organization org = organizationService.getOrganization(userName);
+		List<OrganizationalUnit> list = getAllOrganizationalUnits(org.getId());
+		org.setOrganizationalUnitList(list);
+		return org;
 	}
 	
 }

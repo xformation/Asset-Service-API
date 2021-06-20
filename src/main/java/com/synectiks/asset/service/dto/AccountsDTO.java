@@ -57,8 +57,6 @@ public class AccountsDTO implements Serializable {
     private String createdBy;
 
 
-    private Long organizationId;
-
     private Long organizationalUnitId;
     
     public Long getId() {
@@ -237,14 +235,6 @@ public class AccountsDTO implements Serializable {
         this.createdBy = createdBy;
     }
 
-    public Long getOrganizationId() {
-        return organizationId;
-    }
-
-    public void setOrganizationId(Long organizationId) {
-        this.organizationId = organizationId;
-    }
-
     public Long getOrganizationalUnitId() {
         return organizationalUnitId;
     }
@@ -295,7 +285,6 @@ public class AccountsDTO implements Serializable {
             ", updatedOn='" + getUpdatedOn() + "'" +
             ", updatedBy='" + getUpdatedBy() + "'" +
             ", createdBy='" + getCreatedBy() + "'" +
-            ", organizationId=" + getOrganizationId() +
             ", organizationalUnitId=" + getOrganizationalUnitId() +
             "}";
     }

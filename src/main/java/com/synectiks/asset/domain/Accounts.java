@@ -101,13 +101,10 @@ public class Accounts implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties(value = "accounts", allowSetters = true)
-    private Organization organization;
-
-    @ManyToOne
-    @JsonIgnoreProperties(value = "accounts", allowSetters = true)
     private OrganizationalUnit organizationalUnit;
 
-    @Transient
+    // jhipster-needle-entity-add-field - JHipster will add fields here
+	@Transient
     @JsonProperty
     private List<Asset> assetList;
     
@@ -392,19 +389,6 @@ public class Accounts implements Serializable {
         this.createdBy = createdBy;
     }
 
-    public Organization getOrganization() {
-        return organization;
-    }
-
-    public Accounts organization(Organization organization) {
-        this.organization = organization;
-        return this;
-    }
-
-    public void setOrganization(Organization organization) {
-        this.organization = organization;
-    }
-
     public OrganizationalUnit getOrganizationalUnit() {
         return organizationalUnit;
     }
@@ -463,7 +447,6 @@ public class Accounts implements Serializable {
             ", createdBy='" + getCreatedBy() + "'" +
             "}";
     }
-
 	public List<Asset> getAssetList() {
 		return assetList;
 	}

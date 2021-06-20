@@ -80,15 +80,11 @@ entity ApplicationAssets {
    createdBy String
 }
 
-entity Organization {
-   name String
-   description String maxlength(5000)
-}
-
 entity OrganizationalUnit {
    name String
    description String maxlength(500)
    status String
+   organizationId Long
    createdOn Instant
    updatedOn Instant
    updatedBy String
@@ -98,9 +94,7 @@ entity OrganizationalUnit {
 
 
 relationship ManyToOne {
-	Accounts{organization} to Organization,
 	Accounts{organizationalUnit} to OrganizationalUnit,
-	OrganizationalUnit{organization} to Organization,
 	AssetDetails{cloudAsset} to CloudAsset
 }
 

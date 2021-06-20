@@ -4,40 +4,16 @@ package com.synectiks.asset.domain;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.validation.constraints.Size;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * A Organization.
- */
-@Entity
-@Table(name = "organization")
 public class Organization implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
-
-    @Column(name = "name")
     private String name;
-
-    @Size(max = 5000)
-    @Column(name = "description", length = 5000)
     private String description;
-
-	@Transient
+    
     @JsonProperty
     private List<OrganizationalUnit> organizationalUnitList;
     

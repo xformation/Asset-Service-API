@@ -18,6 +18,8 @@ public class OrganizationalUnitDTO implements Serializable {
 
     private String status;
 
+    private Long organizationId;
+
     private Instant createdOn;
 
     private Instant updatedOn;
@@ -26,8 +28,6 @@ public class OrganizationalUnitDTO implements Serializable {
 
     private String createdBy;
 
-
-    private Long organizationId;
     
     public Long getId() {
         return id;
@@ -59,6 +59,14 @@ public class OrganizationalUnitDTO implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Long getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(Long organizationId) {
+        this.organizationId = organizationId;
     }
 
     public Instant getCreatedOn() {
@@ -93,14 +101,6 @@ public class OrganizationalUnitDTO implements Serializable {
         this.createdBy = createdBy;
     }
 
-    public Long getOrganizationId() {
-        return organizationId;
-    }
-
-    public void setOrganizationId(Long organizationId) {
-        this.organizationId = organizationId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -126,11 +126,11 @@ public class OrganizationalUnitDTO implements Serializable {
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
             ", status='" + getStatus() + "'" +
+            ", organizationId=" + getOrganizationId() +
             ", createdOn='" + getCreatedOn() + "'" +
             ", updatedOn='" + getUpdatedOn() + "'" +
             ", updatedBy='" + getUpdatedBy() + "'" +
             ", createdBy='" + getCreatedBy() + "'" +
-            ", organizationId=" + getOrganizationId() +
             "}";
     }
 }

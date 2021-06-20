@@ -9,14 +9,12 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link Accounts} and its DTO {@link AccountsDTO}.
  */
-@Mapper(componentModel = "spring", uses = {OrganizationMapper.class, OrganizationalUnitMapper.class})
+@Mapper(componentModel = "spring", uses = {OrganizationalUnitMapper.class})
 public interface AccountsMapper extends EntityMapper<AccountsDTO, Accounts> {
 
-    @Mapping(source = "organization.id", target = "organizationId")
     @Mapping(source = "organizationalUnit.id", target = "organizationalUnitId")
     AccountsDTO toDto(Accounts accounts);
 
-    @Mapping(source = "organizationId", target = "organization")
     @Mapping(source = "organizationalUnitId", target = "organizationalUnit")
     Accounts toEntity(AccountsDTO accountsDTO);
 

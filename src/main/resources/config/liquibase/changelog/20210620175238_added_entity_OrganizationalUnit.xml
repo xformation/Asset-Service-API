@@ -10,7 +10,7 @@
     <!--
         Added the entity OrganizationalUnit.
     -->
-    <changeSet id="20210620175238" author="jhipster">
+    <changeSet id="20210620175238-1" author="jhipster">
         <createTable tableName="organizational_unit">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -24,6 +24,9 @@
             <column name="status" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="organization_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <column name="created_on" type="datetime">
                 <constraints nullable="true" />
             </column>
@@ -34,9 +37,6 @@
                 <constraints nullable="true" />
             </column>
             <column name="created_by" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="organization_id" type="bigint">
                 <constraints nullable="true" />
             </column>
         </createTable>

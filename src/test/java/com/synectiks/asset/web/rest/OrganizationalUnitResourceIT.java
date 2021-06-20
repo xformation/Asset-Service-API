@@ -43,6 +43,9 @@ public class OrganizationalUnitResourceIT {
     private static final String DEFAULT_STATUS = "AAAAAAAAAA";
     private static final String UPDATED_STATUS = "BBBBBBBBBB";
 
+    private static final Long DEFAULT_ORGANIZATION_ID = 1L;
+    private static final Long UPDATED_ORGANIZATION_ID = 2L;
+
     private static final Instant DEFAULT_CREATED_ON = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_CREATED_ON = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
@@ -83,6 +86,7 @@ public class OrganizationalUnitResourceIT {
             .name(DEFAULT_NAME)
             .description(DEFAULT_DESCRIPTION)
             .status(DEFAULT_STATUS)
+            .organizationId(DEFAULT_ORGANIZATION_ID)
             .createdOn(DEFAULT_CREATED_ON)
             .updatedOn(DEFAULT_UPDATED_ON)
             .updatedBy(DEFAULT_UPDATED_BY)
@@ -100,6 +104,7 @@ public class OrganizationalUnitResourceIT {
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION)
             .status(UPDATED_STATUS)
+            .organizationId(UPDATED_ORGANIZATION_ID)
             .createdOn(UPDATED_CREATED_ON)
             .updatedOn(UPDATED_UPDATED_ON)
             .updatedBy(UPDATED_UPDATED_BY)
@@ -130,6 +135,7 @@ public class OrganizationalUnitResourceIT {
         assertThat(testOrganizationalUnit.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testOrganizationalUnit.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testOrganizationalUnit.getStatus()).isEqualTo(DEFAULT_STATUS);
+        assertThat(testOrganizationalUnit.getOrganizationId()).isEqualTo(DEFAULT_ORGANIZATION_ID);
         assertThat(testOrganizationalUnit.getCreatedOn()).isEqualTo(DEFAULT_CREATED_ON);
         assertThat(testOrganizationalUnit.getUpdatedOn()).isEqualTo(DEFAULT_UPDATED_ON);
         assertThat(testOrganizationalUnit.getUpdatedBy()).isEqualTo(DEFAULT_UPDATED_BY);
@@ -171,6 +177,7 @@ public class OrganizationalUnitResourceIT {
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
+            .andExpect(jsonPath("$.[*].organizationId").value(hasItem(DEFAULT_ORGANIZATION_ID.intValue())))
             .andExpect(jsonPath("$.[*].createdOn").value(hasItem(DEFAULT_CREATED_ON.toString())))
             .andExpect(jsonPath("$.[*].updatedOn").value(hasItem(DEFAULT_UPDATED_ON.toString())))
             .andExpect(jsonPath("$.[*].updatedBy").value(hasItem(DEFAULT_UPDATED_BY)))
@@ -191,6 +198,7 @@ public class OrganizationalUnitResourceIT {
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS))
+            .andExpect(jsonPath("$.organizationId").value(DEFAULT_ORGANIZATION_ID.intValue()))
             .andExpect(jsonPath("$.createdOn").value(DEFAULT_CREATED_ON.toString()))
             .andExpect(jsonPath("$.updatedOn").value(DEFAULT_UPDATED_ON.toString()))
             .andExpect(jsonPath("$.updatedBy").value(DEFAULT_UPDATED_BY))
@@ -220,6 +228,7 @@ public class OrganizationalUnitResourceIT {
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION)
             .status(UPDATED_STATUS)
+            .organizationId(UPDATED_ORGANIZATION_ID)
             .createdOn(UPDATED_CREATED_ON)
             .updatedOn(UPDATED_UPDATED_ON)
             .updatedBy(UPDATED_UPDATED_BY)
@@ -238,6 +247,7 @@ public class OrganizationalUnitResourceIT {
         assertThat(testOrganizationalUnit.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testOrganizationalUnit.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testOrganizationalUnit.getStatus()).isEqualTo(UPDATED_STATUS);
+        assertThat(testOrganizationalUnit.getOrganizationId()).isEqualTo(UPDATED_ORGANIZATION_ID);
         assertThat(testOrganizationalUnit.getCreatedOn()).isEqualTo(UPDATED_CREATED_ON);
         assertThat(testOrganizationalUnit.getUpdatedOn()).isEqualTo(UPDATED_UPDATED_ON);
         assertThat(testOrganizationalUnit.getUpdatedBy()).isEqualTo(UPDATED_UPDATED_BY);

@@ -1,6 +1,5 @@
 package com.synectiks.asset.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -32,6 +31,9 @@ public class OrganizationalUnit implements Serializable {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "organization_id")
+    private Long organizationId;
+
     @Column(name = "created_on")
     private Instant createdOn;
 
@@ -43,10 +45,6 @@ public class OrganizationalUnit implements Serializable {
 
     @Column(name = "created_by")
     private String createdBy;
-
-    @ManyToOne
-    @JsonIgnoreProperties(value = "organizationalUnits", allowSetters = true)
-    private Organization organization;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -94,6 +92,19 @@ public class OrganizationalUnit implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Long getOrganizationId() {
+        return organizationId;
+    }
+
+    public OrganizationalUnit organizationId(Long organizationId) {
+        this.organizationId = organizationId;
+        return this;
+    }
+
+    public void setOrganizationId(Long organizationId) {
+        this.organizationId = organizationId;
     }
 
     public Instant getCreatedOn() {
@@ -147,19 +158,6 @@ public class OrganizationalUnit implements Serializable {
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
-
-    public Organization getOrganization() {
-        return organization;
-    }
-
-    public OrganizationalUnit organization(Organization organization) {
-        this.organization = organization;
-        return this;
-    }
-
-    public void setOrganization(Organization organization) {
-        this.organization = organization;
-    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -186,6 +184,7 @@ public class OrganizationalUnit implements Serializable {
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
             ", status='" + getStatus() + "'" +
+            ", organizationId=" + getOrganizationId() +
             ", createdOn='" + getCreatedOn() + "'" +
             ", updatedOn='" + getUpdatedOn() + "'" +
             ", updatedBy='" + getUpdatedBy() + "'" +

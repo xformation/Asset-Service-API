@@ -2,18 +2,12 @@
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
     <!--
         Added the constraints for entity Accounts.
     -->
-    <changeSet id="20210620174638" author="jhipster">
+    <changeSet id="20210620174638-2" author="jhipster">
         
-        <addForeignKeyConstraint baseColumnNames="organization_id"
-                                 baseTableName="accounts"
-                                 constraintName="fk_accounts_organization_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="organization"/>
-
         <addForeignKeyConstraint baseColumnNames="organizational_unit_id"
                                  baseTableName="accounts"
                                  constraintName="fk_accounts_organizational_unit_id"

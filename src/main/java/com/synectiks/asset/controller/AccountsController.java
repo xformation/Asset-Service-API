@@ -27,20 +27,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.synectiks.asset.aws.AwsUtils;
 import com.synectiks.asset.business.service.CloudAssetService;
 import com.synectiks.asset.business.service.OrganizationService;
-import com.synectiks.asset.config.ApplicationProperties;
 import com.synectiks.asset.config.Constants;
 import com.synectiks.asset.domain.Accounts;
 import com.synectiks.asset.domain.Asset;
 import com.synectiks.asset.domain.Organization;
 import com.synectiks.asset.domain.OrganizationalUnit;
 import com.synectiks.asset.repository.AccountsRepository;
-import com.synectiks.asset.repository.OrganizationRepository;
 import com.synectiks.asset.repository.OrganizationalUnitRepository;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -232,15 +229,11 @@ public class AccountsController {
 //		accounts.setSourceJsonRef(obj.get("sourceJsonRef").asText());
 //		accounts.setSourceJsonContentType(obj.get("sourceJsonContentType").asText());
 		
-//		Optional<Organization> oo = organizationRepository.findById(obj.get("orgId").asLong());
-
-		if(org != null) {
-			accounts.setOrganization(org);
-			Optional<OrganizationalUnit> oou = organizationalUnitRepository.findById(org.getId());
-			if(oou.isPresent()) {
-				accounts.setOrganizationalUnit(oou.get());
-			}
+		Optional<OrganizationalUnit> oou = organizationalUnitRepository.findById(obj.get("ouId").asLong());
+		if(oou.isPresent()) {
+			accounts.setOrganizationalUnit(oou.get());
 		}
+		
 		
 	 	if (obj.get("user") != null) {
 			accounts.setCreatedBy(obj.get("user").asText());
