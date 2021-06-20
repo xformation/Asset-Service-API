@@ -58,6 +58,9 @@ public class Accounts implements Serializable {
     @Column(name = "bucket")
     private String bucket;
 
+    @Column(name = "end_point")
+    private String endPoint;
+
     @Column(name = "email")
     private String email;
 
@@ -80,6 +83,9 @@ public class Accounts implements Serializable {
 
     @Column(name = "status")
     private String status;
+
+    @Column(name = "hashi_corp_vault_id")
+    private String hashiCorpVaultId;
 
     @Column(name = "created_on")
     private Instant createdOn;
@@ -217,6 +223,19 @@ public class Accounts implements Serializable {
         this.bucket = bucket;
     }
 
+    public String getEndPoint() {
+        return endPoint;
+    }
+
+    public Accounts endPoint(String endPoint) {
+        this.endPoint = endPoint;
+        return this;
+    }
+
+    public void setEndPoint(String endPoint) {
+        this.endPoint = endPoint;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -306,6 +325,19 @@ public class Accounts implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getHashiCorpVaultId() {
+        return hashiCorpVaultId;
+    }
+
+    public Accounts hashiCorpVaultId(String hashiCorpVaultId) {
+        this.hashiCorpVaultId = hashiCorpVaultId;
+        return this;
+    }
+
+    public void setHashiCorpVaultId(String hashiCorpVaultId) {
+        this.hashiCorpVaultId = hashiCorpVaultId;
     }
 
     public Instant getCreatedOn() {
@@ -416,6 +448,7 @@ public class Accounts implements Serializable {
             ", secretKey='" + getSecretKey() + "'" +
             ", region='" + getRegion() + "'" +
             ", bucket='" + getBucket() + "'" +
+            ", endPoint='" + getEndPoint() + "'" +
             ", email='" + getEmail() + "'" +
             ", password='" + getPassword() + "'" +
             ", cloudType='" + getCloudType() + "'" +
@@ -423,6 +456,7 @@ public class Accounts implements Serializable {
             ", sourceJson='" + getSourceJson() + "'" +
             ", sourceJsonContentType='" + getSourceJsonContentType() + "'" +
             ", status='" + getStatus() + "'" +
+            ", hashiCorpVaultId='" + getHashiCorpVaultId() + "'" +
             ", createdOn='" + getCreatedOn() + "'" +
             ", updatedOn='" + getUpdatedOn() + "'" +
             ", updatedBy='" + getUpdatedBy() + "'" +

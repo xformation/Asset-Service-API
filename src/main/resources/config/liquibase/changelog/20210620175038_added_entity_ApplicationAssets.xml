@@ -3,22 +3,37 @@
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     
     <!--
-        Added the entity OrganizationalUnit.
+        Added the entity ApplicationAssets.
     -->
-    <changeSet id="20210326055857-1" author="jhipster">
-        <createTable tableName="organizational_unit">
+    <changeSet id="20210620175038" author="jhipster">
+        <createTable tableName="application_assets">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="name" type="varchar(255)">
+            <column name="tenant_id" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="description" type="varchar(5000)">
+            <column name="dashboard_uuid" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="file_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="cloud_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="element_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="input_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="dashboard_nature" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="status" type="varchar(255)">
@@ -36,15 +51,8 @@
             <column name="created_by" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="organization_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
-        <dropDefaultValue tableName="organizational_unit" columnName="created_on" columnDataType="datetime"/>
-        <dropDefaultValue tableName="organizational_unit" columnName="updated_on" columnDataType="datetime"/>
+        
     </changeSet>
-
-    
 
 </databaseChangeLog>

@@ -26,6 +26,9 @@ public class InputsDTO implements Serializable {
 
     private String status;
 
+    @Size(max = 500)
+    private String refUrl;
+
     private Instant createdOn;
 
     private Instant updatedOn;
@@ -99,6 +102,14 @@ public class InputsDTO implements Serializable {
         this.status = status;
     }
 
+    public String getRefUrl() {
+        return refUrl;
+    }
+
+    public void setRefUrl(String refUrl) {
+        this.refUrl = refUrl;
+    }
+
     public Instant getCreatedOn() {
         return createdOn;
     }
@@ -160,6 +171,7 @@ public class InputsDTO implements Serializable {
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
             ", status='" + getStatus() + "'" +
+            ", refUrl='" + getRefUrl() + "'" +
             ", createdOn='" + getCreatedOn() + "'" +
             ", updatedOn='" + getUpdatedOn() + "'" +
             ", updatedBy='" + getUpdatedBy() + "'" +

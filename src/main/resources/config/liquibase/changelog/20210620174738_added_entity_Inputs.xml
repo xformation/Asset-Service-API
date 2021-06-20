@@ -3,37 +3,40 @@
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     
     <!--
-        Added the entity ApplicationAssets.
+        Added the entity Inputs.
     -->
-    <changeSet id="20210513092619-1" author="jhipster">
-        <createTable tableName="application_assets">
+    <changeSet id="20210620174738" author="jhipster">
+        <createTable tableName="inputs">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="account_id" type="varchar(255)">
+                <constraints nullable="true" />
             </column>
             <column name="tenant_id" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="dashboard_uuid" type="varchar(255)">
+            <column name="input_source" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="cloud_type" type="varchar(255)">
+            <column name="input_source_id" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="element_type" type="varchar(255)">
+            <column name="name" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="input_type" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="dashboard_nature" type="varchar(255)">
+            <column name="description" type="varchar(5000)">
                 <constraints nullable="true" />
             </column>
             <column name="status" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="ref_url" type="varchar(500)">
                 <constraints nullable="true" />
             </column>
             <column name="created_on" type="datetime">
@@ -48,12 +51,8 @@
             <column name="created_by" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
-        <dropDefaultValue tableName="application_assets" columnName="created_on" columnDataType="datetime"/>
-        <dropDefaultValue tableName="application_assets" columnName="updated_on" columnDataType="datetime"/>
+        
     </changeSet>
-
-    
 
 </databaseChangeLog>

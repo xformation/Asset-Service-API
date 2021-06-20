@@ -55,6 +55,9 @@ public class InputsResourceIT {
     private static final String DEFAULT_STATUS = "AAAAAAAAAA";
     private static final String UPDATED_STATUS = "BBBBBBBBBB";
 
+    private static final String DEFAULT_REF_URL = "AAAAAAAAAA";
+    private static final String UPDATED_REF_URL = "BBBBBBBBBB";
+
     private static final Instant DEFAULT_CREATED_ON = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_CREATED_ON = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
@@ -99,6 +102,7 @@ public class InputsResourceIT {
             .name(DEFAULT_NAME)
             .description(DEFAULT_DESCRIPTION)
             .status(DEFAULT_STATUS)
+            .refUrl(DEFAULT_REF_URL)
             .createdOn(DEFAULT_CREATED_ON)
             .updatedOn(DEFAULT_UPDATED_ON)
             .updatedBy(DEFAULT_UPDATED_BY)
@@ -120,6 +124,7 @@ public class InputsResourceIT {
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION)
             .status(UPDATED_STATUS)
+            .refUrl(UPDATED_REF_URL)
             .createdOn(UPDATED_CREATED_ON)
             .updatedOn(UPDATED_UPDATED_ON)
             .updatedBy(UPDATED_UPDATED_BY)
@@ -154,6 +159,7 @@ public class InputsResourceIT {
         assertThat(testInputs.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testInputs.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testInputs.getStatus()).isEqualTo(DEFAULT_STATUS);
+        assertThat(testInputs.getRefUrl()).isEqualTo(DEFAULT_REF_URL);
         assertThat(testInputs.getCreatedOn()).isEqualTo(DEFAULT_CREATED_ON);
         assertThat(testInputs.getUpdatedOn()).isEqualTo(DEFAULT_UPDATED_ON);
         assertThat(testInputs.getUpdatedBy()).isEqualTo(DEFAULT_UPDATED_BY);
@@ -199,6 +205,7 @@ public class InputsResourceIT {
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
+            .andExpect(jsonPath("$.[*].refUrl").value(hasItem(DEFAULT_REF_URL)))
             .andExpect(jsonPath("$.[*].createdOn").value(hasItem(DEFAULT_CREATED_ON.toString())))
             .andExpect(jsonPath("$.[*].updatedOn").value(hasItem(DEFAULT_UPDATED_ON.toString())))
             .andExpect(jsonPath("$.[*].updatedBy").value(hasItem(DEFAULT_UPDATED_BY)))
@@ -223,6 +230,7 @@ public class InputsResourceIT {
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS))
+            .andExpect(jsonPath("$.refUrl").value(DEFAULT_REF_URL))
             .andExpect(jsonPath("$.createdOn").value(DEFAULT_CREATED_ON.toString()))
             .andExpect(jsonPath("$.updatedOn").value(DEFAULT_UPDATED_ON.toString()))
             .andExpect(jsonPath("$.updatedBy").value(DEFAULT_UPDATED_BY))
@@ -256,6 +264,7 @@ public class InputsResourceIT {
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION)
             .status(UPDATED_STATUS)
+            .refUrl(UPDATED_REF_URL)
             .createdOn(UPDATED_CREATED_ON)
             .updatedOn(UPDATED_UPDATED_ON)
             .updatedBy(UPDATED_UPDATED_BY)
@@ -278,6 +287,7 @@ public class InputsResourceIT {
         assertThat(testInputs.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testInputs.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testInputs.getStatus()).isEqualTo(UPDATED_STATUS);
+        assertThat(testInputs.getRefUrl()).isEqualTo(UPDATED_REF_URL);
         assertThat(testInputs.getCreatedOn()).isEqualTo(UPDATED_CREATED_ON);
         assertThat(testInputs.getUpdatedOn()).isEqualTo(UPDATED_UPDATED_ON);
         assertThat(testInputs.getUpdatedBy()).isEqualTo(UPDATED_UPDATED_BY);

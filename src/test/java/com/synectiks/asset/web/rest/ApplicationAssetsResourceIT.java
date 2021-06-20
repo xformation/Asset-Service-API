@@ -40,6 +40,9 @@ public class ApplicationAssetsResourceIT {
     private static final String DEFAULT_DASHBOARD_UUID = "AAAAAAAAAA";
     private static final String UPDATED_DASHBOARD_UUID = "BBBBBBBBBB";
 
+    private static final String DEFAULT_FILE_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_FILE_NAME = "BBBBBBBBBB";
+
     private static final String DEFAULT_CLOUD_TYPE = "AAAAAAAAAA";
     private static final String UPDATED_CLOUD_TYPE = "BBBBBBBBBB";
 
@@ -94,6 +97,7 @@ public class ApplicationAssetsResourceIT {
         ApplicationAssets applicationAssets = new ApplicationAssets()
             .tenantId(DEFAULT_TENANT_ID)
             .dashboardUuid(DEFAULT_DASHBOARD_UUID)
+            .fileName(DEFAULT_FILE_NAME)
             .cloudType(DEFAULT_CLOUD_TYPE)
             .elementType(DEFAULT_ELEMENT_TYPE)
             .inputType(DEFAULT_INPUT_TYPE)
@@ -115,6 +119,7 @@ public class ApplicationAssetsResourceIT {
         ApplicationAssets applicationAssets = new ApplicationAssets()
             .tenantId(UPDATED_TENANT_ID)
             .dashboardUuid(UPDATED_DASHBOARD_UUID)
+            .fileName(UPDATED_FILE_NAME)
             .cloudType(UPDATED_CLOUD_TYPE)
             .elementType(UPDATED_ELEMENT_TYPE)
             .inputType(UPDATED_INPUT_TYPE)
@@ -149,6 +154,7 @@ public class ApplicationAssetsResourceIT {
         ApplicationAssets testApplicationAssets = applicationAssetsList.get(applicationAssetsList.size() - 1);
         assertThat(testApplicationAssets.getTenantId()).isEqualTo(DEFAULT_TENANT_ID);
         assertThat(testApplicationAssets.getDashboardUuid()).isEqualTo(DEFAULT_DASHBOARD_UUID);
+        assertThat(testApplicationAssets.getFileName()).isEqualTo(DEFAULT_FILE_NAME);
         assertThat(testApplicationAssets.getCloudType()).isEqualTo(DEFAULT_CLOUD_TYPE);
         assertThat(testApplicationAssets.getElementType()).isEqualTo(DEFAULT_ELEMENT_TYPE);
         assertThat(testApplicationAssets.getInputType()).isEqualTo(DEFAULT_INPUT_TYPE);
@@ -194,6 +200,7 @@ public class ApplicationAssetsResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(applicationAssets.getId().intValue())))
             .andExpect(jsonPath("$.[*].tenantId").value(hasItem(DEFAULT_TENANT_ID)))
             .andExpect(jsonPath("$.[*].dashboardUuid").value(hasItem(DEFAULT_DASHBOARD_UUID)))
+            .andExpect(jsonPath("$.[*].fileName").value(hasItem(DEFAULT_FILE_NAME)))
             .andExpect(jsonPath("$.[*].cloudType").value(hasItem(DEFAULT_CLOUD_TYPE)))
             .andExpect(jsonPath("$.[*].elementType").value(hasItem(DEFAULT_ELEMENT_TYPE)))
             .andExpect(jsonPath("$.[*].inputType").value(hasItem(DEFAULT_INPUT_TYPE)))
@@ -218,6 +225,7 @@ public class ApplicationAssetsResourceIT {
             .andExpect(jsonPath("$.id").value(applicationAssets.getId().intValue()))
             .andExpect(jsonPath("$.tenantId").value(DEFAULT_TENANT_ID))
             .andExpect(jsonPath("$.dashboardUuid").value(DEFAULT_DASHBOARD_UUID))
+            .andExpect(jsonPath("$.fileName").value(DEFAULT_FILE_NAME))
             .andExpect(jsonPath("$.cloudType").value(DEFAULT_CLOUD_TYPE))
             .andExpect(jsonPath("$.elementType").value(DEFAULT_ELEMENT_TYPE))
             .andExpect(jsonPath("$.inputType").value(DEFAULT_INPUT_TYPE))
@@ -251,6 +259,7 @@ public class ApplicationAssetsResourceIT {
         updatedApplicationAssets
             .tenantId(UPDATED_TENANT_ID)
             .dashboardUuid(UPDATED_DASHBOARD_UUID)
+            .fileName(UPDATED_FILE_NAME)
             .cloudType(UPDATED_CLOUD_TYPE)
             .elementType(UPDATED_ELEMENT_TYPE)
             .inputType(UPDATED_INPUT_TYPE)
@@ -273,6 +282,7 @@ public class ApplicationAssetsResourceIT {
         ApplicationAssets testApplicationAssets = applicationAssetsList.get(applicationAssetsList.size() - 1);
         assertThat(testApplicationAssets.getTenantId()).isEqualTo(UPDATED_TENANT_ID);
         assertThat(testApplicationAssets.getDashboardUuid()).isEqualTo(UPDATED_DASHBOARD_UUID);
+        assertThat(testApplicationAssets.getFileName()).isEqualTo(UPDATED_FILE_NAME);
         assertThat(testApplicationAssets.getCloudType()).isEqualTo(UPDATED_CLOUD_TYPE);
         assertThat(testApplicationAssets.getElementType()).isEqualTo(UPDATED_ELEMENT_TYPE);
         assertThat(testApplicationAssets.getInputType()).isEqualTo(UPDATED_INPUT_TYPE);

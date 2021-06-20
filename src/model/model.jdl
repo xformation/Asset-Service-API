@@ -7,12 +7,14 @@ entity Accounts {
    secretKey String
    region String
    bucket String
+   endPoint String
    email String
    password String
    cloudType String
    sourceJsonRef String maxlength(1000)
    sourceJson Blob
    status String
+   hashiCorpVaultId String
    createdOn Instant
    updatedOn Instant
    updatedBy String
@@ -27,6 +29,7 @@ entity Inputs {
    name String
    description String maxlength(5000)
    status String
+   refUrl String maxlength(500)
    createdOn Instant
    updatedOn Instant
    updatedBy String
@@ -65,6 +68,7 @@ entity AssetDetails {
 entity ApplicationAssets {
    tenantId String
    dashboardUuid String
+   fileName String
    cloudType String
    elementType String
    inputType String
@@ -79,21 +83,11 @@ entity ApplicationAssets {
 entity Organization {
    name String
    description String maxlength(5000)
-   phone String
-   email String
-   address String
-   fax String
-   dateOfEstablishment Instant
-   status String
-   createdOn Instant
-   updatedOn Instant
-   updatedBy String
-   createdBy String
 }
 
 entity OrganizationalUnit {
    name String
-   description String maxlength(5000)
+   description String maxlength(500)
    status String
    createdOn Instant
    updatedOn Instant

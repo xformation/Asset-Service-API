@@ -3,15 +3,15 @@
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     
     <!--
-        Added the entity AssetDetails.
+        Added the entity Accounts.
     -->
-    <changeSet id="20210513092519-1" author="jhipster">
-        <createTable tableName="asset_details">
+    <changeSet id="20210620174638" author="jhipster">
+        <createTable tableName="accounts">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -21,16 +21,34 @@
             <column name="description" type="varchar(5000)">
                 <constraints nullable="true" />
             </column>
-            <column name="total_instances" type="integer">
+            <column name="account_id" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="view_json_ref" type="varchar(1000)">
+            <column name="tenant_id" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="view_json" type="longblob">
+            <column name="access_key" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="view_json_content_type" type="varchar(255)">
+            <column name="secret_key" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="region" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="bucket" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="end_point" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="email" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="cloud_type" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="source_json_ref" type="varchar(1000)">
@@ -45,6 +63,9 @@
             <column name="status" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="hashi_corp_vault_id" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="created_on" type="datetime">
                 <constraints nullable="true" />
             </column>
@@ -57,15 +78,14 @@
             <column name="created_by" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="cloud_asset_id" type="bigint">
+            <column name="organization_id" type="bigint">
                 <constraints nullable="true" />
             </column>
-            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+            <column name="organizational_unit_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
         </createTable>
-        <dropDefaultValue tableName="asset_details" columnName="created_on" columnDataType="datetime"/>
-        <dropDefaultValue tableName="asset_details" columnName="updated_on" columnDataType="datetime"/>
+        
     </changeSet>
-
-    
 
 </databaseChangeLog>

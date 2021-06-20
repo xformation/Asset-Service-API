@@ -1,17 +1,10 @@
 package com.synectiks.asset.domain;
 
 
+import javax.persistence.*;
+
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 
 /**
  * A ApplicationAssets.
@@ -32,6 +25,9 @@ public class ApplicationAssets implements Serializable {
 
     @Column(name = "dashboard_uuid")
     private String dashboardUuid;
+
+    @Column(name = "file_name")
+    private String fileName;
 
     @Column(name = "cloud_type")
     private String cloudType;
@@ -60,6 +56,7 @@ public class ApplicationAssets implements Serializable {
     @Column(name = "created_by")
     private String createdBy;
 
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -92,6 +89,19 @@ public class ApplicationAssets implements Serializable {
 
     public void setDashboardUuid(String dashboardUuid) {
         this.dashboardUuid = dashboardUuid;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public ApplicationAssets fileName(String fileName) {
+        this.fileName = fileName;
+        return this;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public String getCloudType() {
@@ -235,6 +245,7 @@ public class ApplicationAssets implements Serializable {
             "id=" + getId() +
             ", tenantId='" + getTenantId() + "'" +
             ", dashboardUuid='" + getDashboardUuid() + "'" +
+            ", fileName='" + getFileName() + "'" +
             ", cloudType='" + getCloudType() + "'" +
             ", elementType='" + getElementType() + "'" +
             ", inputType='" + getInputType() + "'" +

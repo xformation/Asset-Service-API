@@ -54,9 +54,7 @@ public class OrganizationalUnitController {
 			logger.error("Cannot add organization unit. Parent organization not found");
 			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
 		}
-		org = organizationRepository.save(org);
 		OrganizationalUnit ou = new OrganizationalUnit();
-		ou.setOrganization(org);
 		ou.setOrganization(org);
 		ou.setName(ouName);
 		ou.setDescription(ouName+" department");

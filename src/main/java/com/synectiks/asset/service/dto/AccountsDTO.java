@@ -29,6 +29,8 @@ public class AccountsDTO implements Serializable {
 
     private String bucket;
 
+    private String endPoint;
+
     private String email;
 
     private String password;
@@ -43,6 +45,8 @@ public class AccountsDTO implements Serializable {
 
     private String sourceJsonContentType;
     private String status;
+
+    private String hashiCorpVaultId;
 
     private Instant createdOn;
 
@@ -129,6 +133,14 @@ public class AccountsDTO implements Serializable {
         this.bucket = bucket;
     }
 
+    public String getEndPoint() {
+        return endPoint;
+    }
+
+    public void setEndPoint(String endPoint) {
+        this.endPoint = endPoint;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -183,6 +195,14 @@ public class AccountsDTO implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getHashiCorpVaultId() {
+        return hashiCorpVaultId;
+    }
+
+    public void setHashiCorpVaultId(String hashiCorpVaultId) {
+        this.hashiCorpVaultId = hashiCorpVaultId;
     }
 
     public Instant getCreatedOn() {
@@ -263,12 +283,14 @@ public class AccountsDTO implements Serializable {
             ", secretKey='" + getSecretKey() + "'" +
             ", region='" + getRegion() + "'" +
             ", bucket='" + getBucket() + "'" +
+            ", endPoint='" + getEndPoint() + "'" +
             ", email='" + getEmail() + "'" +
             ", password='" + getPassword() + "'" +
             ", cloudType='" + getCloudType() + "'" +
             ", sourceJsonRef='" + getSourceJsonRef() + "'" +
             ", sourceJson='" + getSourceJson() + "'" +
             ", status='" + getStatus() + "'" +
+            ", hashiCorpVaultId='" + getHashiCorpVaultId() + "'" +
             ", createdOn='" + getCreatedOn() + "'" +
             ", updatedOn='" + getUpdatedOn() + "'" +
             ", updatedBy='" + getUpdatedBy() + "'" +

@@ -13,7 +13,7 @@ public class OrganizationalUnitDTO implements Serializable {
 
     private String name;
 
-    @Size(max = 5000)
+    @Size(max = 500)
     private String description;
 
     private String status;

@@ -59,6 +59,9 @@ public class AccountsResourceIT {
     private static final String DEFAULT_BUCKET = "AAAAAAAAAA";
     private static final String UPDATED_BUCKET = "BBBBBBBBBB";
 
+    private static final String DEFAULT_END_POINT = "AAAAAAAAAA";
+    private static final String UPDATED_END_POINT = "BBBBBBBBBB";
+
     private static final String DEFAULT_EMAIL = "AAAAAAAAAA";
     private static final String UPDATED_EMAIL = "BBBBBBBBBB";
 
@@ -78,6 +81,9 @@ public class AccountsResourceIT {
 
     private static final String DEFAULT_STATUS = "AAAAAAAAAA";
     private static final String UPDATED_STATUS = "BBBBBBBBBB";
+
+    private static final String DEFAULT_HASHI_CORP_VAULT_ID = "AAAAAAAAAA";
+    private static final String UPDATED_HASHI_CORP_VAULT_ID = "BBBBBBBBBB";
 
     private static final Instant DEFAULT_CREATED_ON = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_CREATED_ON = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -124,6 +130,7 @@ public class AccountsResourceIT {
             .secretKey(DEFAULT_SECRET_KEY)
             .region(DEFAULT_REGION)
             .bucket(DEFAULT_BUCKET)
+            .endPoint(DEFAULT_END_POINT)
             .email(DEFAULT_EMAIL)
             .password(DEFAULT_PASSWORD)
             .cloudType(DEFAULT_CLOUD_TYPE)
@@ -131,6 +138,7 @@ public class AccountsResourceIT {
             .sourceJson(DEFAULT_SOURCE_JSON)
             .sourceJsonContentType(DEFAULT_SOURCE_JSON_CONTENT_TYPE)
             .status(DEFAULT_STATUS)
+            .hashiCorpVaultId(DEFAULT_HASHI_CORP_VAULT_ID)
             .createdOn(DEFAULT_CREATED_ON)
             .updatedOn(DEFAULT_UPDATED_ON)
             .updatedBy(DEFAULT_UPDATED_BY)
@@ -153,6 +161,7 @@ public class AccountsResourceIT {
             .secretKey(UPDATED_SECRET_KEY)
             .region(UPDATED_REGION)
             .bucket(UPDATED_BUCKET)
+            .endPoint(UPDATED_END_POINT)
             .email(UPDATED_EMAIL)
             .password(UPDATED_PASSWORD)
             .cloudType(UPDATED_CLOUD_TYPE)
@@ -160,6 +169,7 @@ public class AccountsResourceIT {
             .sourceJson(UPDATED_SOURCE_JSON)
             .sourceJsonContentType(UPDATED_SOURCE_JSON_CONTENT_TYPE)
             .status(UPDATED_STATUS)
+            .hashiCorpVaultId(UPDATED_HASHI_CORP_VAULT_ID)
             .createdOn(UPDATED_CREATED_ON)
             .updatedOn(UPDATED_UPDATED_ON)
             .updatedBy(UPDATED_UPDATED_BY)
@@ -195,6 +205,7 @@ public class AccountsResourceIT {
         assertThat(testAccounts.getSecretKey()).isEqualTo(DEFAULT_SECRET_KEY);
         assertThat(testAccounts.getRegion()).isEqualTo(DEFAULT_REGION);
         assertThat(testAccounts.getBucket()).isEqualTo(DEFAULT_BUCKET);
+        assertThat(testAccounts.getEndPoint()).isEqualTo(DEFAULT_END_POINT);
         assertThat(testAccounts.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(testAccounts.getPassword()).isEqualTo(DEFAULT_PASSWORD);
         assertThat(testAccounts.getCloudType()).isEqualTo(DEFAULT_CLOUD_TYPE);
@@ -202,6 +213,7 @@ public class AccountsResourceIT {
         assertThat(testAccounts.getSourceJson()).isEqualTo(DEFAULT_SOURCE_JSON);
         assertThat(testAccounts.getSourceJsonContentType()).isEqualTo(DEFAULT_SOURCE_JSON_CONTENT_TYPE);
         assertThat(testAccounts.getStatus()).isEqualTo(DEFAULT_STATUS);
+        assertThat(testAccounts.getHashiCorpVaultId()).isEqualTo(DEFAULT_HASHI_CORP_VAULT_ID);
         assertThat(testAccounts.getCreatedOn()).isEqualTo(DEFAULT_CREATED_ON);
         assertThat(testAccounts.getUpdatedOn()).isEqualTo(DEFAULT_UPDATED_ON);
         assertThat(testAccounts.getUpdatedBy()).isEqualTo(DEFAULT_UPDATED_BY);
@@ -248,6 +260,7 @@ public class AccountsResourceIT {
             .andExpect(jsonPath("$.[*].secretKey").value(hasItem(DEFAULT_SECRET_KEY)))
             .andExpect(jsonPath("$.[*].region").value(hasItem(DEFAULT_REGION)))
             .andExpect(jsonPath("$.[*].bucket").value(hasItem(DEFAULT_BUCKET)))
+            .andExpect(jsonPath("$.[*].endPoint").value(hasItem(DEFAULT_END_POINT)))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
             .andExpect(jsonPath("$.[*].password").value(hasItem(DEFAULT_PASSWORD)))
             .andExpect(jsonPath("$.[*].cloudType").value(hasItem(DEFAULT_CLOUD_TYPE)))
@@ -255,6 +268,7 @@ public class AccountsResourceIT {
             .andExpect(jsonPath("$.[*].sourceJsonContentType").value(hasItem(DEFAULT_SOURCE_JSON_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].sourceJson").value(hasItem(Base64Utils.encodeToString(DEFAULT_SOURCE_JSON))))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
+            .andExpect(jsonPath("$.[*].hashiCorpVaultId").value(hasItem(DEFAULT_HASHI_CORP_VAULT_ID)))
             .andExpect(jsonPath("$.[*].createdOn").value(hasItem(DEFAULT_CREATED_ON.toString())))
             .andExpect(jsonPath("$.[*].updatedOn").value(hasItem(DEFAULT_UPDATED_ON.toString())))
             .andExpect(jsonPath("$.[*].updatedBy").value(hasItem(DEFAULT_UPDATED_BY)))
@@ -280,6 +294,7 @@ public class AccountsResourceIT {
             .andExpect(jsonPath("$.secretKey").value(DEFAULT_SECRET_KEY))
             .andExpect(jsonPath("$.region").value(DEFAULT_REGION))
             .andExpect(jsonPath("$.bucket").value(DEFAULT_BUCKET))
+            .andExpect(jsonPath("$.endPoint").value(DEFAULT_END_POINT))
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
             .andExpect(jsonPath("$.password").value(DEFAULT_PASSWORD))
             .andExpect(jsonPath("$.cloudType").value(DEFAULT_CLOUD_TYPE))
@@ -287,6 +302,7 @@ public class AccountsResourceIT {
             .andExpect(jsonPath("$.sourceJsonContentType").value(DEFAULT_SOURCE_JSON_CONTENT_TYPE))
             .andExpect(jsonPath("$.sourceJson").value(Base64Utils.encodeToString(DEFAULT_SOURCE_JSON)))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS))
+            .andExpect(jsonPath("$.hashiCorpVaultId").value(DEFAULT_HASHI_CORP_VAULT_ID))
             .andExpect(jsonPath("$.createdOn").value(DEFAULT_CREATED_ON.toString()))
             .andExpect(jsonPath("$.updatedOn").value(DEFAULT_UPDATED_ON.toString()))
             .andExpect(jsonPath("$.updatedBy").value(DEFAULT_UPDATED_BY))
@@ -321,6 +337,7 @@ public class AccountsResourceIT {
             .secretKey(UPDATED_SECRET_KEY)
             .region(UPDATED_REGION)
             .bucket(UPDATED_BUCKET)
+            .endPoint(UPDATED_END_POINT)
             .email(UPDATED_EMAIL)
             .password(UPDATED_PASSWORD)
             .cloudType(UPDATED_CLOUD_TYPE)
@@ -328,6 +345,7 @@ public class AccountsResourceIT {
             .sourceJson(UPDATED_SOURCE_JSON)
             .sourceJsonContentType(UPDATED_SOURCE_JSON_CONTENT_TYPE)
             .status(UPDATED_STATUS)
+            .hashiCorpVaultId(UPDATED_HASHI_CORP_VAULT_ID)
             .createdOn(UPDATED_CREATED_ON)
             .updatedOn(UPDATED_UPDATED_ON)
             .updatedBy(UPDATED_UPDATED_BY)
@@ -351,6 +369,7 @@ public class AccountsResourceIT {
         assertThat(testAccounts.getSecretKey()).isEqualTo(UPDATED_SECRET_KEY);
         assertThat(testAccounts.getRegion()).isEqualTo(UPDATED_REGION);
         assertThat(testAccounts.getBucket()).isEqualTo(UPDATED_BUCKET);
+        assertThat(testAccounts.getEndPoint()).isEqualTo(UPDATED_END_POINT);
         assertThat(testAccounts.getEmail()).isEqualTo(UPDATED_EMAIL);
         assertThat(testAccounts.getPassword()).isEqualTo(UPDATED_PASSWORD);
         assertThat(testAccounts.getCloudType()).isEqualTo(UPDATED_CLOUD_TYPE);
@@ -358,6 +377,7 @@ public class AccountsResourceIT {
         assertThat(testAccounts.getSourceJson()).isEqualTo(UPDATED_SOURCE_JSON);
         assertThat(testAccounts.getSourceJsonContentType()).isEqualTo(UPDATED_SOURCE_JSON_CONTENT_TYPE);
         assertThat(testAccounts.getStatus()).isEqualTo(UPDATED_STATUS);
+        assertThat(testAccounts.getHashiCorpVaultId()).isEqualTo(UPDATED_HASHI_CORP_VAULT_ID);
         assertThat(testAccounts.getCreatedOn()).isEqualTo(UPDATED_CREATED_ON);
         assertThat(testAccounts.getUpdatedOn()).isEqualTo(UPDATED_UPDATED_ON);
         assertThat(testAccounts.getUpdatedBy()).isEqualTo(UPDATED_UPDATED_BY);

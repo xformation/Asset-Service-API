@@ -25,8 +25,8 @@ public class OrganizationalUnit implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @Size(max = 5000)
-    @Column(name = "description", length = 5000)
+    @Size(max = 500)
+    @Column(name = "description", length = 500)
     private String description;
 
     @Column(name = "status")

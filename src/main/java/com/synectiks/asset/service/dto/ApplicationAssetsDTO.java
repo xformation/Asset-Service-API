@@ -14,6 +14,8 @@ public class ApplicationAssetsDTO implements Serializable {
 
     private String dashboardUuid;
 
+    private String fileName;
+
     private String cloudType;
 
     private String elementType;
@@ -55,6 +57,14 @@ public class ApplicationAssetsDTO implements Serializable {
 
     public void setDashboardUuid(String dashboardUuid) {
         this.dashboardUuid = dashboardUuid;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public String getCloudType() {
@@ -153,6 +163,7 @@ public class ApplicationAssetsDTO implements Serializable {
             "id=" + getId() +
             ", tenantId='" + getTenantId() + "'" +
             ", dashboardUuid='" + getDashboardUuid() + "'" +
+            ", fileName='" + getFileName() + "'" +
             ", cloudType='" + getCloudType() + "'" +
             ", elementType='" + getElementType() + "'" +
             ", inputType='" + getInputType() + "'" +
