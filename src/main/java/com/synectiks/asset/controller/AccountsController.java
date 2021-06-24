@@ -75,6 +75,8 @@ public class AccountsController {
 			assetSarchParams.put("accountId", oa.get().getAccountId());
 			List<Asset> assetList = cloudAssetService.searchCloudAsset(assetSarchParams);
 			Accounts ac = oa.get();
+			Organization org = organizationService.getOrganization(Long.parseLong(ac.getTenantId()));
+			ac.setOrganizationName(org.getName());
 			ac.setAssetList(assetList);
 			return ResponseEntity.status(HttpStatus.OK).body(ac);
 		}
@@ -96,6 +98,9 @@ public class AccountsController {
 			assetSarchParams.put("accountId", accountId);
 			List<Asset> assetList = cloudAssetService.searchCloudAsset(assetSarchParams);
 			Accounts ac = oa.get();
+			Organization org = organizationService.getOrganization(Long.parseLong(ac.getTenantId()));
+			ac.setOrganizationName(org.getName());
+			
 			ac.setAssetList(assetList);
 			return ResponseEntity.status(HttpStatus.OK).body(ac);
 			
@@ -213,7 +218,7 @@ public class AccountsController {
 		
 //		Tenant id is the organization id of an application user (same for owner and its team). 
 //		get it from security service 
-		Organization org = organizationService.getOrganization(obj.get("userName").asText());
+		Organization org = organizationService.getOrganization(obj.get("orgId").asLong());
 		if(org != null) {
 			accounts.setTenantId(String.valueOf(org.getId()));
 		}

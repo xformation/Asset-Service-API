@@ -103,10 +103,13 @@ public class Accounts implements Serializable {
     @JsonIgnoreProperties(value = "accounts", allowSetters = true)
     private OrganizationalUnit organizationalUnit;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here
 	@Transient
     @JsonProperty
     private List<Asset> assetList;
+    
+	@Transient
+    @JsonProperty
+    private String organizationName;
     
     public Long getId() {
         return id;
@@ -453,5 +456,13 @@ public class Accounts implements Serializable {
 
 	public void setAssetList(List<Asset> assetList) {
 		this.assetList = assetList;
+	}
+
+	public String getOrganizationName() {
+		return organizationName;
+	}
+
+	public void setOrganizationName(String organizationName) {
+		this.organizationName = organizationName;
 	}
 }

@@ -14,7 +14,6 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.synectiks.asset.config.Constants;
@@ -33,6 +32,25 @@ public class CloudAssetService {
 	
 	@Autowired
 	private CloudAssetRepository cloudAssetRepository;
+	
+	public List<Asset> getCloudAssets(String accountId) {
+		logger.info("Getting cloud asset by account id: "+accountId);
+		CloudAsset cloudAsset = new CloudAsset();
+		cloudAsset.setAccountId(accountId);
+		List<CloudAsset> list = cloudAssetRepository.findAll(Example.of(cloudAsset));
+		List<Asset> assetList = new ArrayList<>();
+		if(list.size() > 0) {
+			for(CloudAsset ca: list) {
+				logger.debug("Cloud asset:"+ca.toString());
+				Asset asset = new Asset();
+				BeanUtils.copyProperties(ca, asset);
+				asset.setTitle(ca.getName());
+				asset.setStatus(Constants.ACTIVE.equalsIgnoreCase(ca.getStatus()) ? true: false );
+				assetList.add(asset);
+			}
+		}
+		return assetList;
+	}
 	
 	public Asset getCloudAsset(Long id) {
 		logger.info("Getting cloud asset by id: "+id);
@@ -102,12 +120,25 @@ public class CloudAssetService {
 	public Asset addCloudAsset(ObjectNode obj) {
 		try {
 			CloudAsset cloudAsset = new CloudAsset();
-			cloudAsset.setAccountId(obj.get("accountId").asText());
-			cloudAsset.setType(obj.get("type").asText());
-			cloudAsset.setName(obj.get("name").asText());
-			cloudAsset.setDescription(obj.get("description").asText());
-			cloudAsset.setStatus(obj.get("status").asText());
-			cloudAsset.setSourceJsonRef(obj.get("sourceJsonRef").asText());
+			if(obj.get("accountId") != null) {
+				cloudAsset.setAccountId(obj.get("accountId").asText());
+			}
+			if(obj.get("type") != null) {
+				cloudAsset.setType(obj.get("type").asText());
+			}
+			if(obj.get("name") != null) {
+				cloudAsset.setName(obj.get("name").asText());
+			}
+			if(obj.get("description") != null) {
+				cloudAsset.setDescription(obj.get("description").asText());
+			}
+			if(obj.get("status") != null) {
+				cloudAsset.setStatus(obj.get("status").asText());
+			}
+			if(obj.get("sourceJsonRef") != null) {
+				cloudAsset.setSourceJsonRef(obj.get("sourceJsonRef").asText());
+			}
+			
 			
 		 	if (obj.get("user") != null) {
 				cloudAsset.setCreatedBy(obj.get("user").asText());

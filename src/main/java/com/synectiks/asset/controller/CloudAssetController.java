@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.synectiks.asset.business.service.CloudAssetService;
+import com.synectiks.asset.domain.Accounts;
 import com.synectiks.asset.domain.Asset;
 import com.synectiks.asset.repository.AccountsRepository;
-import com.synectiks.asset.repository.CloudAssetRepository;
 
 @RestController
 @RequestMapping("/api")
@@ -36,11 +36,22 @@ public class CloudAssetController {
 	@Autowired
 	private AccountsRepository accountsRepository;
 	
-	@Autowired
-	private CloudAssetRepository cloudAssetRepository;
+//	@Autowired
+//	private CloudAssetRepository cloudAssetRepository;
 	
 	@Autowired
 	CloudAssetService cloudAssetService;
+	
+	@GetMapping("/getDiscoveredAsset/{id}")
+	public ResponseEntity<List<Asset>> getCloudAssetByAccountId(@PathVariable Long id) {
+		logger.info("Request to get cloud asset by account id: "+id);
+		Accounts acc = accountsRepository.findById(id).orElse(null);
+		List<Asset> asset = cloudAssetService.getCloudAssets(acc.getAccountId());
+		if(asset != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(asset);
+		}
+		return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
+	}
 	
 	@GetMapping("/getCloudAsset/{id}")
 	public ResponseEntity<Asset> getCloudAsset(@PathVariable Long id) {
