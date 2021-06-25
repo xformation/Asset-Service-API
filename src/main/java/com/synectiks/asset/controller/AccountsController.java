@@ -237,11 +237,13 @@ public class AccountsController {
 		
 //		accounts.setSourceJsonRef(obj.get("sourceJsonRef").asText());
 //		accounts.setSourceJsonContentType(obj.get("sourceJsonContentType").asText());
-		
-		Optional<OrganizationalUnit> oou = organizationalUnitRepository.findById(obj.get("ouId").asLong());
-		if(oou.isPresent()) {
-			accounts.setOrganizationalUnit(oou.get());
+		if(obj.get("ouId") != null) {
+			Optional<OrganizationalUnit> oou = organizationalUnitRepository.findById(obj.get("ouId").asLong());
+			if(oou.isPresent()) {
+				accounts.setOrganizationalUnit(oou.get());
+			}
 		}
+		
 		
 		
 	 	if (obj.get("user") != null) {
