@@ -187,6 +187,8 @@ public class AccountsController {
 		
 		Map<String, String> assetSarchParams = new HashMap<String, String>();
 		for(Accounts ac: list) {
+			Organization org = organizationService.getOrganization(Long.parseLong(ac.getTenantId()));
+			ac.setOrganizationName(org.getName());
 			assetSarchParams.put("accountId", ac.getAccountId());
 			List<Asset> assetList = cloudAssetService.searchCloudAsset(assetSarchParams);
 			ac.setAssetList(assetList);
