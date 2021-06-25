@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,8 +76,10 @@ public class AccountsController {
 			assetSarchParams.put("accountId", oa.get().getAccountId());
 			List<Asset> assetList = cloudAssetService.searchCloudAsset(assetSarchParams);
 			Accounts ac = oa.get();
-			Organization org = organizationService.getOrganization(Long.parseLong(ac.getTenantId()));
-			ac.setOrganizationName(org.getName());
+			if(!StringUtils.isBlank(ac.getTenantId())) {
+				Organization org = organizationService.getOrganization(Long.parseLong(ac.getTenantId()));
+				ac.setOrganizationName(org.getName());
+			}
 			ac.setAssetList(assetList);
 			return ResponseEntity.status(HttpStatus.OK).body(ac);
 		}
