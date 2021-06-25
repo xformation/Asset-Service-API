@@ -220,9 +220,11 @@ public class AccountsController {
 		
 //		Tenant id is the organization id of an application user (same for owner and its team). 
 //		get it from security service 
-		Organization org = organizationService.getOrganization(obj.get("orgId").asLong());
-		if(org != null) {
-			accounts.setTenantId(String.valueOf(org.getId()));
+		if(obj.get("orgId") != null) {
+			Organization org = organizationService.getOrganization(obj.get("orgId").asLong());
+			if(org != null) {
+				accounts.setTenantId(String.valueOf(org.getId()));
+			}
 		}
 		
 		accounts.setAccessKey(obj.get("accessKey").asText());
