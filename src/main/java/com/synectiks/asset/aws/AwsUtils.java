@@ -90,15 +90,5 @@ public class AwsUtils {
 		return ou;
 	}
 	
-//	NOT working - Access denied exception
-//	public static void describeAccount(String accessKey, String secretKey, String s3Region) {
-//		AWSOrganizations awsOrg = getAwsOrganizationClient(accessKey, secretKey, s3Region);
-//		DescribeAccountResult r = awsOrg.describeAccount(new DescribeAccountRequest().withAccountId(""));
-//		r.getAccount();
-//		
-//	}
-	
-	public static void main(String a[]) {
-		getAwsOrganizationUnit("AKIAZSLS3RLMW2ARKXAR", "qBqI5ILWDTCLEzsyq/rIoC0iNOHmjQp2U6oJNaqt", "us-east-1");
-	}
+
 }
