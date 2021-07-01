@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -17,8 +18,10 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.synectiks.asset.config.Constants;
+import com.synectiks.asset.domain.Accounts;
 import com.synectiks.asset.domain.Asset;
 import com.synectiks.asset.domain.CloudAsset;
+import com.synectiks.asset.domain.Organization;
 import com.synectiks.asset.repository.AccountsRepository;
 import com.synectiks.asset.repository.CloudAssetRepository;
 
@@ -33,10 +36,14 @@ public class CloudAssetService {
 	@Autowired
 	private CloudAssetRepository cloudAssetRepository;
 	
-	public List<Asset> getCloudAssets(String accountId) {
-		logger.info("Getting cloud asset by account id: "+accountId);
+	@Autowired
+	OrganizationService organizationService;
+	
+	
+	public List<Asset> getCloudAssets(Accounts accounts) {
+		logger.info("Getting cloud asset by account id: "+accounts);
 		CloudAsset cloudAsset = new CloudAsset();
-		cloudAsset.setAccountId(accountId);
+		cloudAsset.setAccountId(accounts.getAccountId());
 		List<CloudAsset> list = cloudAssetRepository.findAll(Example.of(cloudAsset));
 		List<Asset> assetList = new ArrayList<>();
 		if(list.size() > 0) {
@@ -46,6 +53,13 @@ public class CloudAssetService {
 				BeanUtils.copyProperties(ca, asset);
 				asset.setTitle(ca.getName());
 				asset.setStatus(Constants.ACTIVE.equalsIgnoreCase(ca.getStatus()) ? true: false );
+				
+				if(!StringUtils.isBlank(accounts.getTenantId())) {
+					Organization org = organizationService.getOrganization(Long.parseLong(accounts.getTenantId()));
+					asset.setOrganizationName(org.getName());
+					asset.setTenantId(accounts.getTenantId());
+				}
+				asset.setOrganizationalUnit(accounts.getOrganizationalUnit().getName());
 				assetList.add(asset);
 			}
 		}

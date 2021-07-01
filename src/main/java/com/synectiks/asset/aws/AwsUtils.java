@@ -9,6 +9,12 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.identitymanagement.AmazonIdentityManagement;
 import com.amazonaws.services.identitymanagement.AmazonIdentityManagementClient;
 import com.amazonaws.services.identitymanagement.model.GetUserResult;
+import com.amazonaws.services.organizations.AWSOrganizations;
+import com.amazonaws.services.organizations.AWSOrganizationsClientBuilder;
+import com.amazonaws.services.organizations.model.DescribeOrganizationRequest;
+import com.amazonaws.services.organizations.model.DescribeOrganizationResult;
+import com.amazonaws.services.organizations.model.DescribeOrganizationalUnitRequest;
+import com.amazonaws.services.organizations.model.DescribeOrganizationalUnitResult;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.securitytoken.AWSSecurityTokenService;
@@ -44,7 +50,8 @@ public class AwsUtils {
 	}
 	
 	public static GetUserResult getAWSUser(String accessKey, String secretKey, String s3Region) {
-	    return getAmazonIdentityManagement(accessKey, secretKey, s3Region).getUser();
+	    AmazonIdentityManagement aim = getAmazonIdentityManagement(accessKey, secretKey, s3Region);
+	    return aim.getUser();
 	}
 	
 	public static AWSSecurityTokenService getAWSSecurityTokenService(String accessKey, String secretKey, String s3Region) {
@@ -60,4 +67,38 @@ public class AwsUtils {
 	}
 	
 	
+	public static AWSOrganizations getAwsOrganizationClient(String accessKey, String secretKey, String s3Region) {
+		logger.info("Getting AWS organization client");
+		AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
+		AWSOrganizationsClientBuilder s3ClientBuilder = AWSOrganizationsClientBuilder.standard()
+				.withCredentials(new AWSStaticCredentialsProvider(credentials));
+		s3ClientBuilder.setRegion(s3Region);
+		return s3ClientBuilder.build();
+	}
+	
+	public static com.amazonaws.services.organizations.model.Organization getAwsOrganization(String accessKey, String secretKey, String s3Region) {
+		AWSOrganizations awsOrg = getAwsOrganizationClient(accessKey, secretKey, s3Region);
+		DescribeOrganizationResult r = awsOrg.describeOrganization(new DescribeOrganizationRequest());
+		com.amazonaws.services.organizations.model.Organization org = r.getOrganization();
+		return org;
+	}
+	
+	public static com.amazonaws.services.organizations.model.OrganizationalUnit getAwsOrganizationUnit(String accessKey, String secretKey, String s3Region) {
+		AWSOrganizations awsOrg = getAwsOrganizationClient(accessKey, secretKey, s3Region);
+		DescribeOrganizationalUnitResult r = awsOrg.describeOrganizationalUnit(new DescribeOrganizationalUnitRequest());
+		com.amazonaws.services.organizations.model.OrganizationalUnit ou = r.getOrganizationalUnit();
+		return ou;
+	}
+	
+//	NOT working - Access denied exception
+//	public static void describeAccount(String accessKey, String secretKey, String s3Region) {
+//		AWSOrganizations awsOrg = getAwsOrganizationClient(accessKey, secretKey, s3Region);
+//		DescribeAccountResult r = awsOrg.describeAccount(new DescribeAccountRequest().withAccountId(""));
+//		r.getAccount();
+//		
+//	}
+	
+	public static void main(String a[]) {
+		getAwsOrganizationUnit("AKIAZSLS3RLMW2ARKXAR", "qBqI5ILWDTCLEzsyq/rIoC0iNOHmjQp2U6oJNaqt", "us-east-1");
+	}
 }

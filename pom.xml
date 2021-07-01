@@ -318,6 +318,11 @@
 			<artifactId>aws-java-sdk</artifactId>
 			<version>1.11.89</version>
 		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-organizations</artifactId>
+			<version>1.11.120</version>
+		</dependency>
         <!-- jhipster-needle-maven-add-dependency -->
     </dependencies>
 

@@ -49,7 +49,7 @@ public class AccountsController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(AccountsController.class);
 	private static final String ENTITY_NAME = "accounts";
-	private static final List<List<Accounts>> List = null;
+//	private static final List<List<Accounts>> List = null;
 
 	@Value("${jhipster.clientApp.name}")
 	private String applicationName;
@@ -74,13 +74,13 @@ public class AccountsController {
 			logger.info("Account :"+oa.get().toString());
 			Map<String, String> assetSarchParams = new HashMap<String, String>();
 			assetSarchParams.put("accountId", oa.get().getAccountId());
-			List<Asset> assetList = cloudAssetService.searchCloudAsset(assetSarchParams);
+//			List<Asset> assetList = cloudAssetService.searchCloudAsset(assetSarchParams);
 			Accounts ac = oa.get();
 			if(!StringUtils.isBlank(ac.getTenantId())) {
 				Organization org = organizationService.getOrganization(Long.parseLong(ac.getTenantId()));
 				ac.setOrganizationName(org.getName());
 			}
-			ac.setAssetList(assetList);
+//			ac.setAssetList(assetList);
 			return ResponseEntity.status(HttpStatus.OK).body(ac);
 		}
 		logger.warn("Account not found");
@@ -99,12 +99,12 @@ public class AccountsController {
 			logger.info("Account :"+oa.get().toString());
 			Map<String, String> assetSarchParams = new HashMap<String, String>();
 			assetSarchParams.put("accountId", accountId);
-			List<Asset> assetList = cloudAssetService.searchCloudAsset(assetSarchParams);
+//			List<Asset> assetList = cloudAssetService.searchCloudAsset(assetSarchParams);
 			Accounts ac = oa.get();
 			Organization org = organizationService.getOrganization(Long.parseLong(ac.getTenantId()));
 			ac.setOrganizationName(org.getName());
 			
-			ac.setAssetList(assetList);
+//			ac.setAssetList(assetList);
 			return ResponseEntity.status(HttpStatus.OK).body(ac);
 			
 		}
@@ -193,8 +193,8 @@ public class AccountsController {
 			Organization org = organizationService.getOrganization(Long.parseLong(ac.getTenantId()));
 			ac.setOrganizationName(org.getName());
 			assetSarchParams.put("accountId", ac.getAccountId());
-			List<Asset> assetList = cloudAssetService.searchCloudAsset(assetSarchParams);
-			ac.setAssetList(assetList);
+//			List<Asset> assetList = cloudAssetService.searchCloudAsset(assetSarchParams);
+//			ac.setAssetList(assetList);
 		}
 		
 		return list;
@@ -246,8 +246,6 @@ public class AccountsController {
 				accounts.setOrganizationalUnit(oou.get());
 			}
 		}
-		
-		
 		
 	 	if (obj.get("user") != null) {
 			accounts.setCreatedBy(obj.get("user").asText());

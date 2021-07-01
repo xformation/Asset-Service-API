@@ -2,6 +2,7 @@ package com.synectiks.asset.business.service;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -100,16 +101,63 @@ public class ApplicationAssetService {
 	}
 	
 	
+	public Map<String, List<Asset>> getApplicationAssetsGropuByInputType() {
+		logger.debug("Getting all application assets group by input type");
+
+		List<ApplicationAssets> list = this.applicationAssetsRepository.findAll();
+		
+		Map<String, List<Asset>> assetMap = new HashMap<String, List<Asset>>();
+		for(ApplicationAssets aa: list) {
+			Asset asset = new Asset();
+			BeanUtils.copyProperties(aa, asset);
+			asset.setTitle(aa.getElementType());
+			asset.setType(aa.getCloudType());
+			asset.setStatus(Constants.ACTIVE.equalsIgnoreCase(aa.getStatus()) ? true: false );
+			
+			if(!assetMap.containsKey(asset.getInputType())) {
+				List<Asset> listAsset = new ArrayList<>();
+				listAsset.add(asset);
+				logger.debug("New input type list being added. Input type : "+asset.getInputType());
+				assetMap.put(asset.getInputType(), listAsset);
+			}else {
+				assetMap.get(asset.getInputType()).add(asset);
+				logger.debug("Asset added to the list : "+asset.toString());
+			}
+		}
+		return assetMap;
+	}
+	
+	
 	public Asset addApplicationAsset(ObjectNode obj) {
 		logger.info("Adding application asset: "+obj.toString());
 		try {
 			ApplicationAssets appAsset = new ApplicationAssets();
-			appAsset.setTenantId(obj.get("tenantId").asText());
-			appAsset.setDashboardUuid(obj.get("dashboardUuid").asText());
-			appAsset.setCloudType(obj.get("cloudType").asText());
-			appAsset.setElementType(obj.get("elementTyp").asText());
-			appAsset.setInputType(obj.get("inputTyp").asText());
-			appAsset.setStatus(obj.get("status").asText());
+			if(obj.get("tenantId") != null) {
+				appAsset.setTenantId(obj.get("tenantId").asText());
+			}
+			if(obj.get("dashboardUuid") != null) {
+				appAsset.setDashboardUuid(obj.get("dashboardUuid").asText());
+			}
+			if(obj.get("fileName") != null) {
+				appAsset.setFileName(obj.get("fileName").asText());
+			}
+			if(obj.get("cloudType") != null) {
+				appAsset.setCloudType(obj.get("cloudType").asText());
+			}
+			if(obj.get("elementType") != null) {
+				appAsset.setElementType(obj.get("elementType").asText());
+			}
+			if(obj.get("inputType") != null) {
+				appAsset.setInputType(obj.get("inputType").asText());
+			}
+			if(obj.get("dashboardNature") != null) {
+				appAsset.setDashboardNature(obj.get("dashboardNature").asText());
+			}
+			if(obj.get("status") != null) {
+				appAsset.setStatus(obj.get("status").asText());
+			}else {
+				appAsset.setStatus(Constants.ACTIVE);
+			}
 			
 		 	if (obj.get("user") != null) {
 				appAsset.setCreatedBy(obj.get("user").asText());

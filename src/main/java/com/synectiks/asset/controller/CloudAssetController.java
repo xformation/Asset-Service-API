@@ -36,9 +36,6 @@ public class CloudAssetController {
 	@Autowired
 	private AccountsRepository accountsRepository;
 	
-//	@Autowired
-//	private CloudAssetRepository cloudAssetRepository;
-	
 	@Autowired
 	CloudAssetService cloudAssetService;
 	
@@ -46,7 +43,7 @@ public class CloudAssetController {
 	public ResponseEntity<List<Asset>> getCloudAssetByAccountId(@PathVariable Long id) {
 		logger.info("Request to get cloud asset by account id: "+id);
 		Accounts acc = accountsRepository.findById(id).orElse(null);
-		List<Asset> asset = cloudAssetService.getCloudAssets(acc.getAccountId());
+		List<Asset> asset = cloudAssetService.getCloudAssets(acc);
 		if(asset != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(asset);
 		}

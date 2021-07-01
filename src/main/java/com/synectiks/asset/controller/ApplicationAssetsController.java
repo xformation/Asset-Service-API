@@ -45,6 +45,11 @@ public class ApplicationAssetsController {
 		return applicationAssetService.searchApplicationAsset(object);
 	}
 	
+	@GetMapping("/getApplicationAssetsGropuByInputType")
+	public Map<String, List<Asset>> getApplicationAssetToEnable() {
+		logger.info("Request to get all application assets group by input type");
+		return applicationAssetService.getApplicationAssetsGropuByInputType();
+	}
 	
 	@PostMapping("/addApplicationAsset")
 	public ResponseEntity<Asset> addApplicationAsset(@RequestBody ObjectNode obj) {
@@ -56,7 +61,7 @@ public class ApplicationAssetsController {
 		return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
 	}
 	
-	@PostMapping("/updateAssetInventory")
+	@PostMapping("/updateApplicationAsset")
 	public ResponseEntity<String> updatePurchaseInventory(@RequestBody List<ObjectNode> list) {
 		logger.info("Request to update purchased asset inventory");
 		applicationAssetService.updatePurchaseInventory(list);

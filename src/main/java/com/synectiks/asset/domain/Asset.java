@@ -4,6 +4,8 @@ package com.synectiks.asset.domain;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 
@@ -25,7 +27,7 @@ public class Asset implements Serializable {
     private Instant updatedOn;
     private String updatedBy;
     private String createdBy;
-    private String unit;
+//    private String unit;
     private String instance;
     private boolean isOpened = false;
     private Asset[] subData;
@@ -35,6 +37,9 @@ public class Asset implements Serializable {
     private String elementType;
     private String inputType;
     private String dashboardNature;
+    private String organizationName;
+    private String organizationalUnit;
+    Map<String, List<Asset>> assetMap;
     
 	public Long getId() {
 		return id;
@@ -114,12 +119,7 @@ public class Asset implements Serializable {
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
-	public String getUnit() {
-		return unit;
-	}
-	public void setUnit(String unit) {
-		this.unit = unit;
-	}
+	
 	public String getInstance() {
 		return instance;
 	}
@@ -194,17 +194,37 @@ public class Asset implements Serializable {
 			return false;
 		return true;
 	}
-	
+	public String getOrganizationName() {
+		return organizationName;
+	}
+	public void setOrganizationName(String organizationName) {
+		this.organizationName = organizationName;
+	}
+	public String getOrganizationalUnit() {
+		return organizationalUnit;
+	}
+	public void setOrganizationalUnit(String organizationalUnit) {
+		this.organizationalUnit = organizationalUnit;
+	}
 	@Override
 	public String toString() {
 		return "Asset [id=" + id + ", accountId=" + accountId + ", type=" + type + ", title=" + title + ", description="
-				+ description + ", status=" + status + ", createdOn=" + createdOn + ", updatedOn=" + updatedOn
-				+ ", updatedBy=" + updatedBy + ", createdBy=" + createdBy + ", unit=" + unit + ", instance=" + instance
-				+ ", isOpened=" + isOpened + ", subData=" + Arrays.toString(subData) + ", tenantId=" + tenantId
-				+ ", dashboardUuid=" + dashboardUuid + ", elementType=" + elementType + ", inputType=" + inputType
-				+ ", dashboardNature=" + dashboardNature + "]";
+				+ description + ", sourceJsonRef=" + sourceJsonRef + ", sourceJson=" + Arrays.toString(sourceJson)
+				+ ", sourceJsonContentType=" + sourceJsonContentType + ", status=" + status + ", createdOn=" + createdOn
+				+ ", updatedOn=" + updatedOn + ", updatedBy=" + updatedBy + ", createdBy=" + createdBy + ", instance="
+				+ instance + ", isOpened=" + isOpened + ", subData=" + Arrays.toString(subData) + ", tenantId="
+				+ tenantId + ", dashboardUuid=" + dashboardUuid + ", elementType=" + elementType + ", inputType="
+				+ inputType + ", dashboardNature=" + dashboardNature + ", organizationName=" + organizationName
+				+ ", organizationUnit=" + organizationalUnit + "]";
 	}
-    
+	public Map<String, List<Asset>> getAssetMap() {
+		return assetMap;
+	}
+	public void setAssetMap(Map<String, List<Asset>> assetMap) {
+		this.assetMap = assetMap;
+	}
+	
+	
     
     
     
