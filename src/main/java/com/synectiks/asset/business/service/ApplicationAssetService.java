@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -101,10 +103,12 @@ public class ApplicationAssetService {
 	}
 	
 	
-	public Map<String, List<Asset>> getApplicationAssetsGropuByInputType() {
+	public Map<String, List<Asset>> getApplicationAssetsGropuByInputType(Map<String, String> object) {
 		logger.debug("Getting all application assets group by input type");
-
-		List<ApplicationAssets> list = this.applicationAssetsRepository.findAll();
+		ApplicationAssets obj = new ApplicationAssets();
+		obj.setTenantId(object.get("tenantId"));
+		
+		List<ApplicationAssets> list = this.applicationAssetsRepository.findAll(Example.of(obj));
 		
 		Map<String, List<Asset>> assetMap = new HashMap<String, List<Asset>>();
 		for(ApplicationAssets aa: list) {
@@ -113,7 +117,7 @@ public class ApplicationAssetService {
 			asset.setTitle(aa.getElementType());
 			asset.setType(aa.getCloudType());
 			asset.setStatus(Constants.ACTIVE.equalsIgnoreCase(aa.getStatus()) ? true: false );
-			
+			asset.setAccountId(object.get("accountId"));
 			if(!assetMap.containsKey(asset.getInputType())) {
 				List<Asset> listAsset = new ArrayList<>();
 				listAsset.add(asset);
@@ -129,7 +133,7 @@ public class ApplicationAssetService {
 	
 	
 	public Asset addApplicationAsset(ObjectNode obj) {
-		logger.info("Adding application asset: "+obj.toString());
+		logger.debug("Adding application asset: "+obj.toString());
 		try {
 			ApplicationAssets appAsset = new ApplicationAssets();
 			if(obj.get("tenantId") != null) {
@@ -154,7 +158,7 @@ public class ApplicationAssetService {
 				appAsset.setDashboardNature(obj.get("dashboardNature").asText());
 			}
 			if(obj.get("status") != null) {
-				appAsset.setStatus(obj.get("status").asText());
+				appAsset.setStatus(obj.get("status").asText().toUpperCase());
 			}else {
 				appAsset.setStatus(Constants.ACTIVE);
 			}
@@ -185,10 +189,42 @@ public class ApplicationAssetService {
 		}
 	}
 	
-	public void updatePurchaseInventory(List<ObjectNode> list) {
+	public void bulkAddApplicationAsset(List<ObjectNode> list) {
 		for(ObjectNode obj: list) {
-			logger.info("Adding new asset inventory: "+obj.toString());
+			logger.debug("Adding new application asset to inventory: "+obj.toString());
 			addApplicationAsset(obj);
+		}
+	}
+	
+	@Transactional
+	public void updateApplicationAsset(List<ObjectNode> list) {
+		for(ObjectNode obj: list) {
+			logger.debug("Updating application asset: "+obj.toString());
+			updateApplicationAsset(obj);
+		}
+	}
+	
+	public void updateApplicationAsset(ObjectNode obj){
+		try {
+			if(obj.get("id") != null) {
+				ApplicationAssets appAsset = applicationAssetsRepository.findById(obj.get("id").asLong()).orElse(null);
+				if(appAsset != null) {
+					if(obj.get("status") != null) {
+						appAsset.setStatus(obj.get("status").asText().toUpperCase());
+					}
+					if (obj.get("user") != null) {
+						appAsset.setUpdatedBy(obj.get("user").asText());
+					} else {
+						appAsset.setUpdatedBy(Constants.SYSTEM_ACCOUNT);
+					}
+					Instant now = Instant.now();
+					appAsset.setUpdatedOn(now);
+					applicationAssetsRepository.save(appAsset);
+				}
+				logger.debug("Application asset updated successfully : "+appAsset.toString());
+			}
+		}catch(Exception e) {
+			logger.warn("Due to exception application asset cannot be updated", e);
 		}
 	}
 }

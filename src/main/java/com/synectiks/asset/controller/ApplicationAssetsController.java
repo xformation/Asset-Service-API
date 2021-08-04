@@ -46,9 +46,14 @@ public class ApplicationAssetsController {
 	}
 	
 	@GetMapping("/getApplicationAssetsGropuByInputType")
-	public Map<String, List<Asset>> getApplicationAssetToEnable() {
+	public ResponseEntity<Map<String, List<Asset>>> getApplicationAssetToEnable(@RequestParam Map<String, String> object) {
 		logger.info("Request to get all application assets group by input type");
-		return applicationAssetService.getApplicationAssetsGropuByInputType();
+		if (object.get("tenantId") == null) {
+			logger.warn("User's organization id is missing");
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
+		}
+		Map<String, List<Asset>> map = applicationAssetService.getApplicationAssetsGropuByInputType(object);
+		return ResponseEntity.status(HttpStatus.OK).body(map);
 	}
 	
 	@PostMapping("/addApplicationAsset")
@@ -61,10 +66,24 @@ public class ApplicationAssetsController {
 		return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
 	}
 	
-	@PostMapping("/updateApplicationAsset")
-	public ResponseEntity<String> updatePurchaseInventory(@RequestBody List<ObjectNode> list) {
-		logger.info("Request to update purchased asset inventory");
-		applicationAssetService.updatePurchaseInventory(list);
+	@PostMapping("/bulkAddApplicationAssets")
+	public ResponseEntity<String> bulkAddApplicationAsset(@RequestBody List<ObjectNode> list) {
+		logger.info("Request to add list of purchased assets");
+		applicationAssetService.bulkAddApplicationAsset(list);
+		return ResponseEntity.status(HttpStatus.OK).body("Assets added");
+	}
+	
+	@PostMapping("/updateApplicationAssets")
+	public ResponseEntity<String> updateApplicationAssets(@RequestBody List<ObjectNode> list) {
+		logger.info("Request to update list of application assets");
+		applicationAssetService.updateApplicationAsset(list);
 		return ResponseEntity.status(HttpStatus.OK).body("Assets updated");
+	}
+	
+	@PostMapping("/updateApplicationAsset")
+	public ResponseEntity<String> updateApplicationAsset(@RequestBody ObjectNode obj) {
+		logger.info("Request to update an application assets");
+		applicationAssetService.updateApplicationAsset(obj);
+		return ResponseEntity.status(HttpStatus.OK).body("Asset updated");
 	}
 }
