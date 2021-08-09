@@ -71,6 +71,7 @@ entity ApplicationAssets {
    fileName String
    cloudType String
    elementType String
+   elementSubType String
    inputType String
    dashboardNature String
    status String
@@ -91,11 +92,15 @@ entity OrganizationalUnit {
    createdBy String
 }
 
-
+entity InputConfig{
+	inputType String
+	status String
+}
 
 relationship ManyToOne {
 	Accounts{organizationalUnit} to OrganizationalUnit,
 	AssetDetails{cloudAsset} to CloudAsset
+	InputConfig{accounts} to Accounts
 }
 
 dto * with mapstruct service all with serviceImpl

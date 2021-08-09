@@ -20,6 +20,8 @@ public class ApplicationAssetsDTO implements Serializable {
 
     private String elementType;
 
+    private String elementSubType;
+
     private String inputType;
 
     private String dashboardNature;
@@ -81,6 +83,14 @@ public class ApplicationAssetsDTO implements Serializable {
 
     public void setElementType(String elementType) {
         this.elementType = elementType;
+    }
+
+    public String getElementSubType() {
+        return elementSubType;
+    }
+
+    public void setElementSubType(String elementSubType) {
+        this.elementSubType = elementSubType;
     }
 
     public String getInputType() {
@@ -166,6 +176,7 @@ public class ApplicationAssetsDTO implements Serializable {
             ", fileName='" + getFileName() + "'" +
             ", cloudType='" + getCloudType() + "'" +
             ", elementType='" + getElementType() + "'" +
+            ", elementSubType='" + getElementSubType() + "'" +
             ", inputType='" + getInputType() + "'" +
             ", dashboardNature='" + getDashboardNature() + "'" +
             ", status='" + getStatus() + "'" +

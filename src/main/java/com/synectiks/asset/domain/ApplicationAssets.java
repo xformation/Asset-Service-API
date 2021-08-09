@@ -35,6 +35,9 @@ public class ApplicationAssets implements Serializable {
     @Column(name = "element_type")
     private String elementType;
 
+    @Column(name = "element_sub_type")
+    private String elementSubType;
+
     @Column(name = "input_type")
     private String inputType;
 
@@ -128,6 +131,19 @@ public class ApplicationAssets implements Serializable {
 
     public void setElementType(String elementType) {
         this.elementType = elementType;
+    }
+
+    public String getElementSubType() {
+        return elementSubType;
+    }
+
+    public ApplicationAssets elementSubType(String elementSubType) {
+        this.elementSubType = elementSubType;
+        return this;
+    }
+
+    public void setElementSubType(String elementSubType) {
+        this.elementSubType = elementSubType;
     }
 
     public String getInputType() {
@@ -248,6 +264,7 @@ public class ApplicationAssets implements Serializable {
             ", fileName='" + getFileName() + "'" +
             ", cloudType='" + getCloudType() + "'" +
             ", elementType='" + getElementType() + "'" +
+            ", elementSubType='" + getElementSubType() + "'" +
             ", inputType='" + getInputType() + "'" +
             ", dashboardNature='" + getDashboardNature() + "'" +
             ", status='" + getStatus() + "'" +

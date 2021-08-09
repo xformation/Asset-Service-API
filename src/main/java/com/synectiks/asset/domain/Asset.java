@@ -35,6 +35,7 @@ public class Asset implements Serializable {
     private String tenantId;
     private String dashboardUuid;
     private String elementType;
+    private String elementSubType;
     private String inputType;
     private String dashboardNature;
     private String organizationName;
@@ -222,6 +223,12 @@ public class Asset implements Serializable {
 	}
 	public void setAssetMap(Map<String, List<Asset>> assetMap) {
 		this.assetMap = assetMap;
+	}
+	public String getElementSubType() {
+		return elementSubType;
+	}
+	public void setElementSubType(String elementSubType) {
+		this.elementSubType = elementSubType;
 	}
 	
 	

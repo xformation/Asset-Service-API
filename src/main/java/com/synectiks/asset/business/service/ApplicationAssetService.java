@@ -107,6 +107,10 @@ public class ApplicationAssetService {
 		logger.debug("Getting all application assets group by input type");
 		ApplicationAssets obj = new ApplicationAssets();
 		obj.setTenantId(object.get("tenantId"));
+		obj.setCloudType(object.get("cloud"));
+		obj.setElementType(object.get("type"));
+		obj.setInputType(object.get("inputType"));
+		obj.setStatus(Constants.DEACTIVE);
 		
 		List<ApplicationAssets> list = this.applicationAssetsRepository.findAll(Example.of(obj));
 		

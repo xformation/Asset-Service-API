@@ -21,9 +21,10 @@
 	<include file="config/liquibase/changelog/20210620174938_added_entity_AssetDetails.xml" relativeToChangelogFile="false"/>
 	<include file="config/liquibase/changelog/20210620175038_added_entity_ApplicationAssets.xml" relativeToChangelogFile="false"/>
 	<include file="config/liquibase/changelog/20210620175238_added_entity_OrganizationalUnit.xml" relativeToChangelogFile="false"/>
+	<include file="config/liquibase/changelog/20210805072011_added_entity_InputConfig.xml" relativeToChangelogFile="false"/>
 	
 	<include file="config/liquibase/changelog/20210620174638_added_entity_constraints_Accounts.xml" relativeToChangelogFile="false"/>
 	<include file="config/liquibase/changelog/20210620174938_added_entity_constraints_AssetDetails.xml" relativeToChangelogFile="false"/>
-	
+	<include file="config/liquibase/changelog/20210805072011_added_entity_constraints_InputConfig.xml" relativeToChangelogFile="false"/>
 	
 </databaseChangeLog>
