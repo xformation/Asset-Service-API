@@ -10,7 +10,7 @@
     <!--
         Added the entity Inputs.
     -->
-    <changeSet id="20210620174738" author="jhipster">
+    <changeSet id="20210620174738-1" author="jhipster">
         <createTable tableName="inputs">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -39,6 +39,9 @@
             <column name="ref_url" type="varchar(500)">
                 <constraints nullable="true" />
             </column>
+            <column name="type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="created_on" type="datetime">
                 <constraints nullable="true" />
             </column>
@@ -51,8 +54,10 @@
             <column name="created_by" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
-        
+        <dropDefaultValue tableName="inputs" columnName="created_on" columnDataType="datetime"/>
+        <dropDefaultValue tableName="inputs" columnName="updated_on" columnDataType="datetime"/>
     </changeSet>
 
 </databaseChangeLog>

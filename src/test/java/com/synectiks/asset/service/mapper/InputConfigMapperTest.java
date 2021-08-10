@@ -10,7 +10,7 @@ public class InputConfigMapperTest {
 
     @BeforeEach
     public void setUp() {
-        inputConfigMapper = new InputConfigMapperImpl();
+//        inputConfigMapper = new InputConfigMapperImpl();
     }
 
     @Test

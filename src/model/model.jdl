@@ -30,6 +30,7 @@ entity Inputs {
    description String maxlength(5000)
    status String
    refUrl String maxlength(500)
+   type String
    createdOn Instant
    updatedOn Instant
    updatedBy String

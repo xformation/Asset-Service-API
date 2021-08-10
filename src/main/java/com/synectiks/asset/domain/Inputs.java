@@ -47,6 +47,9 @@ public class Inputs implements Serializable {
     @Column(name = "ref_url", length = 500)
     private String refUrl;
 
+    @Column(name = "type")
+    private String type;
+
     @Column(name = "created_on")
     private Instant createdOn;
 
@@ -172,6 +175,19 @@ public class Inputs implements Serializable {
         this.refUrl = refUrl;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public Inputs type(String type) {
+        this.type = type;
+        return this;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public Instant getCreatedOn() {
         return createdOn;
     }
@@ -254,6 +270,7 @@ public class Inputs implements Serializable {
             ", description='" + getDescription() + "'" +
             ", status='" + getStatus() + "'" +
             ", refUrl='" + getRefUrl() + "'" +
+            ", type='" + getType() + "'" +
             ", createdOn='" + getCreatedOn() + "'" +
             ", updatedOn='" + getUpdatedOn() + "'" +
             ", updatedBy='" + getUpdatedBy() + "'" +

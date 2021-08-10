@@ -100,6 +100,9 @@ public class InputService {
 			if(obj.get("inputSource") != null) {
 				inputs.setInputSource(obj.get("inputSource").asText());
 			}
+			if(obj.get("inputSourceId") != null) {
+				inputs.setInputSourceId(obj.get("inputSourceId").asText());
+			}
 			if(obj.get("name") != null) {
 				inputs.setName(obj.get("name").asText());
 			}
@@ -108,6 +111,9 @@ public class InputService {
 			}
 			if(obj.get("status") != null) {
 				inputs.setStatus(obj.get("status").asText().toUpperCase());
+			}
+			if(obj.get("type") != null) {
+				inputs.setType(obj.get("type").asText());
 			}
 			if(obj.get("refUrl") != null) {
 				inputs.setRefUrl(obj.get("refUrl").asText());
