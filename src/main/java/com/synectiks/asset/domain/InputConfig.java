@@ -1,6 +1,7 @@
 package com.synectiks.asset.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 
@@ -26,11 +27,17 @@ public class InputConfig implements Serializable {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "tenant_id")
+    private String tenantId;
+
     @ManyToOne
     @JsonIgnoreProperties(value = "inputConfigs", allowSetters = true)
     private Accounts accounts;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here
+    @Transient
+    @JsonProperty
+    private String viewJson;
+    
     public Long getId() {
         return id;
     }
@@ -63,6 +70,19 @@ public class InputConfig implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public InputConfig tenantId(String tenantId) {
+        this.tenantId = tenantId;
+        return this;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 
     public Accounts getAccounts() {
@@ -102,6 +122,7 @@ public class InputConfig implements Serializable {
             "id=" + getId() +
             ", inputType='" + getInputType() + "'" +
             ", status='" + getStatus() + "'" +
+            ", tenantId='" + getTenantId() + "'" +
             "}";
     }
 }

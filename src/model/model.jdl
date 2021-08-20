@@ -31,6 +31,7 @@ entity Inputs {
    status String
    refUrl String maxlength(500)
    type String
+   viewJson Blob
    createdOn Instant
    updatedOn Instant
    updatedBy String
@@ -96,6 +97,7 @@ entity OrganizationalUnit {
 entity InputConfig{
 	inputType String
 	status String
+	tenantId String
 }
 
 relationship ManyToOne {

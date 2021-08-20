@@ -40,6 +40,7 @@ public class Asset implements Serializable {
     private String dashboardNature;
     private String organizationName;
     private String organizationalUnit;
+    private String fileName;
     Map<String, List<Asset>> assetMap;
     
 	public Long getId() {
@@ -229,6 +230,12 @@ public class Asset implements Serializable {
 	}
 	public void setElementSubType(String elementSubType) {
 		this.elementSubType = elementSubType;
+	}
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 	
 	

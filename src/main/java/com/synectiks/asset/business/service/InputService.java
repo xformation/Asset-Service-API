@@ -88,57 +88,52 @@ public class InputService {
 	
 	public Inputs addInputs(ObjectNode obj) {
 		logger.debug("Adding input: "+obj.toString());
-		try {
-			Inputs inputs = new Inputs();
-			if(obj.get("accountId") != null) {
-				inputs.setAccountId(obj.get("accountId").asText());
-			}
-			if(obj.get("tenantId") != null) {
-				inputs.setTenantId(obj.get("tenantId").asText());
-			}
-			
-			if(obj.get("inputSource") != null) {
-				inputs.setInputSource(obj.get("inputSource").asText());
-			}
-			if(obj.get("inputSourceId") != null) {
-				inputs.setInputSourceId(obj.get("inputSourceId").asText());
-			}
-			if(obj.get("name") != null) {
-				inputs.setName(obj.get("name").asText());
-			}
-			if(obj.get("description") != null) {
-				inputs.setDescription(obj.get("description").asText());
-			}
-			if(obj.get("status") != null) {
-				inputs.setStatus(obj.get("status").asText().toUpperCase());
-			}
-			if(obj.get("type") != null) {
-				inputs.setType(obj.get("type").asText());
-			}
-			if(obj.get("refUrl") != null) {
-				inputs.setRefUrl(obj.get("refUrl").asText());
-			}
-			
-		 	if (obj.get("user") != null) {
-				inputs.setCreatedBy(obj.get("user").asText());
-				inputs.setUpdatedBy(obj.get("user").asText());
-			} else {
-				inputs.setCreatedBy(Constants.SYSTEM_ACCOUNT);
-				inputs.setUpdatedBy(Constants.SYSTEM_ACCOUNT);
-			}
-			Instant now = Instant.now();
-			inputs.setCreatedOn(now);
-			inputs.setUpdatedOn(now);
-			
-			inputs = inputsRepository.save(inputs);
-			
-			logger.info("Input added successfully: "+inputs.toString());
-			
-			return inputs;
-		}catch(Exception e) {
-			logger.error("Input could not be added. Exception: ",e);
-			return null;
+		Inputs inputs = new Inputs();
+		if(obj.get("accountId") != null) {
+			inputs.setAccountId(obj.get("accountId").asText());
 		}
+		if(obj.get("tenantId") != null) {
+			inputs.setTenantId(obj.get("tenantId").asText());
+		}
+		
+		if(obj.get("inputSource") != null) {
+			inputs.setInputSource(obj.get("inputSource").asText());
+		}
+		if(obj.get("inputSourceId") != null) {
+			inputs.setInputSourceId(obj.get("inputSourceId").asText());
+		}
+		if(obj.get("name") != null) {
+			inputs.setName(obj.get("name").asText());
+		}
+		if(obj.get("description") != null) {
+			inputs.setDescription(obj.get("description").asText());
+		}
+		if(obj.get("status") != null) {
+			inputs.setStatus(obj.get("status").asText().toUpperCase());
+		}
+		if(obj.get("type") != null) {
+			inputs.setType(obj.get("type").asText());
+		}
+		if(obj.get("refUrl") != null) {
+			inputs.setRefUrl(obj.get("refUrl").asText());
+		}
+		
+	 	if (obj.get("user") != null) {
+			inputs.setCreatedBy(obj.get("user").asText());
+			inputs.setUpdatedBy(obj.get("user").asText());
+		} else {
+			inputs.setCreatedBy(Constants.SYSTEM_ACCOUNT);
+			inputs.setUpdatedBy(Constants.SYSTEM_ACCOUNT);
+		}
+		Instant now = Instant.now();
+		inputs.setCreatedOn(now);
+		inputs.setUpdatedOn(now);
+		
+		inputs = inputsRepository.save(inputs);
+		
+		logger.info("Input added successfully: "+inputs.toString());
+		
+		return inputs;
 	}
 	
 	@Transactional
@@ -149,27 +144,25 @@ public class InputService {
 		}
 	}
 	
-	public void updateInput(ObjectNode obj){
-		try {
-			if(obj.get("id") != null) {
-				Inputs inputs = inputsRepository.findById(obj.get("id").asLong()).orElse(null);
-				if(inputs != null) {
-					if(obj.get("status") != null) {
-						inputs.setStatus(obj.get("status").asText().toUpperCase());
-					}
-					if (obj.get("user") != null) {
-						inputs.setUpdatedBy(obj.get("user").asText());
-					} else {
-						inputs.setUpdatedBy(Constants.SYSTEM_ACCOUNT);
-					}
-					Instant now = Instant.now();
-					inputs.setUpdatedOn(now);
-					inputsRepository.save(inputs);
+	public Inputs updateInput(ObjectNode obj){
+		Inputs inputs = null;
+		if(obj.get("id") != null) {
+			inputs = inputsRepository.findById(obj.get("id").asLong()).orElse(null);
+			if(inputs != null) {
+				if(obj.get("status") != null) {
+					inputs.setStatus(obj.get("status").asText().toUpperCase());
 				}
-				logger.debug("Input updated successfully : "+inputs.toString());
+				if (obj.get("user") != null) {
+					inputs.setUpdatedBy(obj.get("user").asText());
+				} else {
+					inputs.setUpdatedBy(Constants.SYSTEM_ACCOUNT);
+				}
+				Instant now = Instant.now();
+				inputs.setUpdatedOn(now);
+				inputsRepository.save(inputs);
 			}
-		}catch(Exception e) {
-			logger.warn("Due to exception input cannot be updated", e);
+			logger.debug("Input updated successfully : "+inputs.toString());
 		}
+		return inputs;
 	}
 }

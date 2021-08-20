@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.synectiks.asset.business.service.InputService;
 import com.synectiks.asset.domain.Inputs;
+import com.synectiks.asset.domain.Status;
 
 @RestController
 @RequestMapping("/api")
@@ -30,35 +31,101 @@ public class InputsController {
 	InputService inputService;
 	
 	@GetMapping("/getInput/{id}")
-	public ResponseEntity<Inputs> getInput(@PathVariable Long id) {
+	public ResponseEntity<Status> getInput(@PathVariable Long id) {
 		logger.info("Request to get input by id: "+id);
-		Inputs input = inputService.getInput(id);
-		if(input != null) {
-			return ResponseEntity.status(HttpStatus.OK).body(input);
+		try {
+			Inputs input = inputService.getInput(id);
+			if(input != null) {
+				Status st = new Status();
+				st.setCode(HttpStatus.OK.value());
+				st.setType("SUCCESS");
+				st.setMessage("Input found");
+				st.setObject(input);
+				logger.info("Input found: "+input.toString());
+				return ResponseEntity.status(HttpStatus.OK).body(st);
+			}
+			Status st = new Status();
+			st.setCode(HttpStatus.EXPECTATION_FAILED.value());
+			st.setType("ERROR");
+			st.setMessage("Input not found");
+			logger.warn("Input not found");
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(st);
+		}catch(Exception e) {
+			logger.error("Exception in getting an input");
+			Status st = new Status();
+			st.setCode(HttpStatus.EXPECTATION_FAILED.value());
+			st.setType("ERROR");
+			st.setMessage("Exception in getting an input");
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(st);
 		}
-		return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
 	}
 	
 	@GetMapping("/searchInput")
-	public List<Inputs> searchInput(@RequestParam Map<String, String> object) {
+	public ResponseEntity<Status> searchInput(@RequestParam Map<String, String> object) {
 		logger.info("Request to get input on given filter criteria");
-		return inputService.searchInputs(object);
+		Status st = new Status();
+		try {
+			List<Inputs> list = inputService.searchInputs(object);
+			st.setCode(HttpStatus.OK.value());
+			st.setType("SUCCESS");
+			st.setMessage("Inputs found");
+			st.setObject(list);
+			logger.info("Inputs found");
+			return ResponseEntity.status(HttpStatus.OK).body(st);
+		}catch(Exception e) {
+			logger.error("Exception in getting inputs");
+			st.setCode(HttpStatus.EXPECTATION_FAILED.value());
+			st.setType("ERROR");
+			st.setMessage("Exception in getting inputs");
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(st);
+		}
 	}
 	
 	@PostMapping("/addInput")
-	public ResponseEntity<Inputs> addInput(@RequestBody ObjectNode obj) {
+	public ResponseEntity<Status> addInput(@RequestBody ObjectNode obj) {
 		logger.info("Request to add input");
-		Inputs input = inputService.addInputs(obj);
-		if(input != null) {
-			return ResponseEntity.status(HttpStatus.OK).body(input);
+		Status st = new Status();
+		try {
+			Inputs input = inputService.addInputs(obj);
+			st.setCode(HttpStatus.OK.value());
+			st.setType("SUCCESS");
+			st.setMessage("Input added successfully");
+			st.setObject(input);
+			logger.info("Input added successfully");
+			return ResponseEntity.status(HttpStatus.OK).body(st);
+		}catch(Exception e) {
+			logger.error("Adding input failed");
+			st.setCode(HttpStatus.EXPECTATION_FAILED.value());
+			st.setType("ERROR");
+			st.setMessage("Adding input failed");
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(st);
 		}
-		return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
 	}
 	
 	@PostMapping("/updateInput")
-	public ResponseEntity<String> updateInput(@RequestBody ObjectNode obj) {
+	public ResponseEntity<Status> updateInput(@RequestBody ObjectNode obj) {
 		logger.info("Request to update an input");
-		inputService.updateInput(obj);
-		return ResponseEntity.status(HttpStatus.OK).body("Input updated");
+		Status st = new Status();
+		try {
+			Inputs input = inputService.updateInput(obj);
+			if(input != null) {
+				st.setCode(HttpStatus.OK.value());
+				st.setType("SUCCESS");
+				st.setMessage("Input updated successfully");
+				st.setObject(input);
+				logger.info("Input updated successfully");
+				return ResponseEntity.status(HttpStatus.OK).body(st);
+			}
+			st.setCode(HttpStatus.EXPECTATION_FAILED.value());
+			st.setType("ERROR");
+			st.setMessage("Input not found for update");
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(st);
+		}catch(Exception e) {
+			logger.error("Updating input failed");
+			st.setCode(HttpStatus.EXPECTATION_FAILED.value());
+			st.setType("ERROR");
+			st.setMessage("Updating input failed");
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(st);
+		}
 	}
 }

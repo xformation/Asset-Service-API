@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -60,6 +61,11 @@ public class InputsResourceIT {
 
     private static final String DEFAULT_TYPE = "AAAAAAAAAA";
     private static final String UPDATED_TYPE = "BBBBBBBBBB";
+
+    private static final byte[] DEFAULT_VIEW_JSON = TestUtil.createByteArray(1, "0");
+    private static final byte[] UPDATED_VIEW_JSON = TestUtil.createByteArray(1, "1");
+    private static final String DEFAULT_VIEW_JSON_CONTENT_TYPE = "image/jpg";
+    private static final String UPDATED_VIEW_JSON_CONTENT_TYPE = "image/png";
 
     private static final Instant DEFAULT_CREATED_ON = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_CREATED_ON = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -107,6 +113,8 @@ public class InputsResourceIT {
             .status(DEFAULT_STATUS)
             .refUrl(DEFAULT_REF_URL)
             .type(DEFAULT_TYPE)
+            .viewJson(DEFAULT_VIEW_JSON)
+            .viewJsonContentType(DEFAULT_VIEW_JSON_CONTENT_TYPE)
             .createdOn(DEFAULT_CREATED_ON)
             .updatedOn(DEFAULT_UPDATED_ON)
             .updatedBy(DEFAULT_UPDATED_BY)
@@ -130,6 +138,8 @@ public class InputsResourceIT {
             .status(UPDATED_STATUS)
             .refUrl(UPDATED_REF_URL)
             .type(UPDATED_TYPE)
+            .viewJson(UPDATED_VIEW_JSON)
+            .viewJsonContentType(UPDATED_VIEW_JSON_CONTENT_TYPE)
             .createdOn(UPDATED_CREATED_ON)
             .updatedOn(UPDATED_UPDATED_ON)
             .updatedBy(UPDATED_UPDATED_BY)
@@ -166,6 +176,8 @@ public class InputsResourceIT {
         assertThat(testInputs.getStatus()).isEqualTo(DEFAULT_STATUS);
         assertThat(testInputs.getRefUrl()).isEqualTo(DEFAULT_REF_URL);
         assertThat(testInputs.getType()).isEqualTo(DEFAULT_TYPE);
+        assertThat(testInputs.getViewJson()).isEqualTo(DEFAULT_VIEW_JSON);
+        assertThat(testInputs.getViewJsonContentType()).isEqualTo(DEFAULT_VIEW_JSON_CONTENT_TYPE);
         assertThat(testInputs.getCreatedOn()).isEqualTo(DEFAULT_CREATED_ON);
         assertThat(testInputs.getUpdatedOn()).isEqualTo(DEFAULT_UPDATED_ON);
         assertThat(testInputs.getUpdatedBy()).isEqualTo(DEFAULT_UPDATED_BY);
@@ -213,6 +225,8 @@ public class InputsResourceIT {
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
             .andExpect(jsonPath("$.[*].refUrl").value(hasItem(DEFAULT_REF_URL)))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE)))
+            .andExpect(jsonPath("$.[*].viewJsonContentType").value(hasItem(DEFAULT_VIEW_JSON_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].viewJson").value(hasItem(Base64Utils.encodeToString(DEFAULT_VIEW_JSON))))
             .andExpect(jsonPath("$.[*].createdOn").value(hasItem(DEFAULT_CREATED_ON.toString())))
             .andExpect(jsonPath("$.[*].updatedOn").value(hasItem(DEFAULT_UPDATED_ON.toString())))
             .andExpect(jsonPath("$.[*].updatedBy").value(hasItem(DEFAULT_UPDATED_BY)))
@@ -239,6 +253,8 @@ public class InputsResourceIT {
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS))
             .andExpect(jsonPath("$.refUrl").value(DEFAULT_REF_URL))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE))
+            .andExpect(jsonPath("$.viewJsonContentType").value(DEFAULT_VIEW_JSON_CONTENT_TYPE))
+            .andExpect(jsonPath("$.viewJson").value(Base64Utils.encodeToString(DEFAULT_VIEW_JSON)))
             .andExpect(jsonPath("$.createdOn").value(DEFAULT_CREATED_ON.toString()))
             .andExpect(jsonPath("$.updatedOn").value(DEFAULT_UPDATED_ON.toString()))
             .andExpect(jsonPath("$.updatedBy").value(DEFAULT_UPDATED_BY))
@@ -274,6 +290,8 @@ public class InputsResourceIT {
             .status(UPDATED_STATUS)
             .refUrl(UPDATED_REF_URL)
             .type(UPDATED_TYPE)
+            .viewJson(UPDATED_VIEW_JSON)
+            .viewJsonContentType(UPDATED_VIEW_JSON_CONTENT_TYPE)
             .createdOn(UPDATED_CREATED_ON)
             .updatedOn(UPDATED_UPDATED_ON)
             .updatedBy(UPDATED_UPDATED_BY)
@@ -298,6 +316,8 @@ public class InputsResourceIT {
         assertThat(testInputs.getStatus()).isEqualTo(UPDATED_STATUS);
         assertThat(testInputs.getRefUrl()).isEqualTo(UPDATED_REF_URL);
         assertThat(testInputs.getType()).isEqualTo(UPDATED_TYPE);
+        assertThat(testInputs.getViewJson()).isEqualTo(UPDATED_VIEW_JSON);
+        assertThat(testInputs.getViewJsonContentType()).isEqualTo(UPDATED_VIEW_JSON_CONTENT_TYPE);
         assertThat(testInputs.getCreatedOn()).isEqualTo(UPDATED_CREATED_ON);
         assertThat(testInputs.getUpdatedOn()).isEqualTo(UPDATED_UPDATED_ON);
         assertThat(testInputs.getUpdatedBy()).isEqualTo(UPDATED_UPDATED_BY);

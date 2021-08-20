@@ -41,7 +41,7 @@ public class ApplicationAssetService {
 			BeanUtils.copyProperties(oaa.get(), asset);
 			asset.setTitle(oaa.get().getElementType());
 			asset.setType(oaa.get().getCloudType());
-			asset.setStatus(Constants.ACTIVE.equalsIgnoreCase(oaa.get().getStatus()) ? true: false );
+			asset.setStatus(Constants.STATUS_ENABLED.equalsIgnoreCase(oaa.get().getStatus()) ? true: false );
 			return asset;
 		}
 		logger.warn("Application asset not found");
@@ -95,7 +95,7 @@ public class ApplicationAssetService {
 			BeanUtils.copyProperties(aa, asset);
 			asset.setTitle(aa.getElementType());
 			asset.setType(aa.getCloudType());
-			asset.setStatus(Constants.ACTIVE.equalsIgnoreCase(aa.getStatus()) ? true: false );
+			asset.setStatus(Constants.STATUS_ENABLED.equalsIgnoreCase(aa.getStatus()) ? true: false );
 			listAsset.add(asset);
 		}
 
@@ -110,7 +110,7 @@ public class ApplicationAssetService {
 		obj.setCloudType(object.get("cloud"));
 		obj.setElementType(object.get("type"));
 		obj.setInputType(object.get("inputType"));
-		obj.setStatus(Constants.DEACTIVE);
+		obj.setStatus(Constants.STATUS_READY_TO_ENABLE);
 		
 		List<ApplicationAssets> list = this.applicationAssetsRepository.findAll(Example.of(obj));
 		
@@ -120,8 +120,9 @@ public class ApplicationAssetService {
 			BeanUtils.copyProperties(aa, asset);
 			asset.setTitle(aa.getElementType());
 			asset.setType(aa.getCloudType());
-			asset.setStatus(Constants.ACTIVE.equalsIgnoreCase(aa.getStatus()) ? true: false );
+			asset.setStatus(Constants.STATUS_ENABLED.equalsIgnoreCase(aa.getStatus()) ? true: false );
 			asset.setAccountId(object.get("accountId"));
+			
 			if(!assetMap.containsKey(asset.getInputType())) {
 				List<Asset> listAsset = new ArrayList<>();
 				listAsset.add(asset);
@@ -138,61 +139,61 @@ public class ApplicationAssetService {
 	
 	public Asset addApplicationAsset(ObjectNode obj) {
 		logger.debug("Adding application asset: "+obj.toString());
-		try {
-			ApplicationAssets appAsset = new ApplicationAssets();
-			if(obj.get("tenantId") != null) {
-				appAsset.setTenantId(obj.get("tenantId").asText());
-			}
-			if(obj.get("dashboardUuid") != null) {
-				appAsset.setDashboardUuid(obj.get("dashboardUuid").asText());
-			}
-			if(obj.get("fileName") != null) {
-				appAsset.setFileName(obj.get("fileName").asText());
-			}
-			if(obj.get("cloudType") != null) {
-				appAsset.setCloudType(obj.get("cloudType").asText());
-			}
-			if(obj.get("elementType") != null) {
-				appAsset.setElementType(obj.get("elementType").asText());
-			}
-			if(obj.get("inputType") != null) {
-				appAsset.setInputType(obj.get("inputType").asText());
-			}
-			if(obj.get("dashboardNature") != null) {
-				appAsset.setDashboardNature(obj.get("dashboardNature").asText());
-			}
-			if(obj.get("status") != null) {
-				appAsset.setStatus(obj.get("status").asText().toUpperCase());
-			}else {
-				appAsset.setStatus(Constants.ACTIVE);
-			}
-			
-		 	if (obj.get("user") != null) {
-				appAsset.setCreatedBy(obj.get("user").asText());
-				appAsset.setUpdatedBy(obj.get("user").asText());
-			} else {
-				appAsset.setCreatedBy(Constants.SYSTEM_ACCOUNT);
-				appAsset.setUpdatedBy(Constants.SYSTEM_ACCOUNT);
-			}
-			Instant now = Instant.now();
-			appAsset.setCreatedOn(now);
-			appAsset.setUpdatedOn(now);
-			
-			appAsset = applicationAssetsRepository.save(appAsset);
-			
-			logger.info("Application asset added successfully: "+appAsset.toString());
-			Asset asset = new Asset();
-			BeanUtils.copyProperties(appAsset, asset);
-			asset.setTitle(appAsset.getElementType());
-			asset.setType(appAsset.getCloudType());
-			asset.setStatus(Constants.ACTIVE.equalsIgnoreCase(appAsset.getStatus()) ? true: false );
-			return asset;
-		}catch(Exception e) {
-			logger.error("Application asset could not be added. Exception: ",e);
-			return null;
+		ApplicationAssets appAsset = new ApplicationAssets();
+		if(obj.get("tenantId") != null) {
+			appAsset.setTenantId(obj.get("tenantId").asText());
 		}
+		if(obj.get("dashboardUuid") != null) {
+			appAsset.setDashboardUuid(obj.get("dashboardUuid").asText());
+		}
+		if(obj.get("fileName") != null) {
+			appAsset.setFileName(obj.get("fileName").asText());
+		}
+		if(obj.get("cloudType") != null) {
+			appAsset.setCloudType(obj.get("cloudType").asText());
+		}
+		if(obj.get("elementType") != null) {
+			appAsset.setElementType(obj.get("elementType").asText());
+		}
+		if(obj.get("elementSubType") != null) {
+			appAsset.setElementSubType(obj.get("elementSubType").asText());
+		}
+		if(obj.get("inputType") != null) {
+			appAsset.setInputType(obj.get("inputType").asText());
+		}
+		if(obj.get("dashboardNature") != null) {
+			appAsset.setDashboardNature(obj.get("dashboardNature").asText());
+		}
+		if(obj.get("status") != null) {
+			appAsset.setStatus(obj.get("status").asText().toUpperCase());
+		}else {
+			appAsset.setStatus(Constants.STATUS_READY_TO_ENABLE);
+		}
+		
+	 	if (obj.get("user") != null) {
+			appAsset.setCreatedBy(obj.get("user").asText());
+			appAsset.setUpdatedBy(obj.get("user").asText());
+		} else {
+			appAsset.setCreatedBy(Constants.SYSTEM_ACCOUNT);
+			appAsset.setUpdatedBy(Constants.SYSTEM_ACCOUNT);
+		}
+		Instant now = Instant.now();
+		appAsset.setCreatedOn(now);
+		appAsset.setUpdatedOn(now);
+		
+		appAsset = applicationAssetsRepository.save(appAsset);
+		
+		logger.info("Application asset added successfully: "+appAsset.toString());
+		Asset asset = new Asset();
+		BeanUtils.copyProperties(appAsset, asset);
+		asset.setTitle(appAsset.getElementType());
+		asset.setType(appAsset.getCloudType());
+		asset.setStatus(Constants.STATUS_READY_TO_ENABLE.equalsIgnoreCase(appAsset.getStatus()) ? true: false );
+		return asset;
+		
 	}
 	
+	@Transactional
 	public void bulkAddApplicationAsset(List<ObjectNode> list) {
 		for(ObjectNode obj: list) {
 			logger.debug("Adding new application asset to inventory: "+obj.toString());
@@ -208,27 +209,33 @@ public class ApplicationAssetService {
 		}
 	}
 	
-	public void updateApplicationAsset(ObjectNode obj){
-		try {
-			if(obj.get("id") != null) {
-				ApplicationAssets appAsset = applicationAssetsRepository.findById(obj.get("id").asLong()).orElse(null);
-				if(appAsset != null) {
-					if(obj.get("status") != null) {
-						appAsset.setStatus(obj.get("status").asText().toUpperCase());
-					}
-					if (obj.get("user") != null) {
-						appAsset.setUpdatedBy(obj.get("user").asText());
-					} else {
-						appAsset.setUpdatedBy(Constants.SYSTEM_ACCOUNT);
-					}
-					Instant now = Instant.now();
-					appAsset.setUpdatedOn(now);
-					applicationAssetsRepository.save(appAsset);
+	public Asset updateApplicationAsset(ObjectNode obj){
+		Asset asset = null;
+		if(obj.get("id") != null && obj.get("status").asText().equalsIgnoreCase("ENABLED")) {
+			ApplicationAssets appAsset = applicationAssetsRepository.findById(obj.get("id").asLong()).orElse(null);
+			if(appAsset != null) {
+				if(obj.get("status") != null) {
+					appAsset.setStatus(obj.get("status").asText().toUpperCase());
 				}
-				logger.debug("Application asset updated successfully : "+appAsset.toString());
+				if (obj.get("user") != null) {
+					appAsset.setUpdatedBy(obj.get("user").asText());
+				} else {
+					appAsset.setUpdatedBy(Constants.SYSTEM_ACCOUNT);
+				}
+				Instant now = Instant.now();
+				appAsset.setUpdatedOn(now);
+				appAsset = applicationAssetsRepository.save(appAsset);
+				
+				asset = new Asset();
+				BeanUtils.copyProperties(appAsset, asset);
+				asset.setTitle(appAsset.getElementType());
+				asset.setType(appAsset.getCloudType());
+//				asset.setStatus(Constants.STATUS_READY_TO_ENABLE.equalsIgnoreCase(appAsset.getStatus()) ? true: false );
 			}
-		}catch(Exception e) {
-			logger.warn("Due to exception application asset cannot be updated", e);
+			
+			logger.debug("Application asset updated successfully : "+appAsset.toString());
 		}
+		return asset;
 	}
+	
 }

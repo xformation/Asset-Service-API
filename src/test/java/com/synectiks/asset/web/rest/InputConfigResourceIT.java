@@ -38,6 +38,9 @@ public class InputConfigResourceIT {
     private static final String DEFAULT_STATUS = "AAAAAAAAAA";
     private static final String UPDATED_STATUS = "BBBBBBBBBB";
 
+    private static final String DEFAULT_TENANT_ID = "AAAAAAAAAA";
+    private static final String UPDATED_TENANT_ID = "BBBBBBBBBB";
+
     @Autowired
     private InputConfigRepository inputConfigRepository;
 
@@ -64,7 +67,8 @@ public class InputConfigResourceIT {
     public static InputConfig createEntity(EntityManager em) {
         InputConfig inputConfig = new InputConfig()
             .inputType(DEFAULT_INPUT_TYPE)
-            .status(DEFAULT_STATUS);
+            .status(DEFAULT_STATUS)
+            .tenantId(DEFAULT_TENANT_ID);
         return inputConfig;
     }
     /**
@@ -76,7 +80,8 @@ public class InputConfigResourceIT {
     public static InputConfig createUpdatedEntity(EntityManager em) {
         InputConfig inputConfig = new InputConfig()
             .inputType(UPDATED_INPUT_TYPE)
-            .status(UPDATED_STATUS);
+            .status(UPDATED_STATUS)
+            .tenantId(UPDATED_TENANT_ID);
         return inputConfig;
     }
 
@@ -102,6 +107,7 @@ public class InputConfigResourceIT {
         InputConfig testInputConfig = inputConfigList.get(inputConfigList.size() - 1);
         assertThat(testInputConfig.getInputType()).isEqualTo(DEFAULT_INPUT_TYPE);
         assertThat(testInputConfig.getStatus()).isEqualTo(DEFAULT_STATUS);
+        assertThat(testInputConfig.getTenantId()).isEqualTo(DEFAULT_TENANT_ID);
     }
 
     @Test
@@ -137,7 +143,8 @@ public class InputConfigResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(inputConfig.getId().intValue())))
             .andExpect(jsonPath("$.[*].inputType").value(hasItem(DEFAULT_INPUT_TYPE)))
-            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)));
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
+            .andExpect(jsonPath("$.[*].tenantId").value(hasItem(DEFAULT_TENANT_ID)));
     }
     
     @Test
@@ -152,7 +159,8 @@ public class InputConfigResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(inputConfig.getId().intValue()))
             .andExpect(jsonPath("$.inputType").value(DEFAULT_INPUT_TYPE))
-            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS));
+            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS))
+            .andExpect(jsonPath("$.tenantId").value(DEFAULT_TENANT_ID));
     }
     @Test
     @Transactional
@@ -176,7 +184,8 @@ public class InputConfigResourceIT {
         em.detach(updatedInputConfig);
         updatedInputConfig
             .inputType(UPDATED_INPUT_TYPE)
-            .status(UPDATED_STATUS);
+            .status(UPDATED_STATUS)
+            .tenantId(UPDATED_TENANT_ID);
         InputConfigDTO inputConfigDTO = inputConfigMapper.toDto(updatedInputConfig);
 
         restInputConfigMockMvc.perform(put("/api/input-configs")
@@ -190,6 +199,7 @@ public class InputConfigResourceIT {
         InputConfig testInputConfig = inputConfigList.get(inputConfigList.size() - 1);
         assertThat(testInputConfig.getInputType()).isEqualTo(UPDATED_INPUT_TYPE);
         assertThat(testInputConfig.getStatus()).isEqualTo(UPDATED_STATUS);
+        assertThat(testInputConfig.getTenantId()).isEqualTo(UPDATED_TENANT_ID);
     }
 
     @Test

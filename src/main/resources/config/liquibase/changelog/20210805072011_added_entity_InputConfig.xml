@@ -21,6 +21,9 @@
             <column name="status" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="tenant_id" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="accounts_id" type="bigint">
                 <constraints nullable="true" />
             </column>

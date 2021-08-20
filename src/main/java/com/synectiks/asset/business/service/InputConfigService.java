@@ -62,6 +62,11 @@ public class InputConfigService {
 			isFilter = true;
 		}
 		
+		if (!StringUtils.isBlank(object.get("tenantId"))) {
+			obj.setTenantId(object.get("tenantId"));
+			isFilter = true;
+		}
+		
 		if (!StringUtils.isBlank(object.get("status"))) {
 			obj.setStatus(object.get("status"));
 			isFilter = true;
@@ -81,34 +86,33 @@ public class InputConfigService {
 	
 	public InputConfig addInputConfig(ObjectNode obj) {
 		logger.debug("Adding input config: "+obj.toString());
-		try {
-			InputConfig inputs = new InputConfig();
-			if(obj.get("accountId") != null && obj.get("tenantId") != null) {
-				Accounts ac = new Accounts();
-				ac.setAccountId(obj.get("accountId").asText());
-				ac.setTenantId(obj.get("tenantId").asText());
-				Optional<Accounts> oa = accountsRepository.findOne(Example.of(ac));
-				if(oa.isPresent()) {
-					inputs.setAccounts(oa.get());
-				}
+		InputConfig inputs = new InputConfig();
+		if(obj.get("accountId") != null && obj.get("tenantId") != null) {
+			Accounts ac = new Accounts();
+			ac.setAccountId(obj.get("accountId").asText());
+			ac.setTenantId(obj.get("tenantId").asText());
+			Optional<Accounts> oa = accountsRepository.findOne(Example.of(ac));
+			if(oa.isPresent()) {
+				inputs.setAccounts(oa.get());
 			}
-			if(obj.get("inputType") != null) {
-				inputs.setInputType(obj.get("inputType").asText());
-			}
-			
-			if(obj.get("status") != null) {
-				inputs.setStatus(obj.get("status").asText().toUpperCase());
-			}
-			
-			inputs = inputConfigRepository.save(inputs);
-			
-			logger.info("Input config added successfully: "+inputs.toString());
-			
-			return inputs;
-		}catch(Exception e) {
-			logger.error("Input config could not be added. Exception: ",e);
-			return null;
 		}
+		if(obj.get("tenantId") != null) {
+			inputs.setTenantId(obj.get("tenantId").asText());
+		}
+		if(obj.get("inputType") != null) {
+			inputs.setInputType(obj.get("inputType").asText());
+		}
+		
+		if(obj.get("status") != null) {
+			inputs.setStatus(obj.get("status").asText().toUpperCase());
+		}
+		
+		inputs = inputConfigRepository.save(inputs);
+		
+		logger.info("Input config added successfully: "+inputs.toString());
+		
+		return inputs;
+		
 	}
 	
 	@Transactional
@@ -119,19 +123,17 @@ public class InputConfigService {
 		}
 	}
 	
-	public void updateInputConfig(ObjectNode obj){
-		try {
-			if(obj.get("id") != null) {
-				InputConfig inputs = inputConfigRepository.findById(obj.get("id").asLong()).orElse(null);
-				if(inputs != null) {
-					if(obj.get("status") != null) {
-						inputs.setStatus(obj.get("status").asText().toUpperCase());
-					}
+	public InputConfig updateInputConfig(ObjectNode obj){
+		InputConfig inputs = null;
+		if(obj.get("id") != null) {
+			inputs = inputConfigRepository.findById(obj.get("id").asLong()).orElse(null);
+			if(inputs != null) {
+				if(obj.get("status") != null) {
+					inputs.setStatus(obj.get("status").asText().toUpperCase());
 				}
-				logger.debug("Input config updated successfully : "+inputs.toString());
 			}
-		}catch(Exception e) {
-			logger.warn("Due to exception input config cannot be updated", e);
+			logger.debug("Input config updated successfully : "+inputs.toString());
 		}
+		return inputs;
 	}
 }

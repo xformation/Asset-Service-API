@@ -3,6 +3,7 @@ package com.synectiks.asset.service.dto;
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import javax.persistence.Lob;
 
 /**
  * A DTO for the {@link com.synectiks.asset.domain.Inputs} entity.
@@ -31,6 +32,10 @@ public class InputsDTO implements Serializable {
 
     private String type;
 
+    @Lob
+    private byte[] viewJson;
+
+    private String viewJsonContentType;
     private Instant createdOn;
 
     private Instant updatedOn;
@@ -120,6 +125,22 @@ public class InputsDTO implements Serializable {
         this.type = type;
     }
 
+    public byte[] getViewJson() {
+        return viewJson;
+    }
+
+    public void setViewJson(byte[] viewJson) {
+        this.viewJson = viewJson;
+    }
+
+    public String getViewJsonContentType() {
+        return viewJsonContentType;
+    }
+
+    public void setViewJsonContentType(String viewJsonContentType) {
+        this.viewJsonContentType = viewJsonContentType;
+    }
+
     public Instant getCreatedOn() {
         return createdOn;
     }
@@ -183,6 +204,7 @@ public class InputsDTO implements Serializable {
             ", status='" + getStatus() + "'" +
             ", refUrl='" + getRefUrl() + "'" +
             ", type='" + getType() + "'" +
+            ", viewJson='" + getViewJson() + "'" +
             ", createdOn='" + getCreatedOn() + "'" +
             ", updatedOn='" + getUpdatedOn() + "'" +
             ", updatedBy='" + getUpdatedBy() + "'" +

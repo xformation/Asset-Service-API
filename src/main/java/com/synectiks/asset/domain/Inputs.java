@@ -50,6 +50,13 @@ public class Inputs implements Serializable {
     @Column(name = "type")
     private String type;
 
+    @Lob
+    @Column(name = "view_json")
+    private byte[] viewJson;
+
+    @Column(name = "view_json_content_type")
+    private String viewJsonContentType;
+
     @Column(name = "created_on")
     private Instant createdOn;
 
@@ -188,6 +195,32 @@ public class Inputs implements Serializable {
         this.type = type;
     }
 
+    public byte[] getViewJson() {
+        return viewJson;
+    }
+
+    public Inputs viewJson(byte[] viewJson) {
+        this.viewJson = viewJson;
+        return this;
+    }
+
+    public void setViewJson(byte[] viewJson) {
+        this.viewJson = viewJson;
+    }
+
+    public String getViewJsonContentType() {
+        return viewJsonContentType;
+    }
+
+    public Inputs viewJsonContentType(String viewJsonContentType) {
+        this.viewJsonContentType = viewJsonContentType;
+        return this;
+    }
+
+    public void setViewJsonContentType(String viewJsonContentType) {
+        this.viewJsonContentType = viewJsonContentType;
+    }
+
     public Instant getCreatedOn() {
         return createdOn;
     }
@@ -271,6 +304,8 @@ public class Inputs implements Serializable {
             ", status='" + getStatus() + "'" +
             ", refUrl='" + getRefUrl() + "'" +
             ", type='" + getType() + "'" +
+            ", viewJson='" + getViewJson() + "'" +
+            ", viewJsonContentType='" + getViewJsonContentType() + "'" +
             ", createdOn='" + getCreatedOn() + "'" +
             ", updatedOn='" + getUpdatedOn() + "'" +
             ", updatedBy='" + getUpdatedBy() + "'" +

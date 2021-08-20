@@ -42,6 +42,12 @@
             <column name="type" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="view_json" type="longblob">
+                <constraints nullable="true" />
+            </column>
+            <column name="view_json_content_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="created_on" type="datetime">
                 <constraints nullable="true" />
             </column>

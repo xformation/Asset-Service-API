@@ -13,6 +13,8 @@ public class InputConfigDTO implements Serializable {
 
     private String status;
 
+    private String tenantId;
+
 
     private Long accountsId;
     
@@ -38,6 +40,14 @@ public class InputConfigDTO implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 
     public Long getAccountsId() {
@@ -72,6 +82,7 @@ public class InputConfigDTO implements Serializable {
             "id=" + getId() +
             ", inputType='" + getInputType() + "'" +
             ", status='" + getStatus() + "'" +
+            ", tenantId='" + getTenantId() + "'" +
             ", accountsId=" + getAccountsId() +
             "}";
     }

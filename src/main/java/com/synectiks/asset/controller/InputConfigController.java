@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.synectiks.asset.business.service.InputConfigService;
 import com.synectiks.asset.domain.InputConfig;
+import com.synectiks.asset.domain.Status;
 
 @RestController
 @RequestMapping("/api")
@@ -30,35 +31,103 @@ public class InputConfigController {
 	InputConfigService inputConfigService;
 	
 	@GetMapping("/getInputConfig/{id}")
-	public ResponseEntity<InputConfig> getInputConfig(@PathVariable Long id) {
+	public ResponseEntity<Status> getInputConfig(@PathVariable Long id) {
 		logger.info("Request to get input config by id: "+id);
-		InputConfig input = inputConfigService.getInputConfig(id);
-		if(input != null) {
-			return ResponseEntity.status(HttpStatus.OK).body(input);
+		try {
+			InputConfig input = inputConfigService.getInputConfig(id);
+			if(input != null) {
+				Status st = new Status();
+				st.setCode(HttpStatus.OK.value());
+				st.setType("SUCCESS");
+				st.setMessage("Input config found");
+				st.setObject(input);
+				logger.info("Input config found: "+input.toString());
+				return ResponseEntity.status(HttpStatus.OK).body(st);
+			}
+			Status st = new Status();
+			st.setCode(HttpStatus.EXPECTATION_FAILED.value());
+			st.setType("ERROR");
+			st.setMessage("Input config not found");
+			logger.warn("Input config not found");
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(st);
+		}catch(Exception e) {
+			logger.error("Exception in getting an input config");
+			Status st = new Status();
+			st.setCode(HttpStatus.EXPECTATION_FAILED.value());
+			st.setType("ERROR");
+			st.setMessage("Exception in getting an input config");
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(st);
 		}
-		return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
+		
 	}
 	
 	@GetMapping("/searchInputConfig")
-	public List<InputConfig> searchInputConfig(@RequestParam Map<String, String> object) {
-		logger.info("Request to get input config on given filter criteria");
-		return inputConfigService.searchInputConfig(object);
+	public ResponseEntity<Status> searchInputConfig(@RequestParam Map<String, String> object) {
+		logger.info("Request to get list of input configs on given filter criteria");
+		Status st = new Status();
+		try {
+			List<InputConfig> list = inputConfigService.searchInputConfig(object);
+			st.setCode(HttpStatus.OK.value());
+			st.setType("SUCCESS");
+			st.setMessage("Input configs found");
+			st.setObject(list);
+			logger.info("Input configs found");
+			return ResponseEntity.status(HttpStatus.OK).body(st);
+		}catch(Exception e) {
+			logger.error("Exception in getting input config");
+			st.setCode(HttpStatus.EXPECTATION_FAILED.value());
+			st.setType("ERROR");
+			st.setMessage("Exception in getting input config");
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(st);
+		}
 	}
 	
 	@PostMapping("/addInputConfig")
-	public ResponseEntity<InputConfig> addInputConfig(@RequestBody ObjectNode obj) {
+	public ResponseEntity<Status> addInputConfig(@RequestBody ObjectNode obj) {
 		logger.info("Request to add input config");
-		InputConfig input = inputConfigService.addInputConfig(obj);
-		if(input != null) {
-			return ResponseEntity.status(HttpStatus.OK).body(input);
+		Status st = new Status();
+		try {
+			InputConfig input = inputConfigService.addInputConfig(obj);
+			st.setCode(HttpStatus.OK.value());
+			st.setType("SUCCESS");
+			st.setMessage("Input config added successfully");
+			st.setObject(input);
+			logger.info("Input config added successfully");
+			return ResponseEntity.status(HttpStatus.OK).body(st);
+		}catch(Exception e) {
+			logger.error("Adding input config failed");
+			st.setCode(HttpStatus.EXPECTATION_FAILED.value());
+			st.setType("ERROR");
+			st.setMessage("Adding input config failed");
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(st);
 		}
-		return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
 	}
 	
 	@PostMapping("/updateInputConfig")
-	public ResponseEntity<String> updateInputConfig(@RequestBody ObjectNode obj) {
+	public ResponseEntity<Status> updateInputConfig(@RequestBody ObjectNode obj) {
 		logger.info("Request to update an input config");
-		inputConfigService.updateInputConfig(obj);
-		return ResponseEntity.status(HttpStatus.OK).body("Input config updated");
+		Status st = new Status();
+		try {
+			InputConfig input = inputConfigService.updateInputConfig(obj);
+			if(input != null) {
+				st.setCode(HttpStatus.OK.value());
+				st.setType("SUCCESS");
+				st.setMessage("Input config updated successfully");
+				st.setObject(input);
+				logger.info("Input config updated successfully");
+				return ResponseEntity.status(HttpStatus.OK).body(st);
+			}
+			st.setCode(HttpStatus.EXPECTATION_FAILED.value());
+			st.setType("ERROR");
+			st.setMessage("Input config not found for update");
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(st);
+		}catch(Exception e) {
+			logger.error("Updating input config failed");
+			st.setCode(HttpStatus.EXPECTATION_FAILED.value());
+			st.setType("ERROR");
+			st.setMessage("Updating input config failed");
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(st);
+		}
+		
 	}
 }
