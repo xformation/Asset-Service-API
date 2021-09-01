@@ -211,7 +211,7 @@ public class ApplicationAssetService {
 	
 	public Asset updateApplicationAsset(ObjectNode obj){
 		Asset asset = null;
-		if(obj.get("id") != null && obj.get("status").asText().equalsIgnoreCase("ENABLED")) {
+		if(obj.get("id") != null) {
 			ApplicationAssets appAsset = applicationAssetsRepository.findById(obj.get("id").asLong()).orElse(null);
 			if(appAsset != null) {
 				if(obj.get("status") != null) {
