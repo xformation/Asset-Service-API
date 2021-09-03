@@ -1,5 +1,9 @@
 package com.synectiks.asset.business.service;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +13,8 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -18,10 +24,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.S3Object;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.synectiks.asset.aws.AwsUtils;
 import com.synectiks.asset.config.Constants;
+import com.synectiks.asset.domain.Accounts;
 import com.synectiks.asset.domain.ApplicationAssets;
 import com.synectiks.asset.domain.Asset;
+import com.synectiks.asset.domain.Dashboard;
 import com.synectiks.asset.repository.ApplicationAssetsRepository;
 
 @Service
@@ -32,6 +43,9 @@ public class ApplicationAssetService {
 	@Autowired
 	private ApplicationAssetsRepository applicationAssetsRepository;
 	
+	@Autowired
+	AccountsService accountsService;
+
 	public Asset getApplicationAsset(Long id) {
 		logger.info("Getting application asset by id: "+id);
 		Optional<ApplicationAssets> oaa = applicationAssetsRepository.findById(id);
@@ -238,4 +252,57 @@ public class ApplicationAssetService {
 		return asset;
 	}
 	
+	public Dashboard previewDashboard(Map<String, String> object) throws IOException {
+		logger.info("Downloading dashboard json from AWS");
+		
+		if (StringUtils.isBlank(object.get("cloudType")) || StringUtils.isBlank(object.get("elementType")) ||
+				StringUtils.isBlank(object.get("tenantId")) || StringUtils.isBlank(object.get("accountId")) ||
+				StringUtils.isBlank(object.get("inputType")) || StringUtils.isBlank(object.get("fileName")) ||
+				StringUtils.isBlank(object.get("dataSource"))) {
+			logger.error("Mandatory fields missing");
+			return null;
+		}
+		
+		String cloudType = object.get("cloudType");
+		String elementType = object.get("elementType");
+		String tenantId = object.get("tenantId");
+		String accountId = object.get("accountId");
+		String inputType = object.get("inputType");
+		String fileName = object.get("fileName");
+		String dataSource = object.get("dataSource");
+		
+		Accounts account = accountsService.getAccountByAccountAndTenantId(accountId, tenantId);
+		
+		AmazonS3 s3Client = AwsUtils.getAmazonS3Client(account.getAccessKey(), account.getSecretKey(), account.getRegion());
+		S3Object file = s3Client.getObject(account.getBucket(), fileName);
+		
+		Dashboard dashboard = new Dashboard();
+		
+		dashboard.setCloudName(cloudType);
+		dashboard.setElementType(elementType);
+		dashboard.setTenantId(tenantId);
+		dashboard.setAccountId(accountId);
+		dashboard.setInputType(inputType);
+		dashboard.setFileName(fileName);
+		dashboard.setInputSourceId(dataSource);
+		dashboard.setTitle(cloudType+"_"+elementType+"_"+dataSource);
+		dashboard.setSlug(cloudType+"_"+elementType+"_"+dataSource);
+		String data = displayTextInputStream(file.getObjectContent());
+		String uid = RandomStringUtils.random(8, true, true);
+		dashboard.setUid(uid);
+		dashboard.setData(data);
+		return dashboard;
+	}
+	
+	private String displayTextInputStream(InputStream input) throws IOException {
+        // Read the text input stream one line at a time and display each line.
+		BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+        StringBuffer sb = new StringBuffer();
+		String line = null;
+        while ((line = reader.readLine()) != null) {
+            sb.append(line).append(" ");
+        	logger.info(sb.toString());
+        }
+        return sb.toString();
+	}
 }

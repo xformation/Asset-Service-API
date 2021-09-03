@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.synectiks.asset.business.service.ApplicationAssetService;
 import com.synectiks.asset.domain.Asset;
+import com.synectiks.asset.domain.Dashboard;
 import com.synectiks.asset.domain.Status;
 
 @RestController
@@ -51,7 +52,7 @@ public class ApplicationAssetsController {
 			logger.warn("Asset not found");
 			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(st);
 		}catch(Exception e) {
-			logger.error("Exception in getting an asset");
+			logger.error("Exception in getting an asset. Exception : ",e );
 			Status st = new Status();
 			st.setCode(HttpStatus.EXPECTATION_FAILED.value());
 			st.setType("ERROR");
@@ -73,7 +74,7 @@ public class ApplicationAssetsController {
 			logger.info("Assets found");
 			return ResponseEntity.status(HttpStatus.OK).body(st);
 		}catch(Exception e) {
-			logger.error("Exception in getting assets");
+			logger.error("Exception in getting assets. Exception : ",e );
 			st.setCode(HttpStatus.EXPECTATION_FAILED.value());
 			st.setType("ERROR");
 			st.setMessage("Exception in getting assets");
@@ -103,7 +104,7 @@ public class ApplicationAssetsController {
 			logger.info("Assets found");
 			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(st);
 		}catch(Exception e) {
-			logger.error("Exception in getting assets");
+			logger.error("Exception in getting assets. Exception : ",e );
 			Status st = new Status();
 			st.setCode(HttpStatus.EXPECTATION_FAILED.value());
 			st.setType("ERROR");
@@ -125,7 +126,7 @@ public class ApplicationAssetsController {
 			logger.info("Assets added successfully");
 			return ResponseEntity.status(HttpStatus.OK).body(st);
 		}catch(Exception e) {
-			logger.error("Adding asset failed");
+			logger.error("Adding asset failed. Exception : ",e );
 			st.setCode(HttpStatus.EXPECTATION_FAILED.value());
 			st.setType("ERROR");
 			st.setMessage("Adding asset failed");
@@ -147,7 +148,7 @@ public class ApplicationAssetsController {
 			logger.info("All the assets added successfully");
 			return ResponseEntity.status(HttpStatus.OK).body(st);
 		}catch(Exception e) {
-			logger.error("Bulk additions of assets failed");
+			logger.error("Bulk additions of assets failed. Exception : ",e );
 			st.setCode(HttpStatus.EXPECTATION_FAILED.value());
 			st.setType("ERROR");
 			st.setMessage("Bulk additions of assets failed");
@@ -168,7 +169,7 @@ public class ApplicationAssetsController {
 			logger.info("All the assets updated successfully");
 			return ResponseEntity.status(HttpStatus.OK).body(st);
 		}catch(Exception e) {
-			logger.error("Bulk update of assets failed");
+			logger.error("Bulk update of assets failed. Exception : ",e );
 			st.setCode(HttpStatus.EXPECTATION_FAILED.value());
 			st.setType("ERROR");
 			st.setMessage("Bulk update of assets failed");
@@ -196,10 +197,31 @@ public class ApplicationAssetsController {
 			logger.info("Asset updated successfully");
 			return ResponseEntity.status(HttpStatus.OK).body(st);
 		}catch(Exception e) {
-			logger.error("Updating asset failed");
+			logger.error("Updating asset failed. Exception: ", e);
 			st.setCode(HttpStatus.EXPECTATION_FAILED.value());
 			st.setType("ERROR");
 			st.setMessage("Updating asset failed");
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(st);
+		}
+	}
+	
+	@GetMapping("/previewDashboard")
+	public ResponseEntity<Status> PreviewDashboard(@RequestParam Map<String, String> object) {
+		logger.info("Request to get dashboard json");
+		Status st = new Status();
+		try {
+			Dashboard dashboard = applicationAssetService.previewDashboard(object);
+			st.setCode(HttpStatus.OK.value());
+			st.setType("SUCCESS");
+			st.setMessage("Dashboard found");
+			st.setObject(dashboard);
+			logger.info("Dashboard json found");
+			return ResponseEntity.status(HttpStatus.OK).body(st);
+		}catch(Exception e) {
+			logger.error("Exception in getting dashboard json: ", e);
+			st.setCode(HttpStatus.EXPECTATION_FAILED.value());
+			st.setType("ERROR");
+			st.setMessage("Exception in getting dashboard json");
 			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(st);
 		}
 	}
