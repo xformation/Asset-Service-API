@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.S3Object;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.synectiks.asset.aws.AwsUtils;
 import com.synectiks.asset.config.Constants;
@@ -33,6 +35,7 @@ import com.synectiks.asset.domain.Accounts;
 import com.synectiks.asset.domain.ApplicationAssets;
 import com.synectiks.asset.domain.Asset;
 import com.synectiks.asset.domain.Dashboard;
+import com.synectiks.asset.domain.InputConfig;
 import com.synectiks.asset.repository.ApplicationAssetsRepository;
 
 @Service
@@ -46,6 +49,9 @@ public class ApplicationAssetService {
 	@Autowired
 	AccountsService accountsService;
 
+	@Autowired
+	InputConfigService inputConfigService;
+	
 	public Asset getApplicationAsset(Long id) {
 		logger.info("Getting application asset by id: "+id);
 		Optional<ApplicationAssets> oaa = applicationAssetsRepository.findById(id);
@@ -88,7 +94,7 @@ public class ApplicationAssetService {
 			isFilter = true;
 		}
 		if (object.get("status") != null) {
-			obj.setStatus(object.get("status"));
+			obj.setStatus(object.get("status").toUpperCase());
 			isFilter = true;
 		}
 		if (object.get("inputType") != null) {
@@ -216,14 +222,35 @@ public class ApplicationAssetService {
 	}
 	
 	@Transactional
-	public void updateApplicationAsset(List<ObjectNode> list) {
-		for(ObjectNode obj: list) {
-			logger.debug("Updating application asset: "+obj.toString());
-			updateApplicationAsset(obj);
+	public void buldUpdateApplicationAsset(ObjectNode requestObj) {
+		JsonNode obj = requestObj.get("dashboardList");
+		if(obj.isArray()) {
+			Iterator<JsonNode> itr = obj.iterator();
+			while(itr.hasNext()) {
+				updateApplicationAsset(itr.next());
+			}
+		}
+				
+		boolean isInputConfigAdd = requestObj.get("isInputConfigAdd").asBoolean();
+		if(isInputConfigAdd) {
+			String accountId = requestObj.get("accountId").asText();
+			String tenantId = requestObj.get("tenantId").asText();
+			String inputType = requestObj.get("inputType").asText();
+			String status = requestObj.get("status").asText();
+			Map<String, String> objMap = new HashMap<String, String>();
+			objMap.put("accountId", accountId);
+			objMap.put("tenantId", tenantId);
+			objMap.put("inputType", inputType);
+			objMap.put("status", status);
+			List<InputConfig> inpConfigList = inputConfigService.searchInputConfig(objMap);
+			if(inpConfigList.size() == 0) {
+				logger.info("enabling input type " + inputType);
+				inputConfigService.addInputConfig(requestObj);
+			}
 		}
 	}
 	
-	public Asset updateApplicationAsset(ObjectNode obj){
+	public Asset updateApplicationAsset(JsonNode obj){
 		Asset asset = null;
 		if(obj.get("id") != null) {
 			ApplicationAssets appAsset = applicationAssetsRepository.findById(obj.get("id").asLong()).orElse(null);

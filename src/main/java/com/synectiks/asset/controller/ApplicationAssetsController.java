@@ -157,11 +157,11 @@ public class ApplicationAssetsController {
 	}
 	
 	@PostMapping("/bulkUpdateApplicationAssets")
-	public ResponseEntity<Status> bulkUpdateApplicationAssets(@RequestBody List<ObjectNode> list) {
+	public ResponseEntity<Status> bulkUpdateApplicationAssets(@RequestBody ObjectNode obj) {
 		logger.info("Request to update list of application assets");
 		Status st = new Status();
 		try {
-			applicationAssetService.updateApplicationAsset(list);
+			applicationAssetService.buldUpdateApplicationAsset(obj);
 			st.setCode(HttpStatus.OK.value());
 			st.setType("SUCCESS");
 			st.setMessage("All the assets updated successfully");
@@ -178,7 +178,7 @@ public class ApplicationAssetsController {
 	}
 	
 	@PostMapping("/updateApplicationAsset")
-	public ResponseEntity<Status> updateApplicationAsset(@RequestBody ObjectNode obj) {
+	public ResponseEntity<Status> updateSingleApplicationAsset(@RequestBody ObjectNode obj) {
 		logger.info("Request to update an application assets");
 		Status st = new Status();
 		try {

@@ -69,7 +69,7 @@ public class InputService {
 			isFilter = true;
 		}
 		if (object.get("status") != null) {
-			obj.setStatus(object.get("status"));
+			obj.setStatus(object.get("status").toUpperCase());
 			isFilter = true;
 		}
 		if (object.get("refUrl") != null) {

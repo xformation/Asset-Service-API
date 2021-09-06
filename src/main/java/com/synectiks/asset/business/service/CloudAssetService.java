@@ -30,8 +30,8 @@ public class CloudAssetService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(CloudAssetService.class);
 	
-	@Autowired
-	private AccountsRepository accountsRepository;
+//	@Autowired
+//	private AccountsRepository accountsRepository;
 	
 	@Autowired
 	private CloudAssetRepository cloudAssetRepository;
@@ -107,7 +107,7 @@ public class CloudAssetService {
 			isFilter = true;
 		}
 		if (object.get("status") != null) {
-			obj.setStatus(object.get("status"));
+			obj.setStatus(object.get("status").toUpperCase());
 			isFilter = true;
 		}
 		
@@ -147,7 +147,7 @@ public class CloudAssetService {
 				cloudAsset.setDescription(obj.get("description").asText());
 			}
 			if(obj.get("status") != null) {
-				cloudAsset.setStatus(obj.get("status").asText());
+				cloudAsset.setStatus(obj.get("status").asText().toUpperCase());
 			}
 			if(obj.get("sourceJsonRef") != null) {
 				cloudAsset.setSourceJsonRef(obj.get("sourceJsonRef").asText());

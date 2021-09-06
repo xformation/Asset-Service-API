@@ -68,7 +68,7 @@ public class InputConfigService {
 		}
 		
 		if (!StringUtils.isBlank(object.get("status"))) {
-			obj.setStatus(object.get("status"));
+			obj.setStatus(object.get("status").toUpperCase());
 			isFilter = true;
 		}
 		if (!StringUtils.isBlank(object.get("inputType"))) {
@@ -116,7 +116,7 @@ public class InputConfigService {
 	}
 	
 	@Transactional
-	public void updateInput(List<ObjectNode> list) {
+	public void bulkUpdateInputConfig(List<ObjectNode> list) {
 		for(ObjectNode obj: list) {
 			logger.debug("Updating input config: "+obj.toString());
 			updateInputConfig(obj);
