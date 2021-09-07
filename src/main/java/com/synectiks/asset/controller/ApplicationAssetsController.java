@@ -161,7 +161,8 @@ public class ApplicationAssetsController {
 		logger.info("Request to update list of application assets");
 		Status st = new Status();
 		try {
-			applicationAssetService.buldUpdateApplicationAsset(obj);
+			boolean enableInput = obj.get("enableInput").asBoolean();
+			applicationAssetService.bulkUpdateApplicationAsset(obj, enableInput);
 			st.setCode(HttpStatus.OK.value());
 			st.setType("SUCCESS");
 			st.setMessage("All the assets updated successfully");
@@ -210,7 +211,7 @@ public class ApplicationAssetsController {
 		logger.info("Request to get dashboard json");
 		Status st = new Status();
 		try {
-			Dashboard dashboard = applicationAssetService.previewDashboard(object);
+			Dashboard dashboard = applicationAssetService.getDashboardFromAwsS3(object);
 			st.setCode(HttpStatus.OK.value());
 			st.setType("SUCCESS");
 			st.setMessage("Dashboard found");

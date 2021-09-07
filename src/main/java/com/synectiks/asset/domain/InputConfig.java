@@ -1,11 +1,21 @@
 package com.synectiks.asset.domain;
 
+import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import javax.persistence.*;
-
-import java.io.Serializable;
 
 /**
  * A InputConfig.
@@ -30,13 +40,24 @@ public class InputConfig implements Serializable {
     @Column(name = "tenant_id")
     private String tenantId;
 
+    @Lob
+    @Column(name = "view_json")
+    private byte[] viewJson;
+
+    @Column(name = "view_json_content_type")
+    private String viewJsonContentType;
+
     @ManyToOne
     @JsonIgnoreProperties(value = "inputConfigs", allowSetters = true)
     private Accounts accounts;
 
     @Transient
     @JsonProperty
-    private String viewJson;
+    private List<Dashboard> enabledDashboardList;
+    
+    @Transient
+    @JsonProperty
+    private String enabledDashboard;
     
     public Long getId() {
         return id;
@@ -85,6 +106,32 @@ public class InputConfig implements Serializable {
         this.tenantId = tenantId;
     }
 
+    public byte[] getViewJson() {
+        return viewJson;
+    }
+
+    public InputConfig viewJson(byte[] viewJson) {
+        this.viewJson = viewJson;
+        return this;
+    }
+
+    public void setViewJson(byte[] viewJson) {
+        this.viewJson = viewJson;
+    }
+
+    public String getViewJsonContentType() {
+        return viewJsonContentType;
+    }
+
+    public InputConfig viewJsonContentType(String viewJsonContentType) {
+        this.viewJsonContentType = viewJsonContentType;
+        return this;
+    }
+
+    public void setViewJsonContentType(String viewJsonContentType) {
+        this.viewJsonContentType = viewJsonContentType;
+    }
+
     public Accounts getAccounts() {
         return accounts;
     }
@@ -123,6 +170,24 @@ public class InputConfig implements Serializable {
             ", inputType='" + getInputType() + "'" +
             ", status='" + getStatus() + "'" +
             ", tenantId='" + getTenantId() + "'" +
+            ", viewJson='" + getViewJson() + "'" +
+            ", viewJsonContentType='" + getViewJsonContentType() + "'" +
             "}";
     }
+
+	public List<Dashboard> getEnabledDashboardList() {
+		return enabledDashboardList;
+	}
+
+	public void setEnabledDashboardList(List<Dashboard> enabledDashboardList) {
+		this.enabledDashboardList = enabledDashboardList;
+	}
+
+	public String getEnabledDashboard() {
+		return enabledDashboard;
+	}
+
+	public void setEnabledDashboard(String enabledDashboard) {
+		this.enabledDashboard = enabledDashboard;
+	}
 }

@@ -24,11 +24,17 @@
             <column name="tenant_id" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="view_json" type="longblob">
+                <constraints nullable="true" />
+            </column>
+            <column name="view_json_content_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="accounts_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
     </changeSet>
-
+    
 </databaseChangeLog>

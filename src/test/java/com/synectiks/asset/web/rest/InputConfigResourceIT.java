@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 import javax.persistence.EntityManager;
 import java.util.List;
 
@@ -40,6 +41,11 @@ public class InputConfigResourceIT {
 
     private static final String DEFAULT_TENANT_ID = "AAAAAAAAAA";
     private static final String UPDATED_TENANT_ID = "BBBBBBBBBB";
+
+    private static final byte[] DEFAULT_VIEW_JSON = TestUtil.createByteArray(1, "0");
+    private static final byte[] UPDATED_VIEW_JSON = TestUtil.createByteArray(1, "1");
+    private static final String DEFAULT_VIEW_JSON_CONTENT_TYPE = "image/jpg";
+    private static final String UPDATED_VIEW_JSON_CONTENT_TYPE = "image/png";
 
     @Autowired
     private InputConfigRepository inputConfigRepository;
@@ -68,7 +74,9 @@ public class InputConfigResourceIT {
         InputConfig inputConfig = new InputConfig()
             .inputType(DEFAULT_INPUT_TYPE)
             .status(DEFAULT_STATUS)
-            .tenantId(DEFAULT_TENANT_ID);
+            .tenantId(DEFAULT_TENANT_ID)
+            .viewJson(DEFAULT_VIEW_JSON)
+            .viewJsonContentType(DEFAULT_VIEW_JSON_CONTENT_TYPE);
         return inputConfig;
     }
     /**
@@ -81,7 +89,9 @@ public class InputConfigResourceIT {
         InputConfig inputConfig = new InputConfig()
             .inputType(UPDATED_INPUT_TYPE)
             .status(UPDATED_STATUS)
-            .tenantId(UPDATED_TENANT_ID);
+            .tenantId(UPDATED_TENANT_ID)
+            .viewJson(UPDATED_VIEW_JSON)
+            .viewJsonContentType(UPDATED_VIEW_JSON_CONTENT_TYPE);
         return inputConfig;
     }
 
@@ -108,6 +118,8 @@ public class InputConfigResourceIT {
         assertThat(testInputConfig.getInputType()).isEqualTo(DEFAULT_INPUT_TYPE);
         assertThat(testInputConfig.getStatus()).isEqualTo(DEFAULT_STATUS);
         assertThat(testInputConfig.getTenantId()).isEqualTo(DEFAULT_TENANT_ID);
+        assertThat(testInputConfig.getViewJson()).isEqualTo(DEFAULT_VIEW_JSON);
+        assertThat(testInputConfig.getViewJsonContentType()).isEqualTo(DEFAULT_VIEW_JSON_CONTENT_TYPE);
     }
 
     @Test
@@ -144,7 +156,9 @@ public class InputConfigResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(inputConfig.getId().intValue())))
             .andExpect(jsonPath("$.[*].inputType").value(hasItem(DEFAULT_INPUT_TYPE)))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
-            .andExpect(jsonPath("$.[*].tenantId").value(hasItem(DEFAULT_TENANT_ID)));
+            .andExpect(jsonPath("$.[*].tenantId").value(hasItem(DEFAULT_TENANT_ID)))
+            .andExpect(jsonPath("$.[*].viewJsonContentType").value(hasItem(DEFAULT_VIEW_JSON_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].viewJson").value(hasItem(Base64Utils.encodeToString(DEFAULT_VIEW_JSON))));
     }
     
     @Test
@@ -160,7 +174,9 @@ public class InputConfigResourceIT {
             .andExpect(jsonPath("$.id").value(inputConfig.getId().intValue()))
             .andExpect(jsonPath("$.inputType").value(DEFAULT_INPUT_TYPE))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS))
-            .andExpect(jsonPath("$.tenantId").value(DEFAULT_TENANT_ID));
+            .andExpect(jsonPath("$.tenantId").value(DEFAULT_TENANT_ID))
+            .andExpect(jsonPath("$.viewJsonContentType").value(DEFAULT_VIEW_JSON_CONTENT_TYPE))
+            .andExpect(jsonPath("$.viewJson").value(Base64Utils.encodeToString(DEFAULT_VIEW_JSON)));
     }
     @Test
     @Transactional
@@ -185,7 +201,9 @@ public class InputConfigResourceIT {
         updatedInputConfig
             .inputType(UPDATED_INPUT_TYPE)
             .status(UPDATED_STATUS)
-            .tenantId(UPDATED_TENANT_ID);
+            .tenantId(UPDATED_TENANT_ID)
+            .viewJson(UPDATED_VIEW_JSON)
+            .viewJsonContentType(UPDATED_VIEW_JSON_CONTENT_TYPE);
         InputConfigDTO inputConfigDTO = inputConfigMapper.toDto(updatedInputConfig);
 
         restInputConfigMockMvc.perform(put("/api/input-configs")
@@ -200,6 +218,8 @@ public class InputConfigResourceIT {
         assertThat(testInputConfig.getInputType()).isEqualTo(UPDATED_INPUT_TYPE);
         assertThat(testInputConfig.getStatus()).isEqualTo(UPDATED_STATUS);
         assertThat(testInputConfig.getTenantId()).isEqualTo(UPDATED_TENANT_ID);
+        assertThat(testInputConfig.getViewJson()).isEqualTo(UPDATED_VIEW_JSON);
+        assertThat(testInputConfig.getViewJsonContentType()).isEqualTo(UPDATED_VIEW_JSON_CONTENT_TYPE);
     }
 
     @Test

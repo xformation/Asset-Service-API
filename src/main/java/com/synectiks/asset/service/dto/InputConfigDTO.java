@@ -1,6 +1,7 @@
 package com.synectiks.asset.service.dto;
 
 import java.io.Serializable;
+import javax.persistence.Lob;
 
 /**
  * A DTO for the {@link com.synectiks.asset.domain.InputConfig} entity.
@@ -15,6 +16,10 @@ public class InputConfigDTO implements Serializable {
 
     private String tenantId;
 
+    @Lob
+    private byte[] viewJson;
+
+    private String viewJsonContentType;
 
     private Long accountsId;
     
@@ -50,6 +55,22 @@ public class InputConfigDTO implements Serializable {
         this.tenantId = tenantId;
     }
 
+    public byte[] getViewJson() {
+        return viewJson;
+    }
+
+    public void setViewJson(byte[] viewJson) {
+        this.viewJson = viewJson;
+    }
+
+    public String getViewJsonContentType() {
+        return viewJsonContentType;
+    }
+
+    public void setViewJsonContentType(String viewJsonContentType) {
+        this.viewJsonContentType = viewJsonContentType;
+    }
+
     public Long getAccountsId() {
         return accountsId;
     }
@@ -83,6 +104,7 @@ public class InputConfigDTO implements Serializable {
             ", inputType='" + getInputType() + "'" +
             ", status='" + getStatus() + "'" +
             ", tenantId='" + getTenantId() + "'" +
+            ", viewJson='" + getViewJson() + "'" +
             ", accountsId=" + getAccountsId() +
             "}";
     }

@@ -1,5 +1,8 @@
 package com.synectiks.asset.business.service;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -13,8 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.synectiks.asset.domain.Accounts;
+import com.synectiks.asset.domain.Dashboard;
+import com.synectiks.asset.domain.DashboardMeta;
 import com.synectiks.asset.domain.InputConfig;
 import com.synectiks.asset.repository.AccountsRepository;
 import com.synectiks.asset.repository.InputConfigRepository;
@@ -30,6 +38,8 @@ public class InputConfigService {
 	@Autowired
 	private AccountsRepository accountsRepository;
 	
+	@Autowired
+	private ApplicationAssetService applicationAssetService;
 	
 	public InputConfig getInputConfig(Long id) {
 		logger.info("Getting input config by id: "+id);
@@ -42,7 +52,7 @@ public class InputConfigService {
 		return null;
 	}
 	
-	public List<InputConfig> searchInputConfig(Map<String, String> object) {
+	public List<InputConfig> searchInputConfig(Map<String, String> object) throws IOException {
 		logger.info("Searching Input config");
 		InputConfig obj = new InputConfig();
 		
@@ -81,37 +91,108 @@ public class InputConfigService {
 		} else {
 			list = this.inputConfigRepository.findAll();
 		}
+		
+		ObjectMapper mapper = new ObjectMapper();
+		StringBuffer sb = new StringBuffer();
+		for(InputConfig inputConfig: list) {
+			sb.setLength(0);
+			ArrayNode existingJsonArray = (ArrayNode)mapper.readTree(inputConfig.getViewJson());
+			List<Dashboard> dashList = new ArrayList<>();
+			if(existingJsonArray.isArray()) {
+		        for(JsonNode jsonNode : existingJsonArray) {
+		        	Dashboard ds = fillDashboard(mapper, jsonNode);
+		        	sb.append(ds.toString()).append(",");
+		        	dashList.add(ds);
+		        }
+		    }
+			inputConfig.setEnabledDashboard(sb.toString().substring(0, sb.toString().lastIndexOf(",")));
+			inputConfig.setEnabledDashboardList(dashList);
+			logger.debug("Enabled dashboards : "+inputConfig.getEnabledDashboard());
+		}
+		
 		return list;
+	}
+	
+	public Dashboard fillDashboard(ObjectMapper mapper, JsonNode jsonNode) throws IOException {
+		Map<String, String> object = new HashMap<>();
+		object.put("cloudType",jsonNode.get("CloudName").asText());
+		object.put("elementType",jsonNode.get("ElementType").asText());
+		object.put("tenantId",jsonNode.get("TenantId").asText());
+		object.put("accountId",jsonNode.get("AccountId").asText());
+		object.put("inputType",jsonNode.get("InputType").asText());
+		object.put("fileName",jsonNode.get("FileName").asText());
+		object.put("dataSource",jsonNode.get("InputSourceId").asText());
+		
+		Dashboard ds = applicationAssetService.getDashboardFromAwsS3(object);
+		ObjectNode dataNode = (ObjectNode)mapper.readTree(ds.getData());
+		
+		if(jsonNode.get("Uid") != null) {
+			ds.setUid(jsonNode.get("Uid").asText());
+			dataNode.put("uid", jsonNode.get("Uid").asText());
+		}
+		if(jsonNode.get("Uuid") != null) {
+			ds.setUuid(jsonNode.get("Uuid").asText());
+		}
+		if(jsonNode.get("Slug") != null) {
+			ds.setSlug(jsonNode.get("Slug").asText());
+			ds.setTitle(jsonNode.get("Slug").asText());
+			dataNode.put("slug", jsonNode.get("Slug").asText());
+			dataNode.put("title", jsonNode.get("Slug").asText());
+		}
+		if(jsonNode.get("Version") != null) {
+			ds.setVersion(jsonNode.get("Version").asInt());
+			dataNode.put("version", jsonNode.get("Version").asText());
+		}
+		if(jsonNode.get("Id") != null) {
+			ds.setId(jsonNode.get("Id").asLong());
+			dataNode.put("id", jsonNode.get("Id").asLong());
+		}
+		if(jsonNode.get("IsCloud") != null) {
+			ds.setCloud(jsonNode.get("IsCloud").asBoolean());
+		}
+		String newData = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(dataNode);
+		
+		DashboardMeta meta = ds.getDashboardMeta();
+		meta.setSlug(ds.getSlug());
+		meta.setVersion(ds.getVersion());
+		ds.setDashboardMeta(meta);
+		
+		ds.setData(newData);
+		return ds;
 	}
 	
 	public InputConfig addInputConfig(ObjectNode obj) {
 		logger.debug("Adding input config: "+obj.toString());
-		InputConfig inputs = new InputConfig();
+		InputConfig inputConfig = new InputConfig();
 		if(obj.get("accountId") != null && obj.get("tenantId") != null) {
 			Accounts ac = new Accounts();
 			ac.setAccountId(obj.get("accountId").asText());
 			ac.setTenantId(obj.get("tenantId").asText());
 			Optional<Accounts> oa = accountsRepository.findOne(Example.of(ac));
 			if(oa.isPresent()) {
-				inputs.setAccounts(oa.get());
+				inputConfig.setAccounts(oa.get());
 			}
 		}
 		if(obj.get("tenantId") != null) {
-			inputs.setTenantId(obj.get("tenantId").asText());
+			inputConfig.setTenantId(obj.get("tenantId").asText());
 		}
 		if(obj.get("inputType") != null) {
-			inputs.setInputType(obj.get("inputType").asText());
+			inputConfig.setInputType(obj.get("inputType").asText());
 		}
 		
 		if(obj.get("status") != null) {
-			inputs.setStatus(obj.get("status").asText().toUpperCase());
+			inputConfig.setStatus(obj.get("status").asText().toUpperCase());
 		}
 		
-		inputs = inputConfigRepository.save(inputs);
+		if(obj.get("viewJson") != null) {
+			inputConfig.setViewJson(obj.get("viewJson").asText().getBytes());
+		}
 		
-		logger.info("Input config added successfully: "+inputs.toString());
+		inputConfig = inputConfigRepository.save(inputConfig);
 		
-		return inputs;
+		logger.info("Input config added successfully: "+inputConfig.toString());
+		
+		return inputConfig;
 		
 	}
 	
@@ -124,16 +205,58 @@ public class InputConfigService {
 	}
 	
 	public InputConfig updateInputConfig(ObjectNode obj){
-		InputConfig inputs = null;
-		if(obj.get("id") != null) {
-			inputs = inputConfigRepository.findById(obj.get("id").asLong()).orElse(null);
-			if(inputs != null) {
-				if(obj.get("status") != null) {
-					inputs.setStatus(obj.get("status").asText().toUpperCase());
-				}
-			}
-			logger.debug("Input config updated successfully : "+inputs.toString());
+		if(obj.get("id") == null) {
+			logger.warn("Input config id missing. Cannot find input config for update");
+			return null;
 		}
-		return inputs;
+		InputConfig inputConfig = inputConfigRepository.findById(obj.get("id").asLong()).orElse(null);
+		if(inputConfig == null) {
+			logger.warn("Input config not found. Update failed");
+			return null;
+		}
+		
+		if(obj.get("status") != null) {
+			inputConfig.setStatus(obj.get("status").asText().toUpperCase());
+		}
+		if(obj.get("tenantId") != null) {
+			inputConfig.setTenantId(obj.get("tenantId").asText());
+		}
+		if(obj.get("inputType") != null) {
+			inputConfig.setInputType(obj.get("inputType").asText());
+		}
+		
+		inputConfig = inputConfigRepository.save(inputConfig);
+		logger.debug("Input config updated successfully : "+inputConfig.toString());
+		return inputConfig;
 	}
+	
+	public InputConfig updateInputConfig(InputConfig obj){
+		if(obj.getId() == null) {
+			logger.warn("Input config id missing. Cannot find input config for update");
+			return null;
+		}
+		InputConfig inputConfig = inputConfigRepository.findById(obj.getId()).orElse(null);
+		if(inputConfig == null) {
+			logger.warn("Input config not found. Update failed");
+			return null;
+		}
+		
+		if(!StringUtils.isBlank(obj.getStatus())) {
+			inputConfig.setStatus(obj.getStatus().toUpperCase());
+		}
+		if(!StringUtils.isBlank(obj.getTenantId())) {
+			inputConfig.setTenantId(obj.getTenantId());
+		}
+		if(!StringUtils.isBlank(obj.getInputType())) {
+			inputConfig.setInputType(obj.getInputType());
+		}
+		if(obj.getViewJson() != null && obj.getViewJson().length > 0) {
+			inputConfig.setViewJson(obj.getViewJson());
+		}
+		inputConfig = inputConfigRepository.save(inputConfig);
+		logger.debug("Input config updated successfully : "+inputConfig.toString());
+		
+		return inputConfig;
+	}
+	
 }

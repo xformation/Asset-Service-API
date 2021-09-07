@@ -98,6 +98,7 @@ entity InputConfig{
 	inputType String
 	status String
 	tenantId String
+	viewJson Blob
 }
 
 relationship ManyToOne {

@@ -28,6 +28,8 @@ import org.springframework.stereotype.Service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.S3Object;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.synectiks.asset.aws.AwsUtils;
 import com.synectiks.asset.config.Constants;
@@ -35,6 +37,7 @@ import com.synectiks.asset.domain.Accounts;
 import com.synectiks.asset.domain.ApplicationAssets;
 import com.synectiks.asset.domain.Asset;
 import com.synectiks.asset.domain.Dashboard;
+import com.synectiks.asset.domain.DashboardMeta;
 import com.synectiks.asset.domain.InputConfig;
 import com.synectiks.asset.repository.ApplicationAssetsRepository;
 
@@ -130,7 +133,7 @@ public class ApplicationAssetService {
 		obj.setCloudType(object.get("cloud"));
 		obj.setElementType(object.get("type"));
 		obj.setInputType(object.get("inputType"));
-		obj.setStatus(Constants.STATUS_READY_TO_ENABLE);
+//		obj.setStatus(Constants.STATUS_READY_TO_ENABLE);
 		
 		List<ApplicationAssets> list = this.applicationAssetsRepository.findAll(Example.of(obj));
 		
@@ -222,17 +225,18 @@ public class ApplicationAssetService {
 	}
 	
 	@Transactional
-	public void buldUpdateApplicationAsset(ObjectNode requestObj) {
-		JsonNode obj = requestObj.get("dashboardList");
-		if(obj.isArray()) {
-			Iterator<JsonNode> itr = obj.iterator();
+	public void bulkUpdateApplicationAsset(ObjectNode requestObj, boolean enableInput) throws IOException {
+		logger.info("Updating application assets");
+		JsonNode dashboardList = requestObj.get("dashboardList");
+		if(dashboardList.isArray()) {
+			Iterator<JsonNode> itr = dashboardList.iterator();
 			while(itr.hasNext()) {
 				updateApplicationAsset(itr.next());
 			}
 		}
-				
-		boolean isInputConfigAdd = requestObj.get("isInputConfigAdd").asBoolean();
-		if(isInputConfigAdd) {
+		logger.info("Application assets updated successfully");		
+		
+		if(enableInput) {
 			String accountId = requestObj.get("accountId").asText();
 			String tenantId = requestObj.get("tenantId").asText();
 			String inputType = requestObj.get("inputType").asText();
@@ -242,12 +246,70 @@ public class ApplicationAssetService {
 			objMap.put("tenantId", tenantId);
 			objMap.put("inputType", inputType);
 			objMap.put("status", status);
+			
 			List<InputConfig> inpConfigList = inputConfigService.searchInputConfig(objMap);
+			
+			ObjectMapper mapper = new ObjectMapper();
+			
 			if(inpConfigList.size() == 0) {
-				logger.info("enabling input type " + inputType);
+				
+				logger.info("enabling input " + inputType);
+				
+				ArrayNode arrayNode = getJsonArray(mapper, dashboardList.iterator());
+				String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(arrayNode);
+				requestObj.put("viewJson", json);
+				logger.debug("Dashboard json array as string : "+json);
+				logger.info("Updating input config with enabled dashboards");
+					
 				inputConfigService.addInputConfig(requestObj);
+				logger.info("Input " + inputType+" enabled successfully");
+				
+			}else {
+				logger.info("Input " + inputType+ " already enabled. Updating view json");
+				InputConfig inputConfig = inpConfigList.get(0);
+				ArrayNode existingJsonArray = (ArrayNode)mapper.readTree(inputConfig.getViewJson());
+				
+				if(dashboardList.isArray()) {
+					ArrayNode newJsonarray = getJsonArray(mapper, dashboardList.iterator());
+					
+					if(existingJsonArray.isArray()) {
+				         for(JsonNode jsonNode : existingJsonArray) {
+				        	 logger.debug("Existing dashboard json : "+jsonNode);
+				        	 newJsonarray.add(jsonNode);
+				         }
+				    }
+					
+					String newJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(newJsonarray);
+					
+					logger.debug("Updated dashboard json Array : "+newJson);
+					inputConfig.setViewJson(newJson.getBytes());
+					inputConfig = inputConfigService.updateInputConfig(inputConfig);
+					
+				}
+				logger.info("View json updated successfully");	
 			}
 		}
+	}
+
+	private ArrayNode getJsonArray(ObjectMapper mapper, Iterator<JsonNode> itr) {
+		ArrayNode arrayNode = mapper.createArrayNode();
+		while(itr.hasNext()) {
+			JsonNode jsonObj = itr.next();
+			JsonNode appAsset = jsonObj.get("appAsset");
+			JsonNode grafanaAsset = jsonObj.get("grafanaAsset");
+			
+			ObjectNode dashboard = (ObjectNode)appAsset.get("Dashboard");
+			dashboard.put("Uid", grafanaAsset.get("uid").asText());
+			dashboard.put("Slug", grafanaAsset.get("slug").asText());
+			dashboard.put("Id", grafanaAsset.get("id").asLong());
+			dashboard.put("Url", grafanaAsset.get("url").asLong());
+			dashboard.put("Version", grafanaAsset.get("version").asInt());
+			
+			arrayNode.add(dashboard);
+			
+			logger.debug("Dashboard : "+dashboard.toString());
+		}
+		return arrayNode;
 	}
 	
 	public Asset updateApplicationAsset(JsonNode obj){
@@ -279,7 +341,7 @@ public class ApplicationAssetService {
 		return asset;
 	}
 	
-	public Dashboard previewDashboard(Map<String, String> object) throws IOException {
+	public Dashboard getDashboardFromAwsS3(Map<String, String> object) throws IOException {
 		logger.info("Downloading dashboard json from AWS");
 		
 		if (StringUtils.isBlank(object.get("cloudType")) || StringUtils.isBlank(object.get("elementType")) ||
@@ -318,6 +380,11 @@ public class ApplicationAssetService {
 		String uid = RandomStringUtils.random(8, true, true);
 		dashboard.setUid(uid);
 		dashboard.setData(data);
+		
+		DashboardMeta meta = new DashboardMeta();
+		meta.setSlug(dashboard.getSlug());
+		
+		dashboard.setDashboardMeta(meta);
 		return dashboard;
 	}
 	

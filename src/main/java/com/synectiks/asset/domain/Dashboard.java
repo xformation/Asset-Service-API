@@ -18,8 +18,21 @@ public class Dashboard implements Serializable {
     private String title;
     private String slug;
     private String uid;
+    private String uuid;
     private String data;
     private boolean isCloud = true;
+    
+    private int orgId = 1;
+    private int gnetId = 0;
+    private int version = 1;
+    private String pluginId;
+    private int folderId = 0;
+    private boolean isFolder = false;
+    private boolean hasAcl = false;
+    private String sourceJsonRef;
+    private Long id;
+    private String url;
+    private DashboardMeta dashboardMeta; 
     
 	public String getCloudName() {
 		return cloudName;
@@ -92,6 +105,83 @@ public class Dashboard implements Serializable {
 	}
 	public void setCloud(boolean isCloud) {
 		this.isCloud = isCloud;
+	}
+	public String getUuid() {
+		return uuid;
+	}
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+	public int getOrgId() {
+		return orgId;
+	}
+	public void setOrgId(int orgId) {
+		this.orgId = orgId;
+	}
+	public int getGnetId() {
+		return gnetId;
+	}
+	public void setGnetId(int gnetId) {
+		this.gnetId = gnetId;
+	}
+	public int getVersion() {
+		return version;
+	}
+	public void setVersion(int version) {
+		this.version = version;
+	}
+	public String getPluginId() {
+		return pluginId;
+	}
+	public void setPluginId(String pluginId) {
+		this.pluginId = pluginId;
+	}
+	public int getFolderId() {
+		return folderId;
+	}
+	public void setFolderId(int folderId) {
+		this.folderId = folderId;
+	}
+	public boolean isFolder() {
+		return isFolder;
+	}
+	public void setFolder(boolean isFolder) {
+		this.isFolder = isFolder;
+	}
+	public boolean isHasAcl() {
+		return hasAcl;
+	}
+	public void setHasAcl(boolean hasAcl) {
+		this.hasAcl = hasAcl;
+	}
+	public String getSourceJsonRef() {
+		return sourceJsonRef;
+	}
+	public void setSourceJsonRef(String sourceJsonRef) {
+		this.sourceJsonRef = sourceJsonRef;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	
+	@Override
+	public String toString() {
+		return data ;
+	}
+	public DashboardMeta getDashboardMeta() {
+		return dashboardMeta;
+	}
+	public void setDashboardMeta(DashboardMeta dashboardMeta) {
+		this.dashboardMeta = dashboardMeta;
 	}
 	
  }

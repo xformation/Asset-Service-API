@@ -1,11 +1,11 @@
-id;input_type;status;tenant_id
-1;panel paradigms;Baby overriding bricks-and-clicks;Frozen
-2;multi-byte Coordinator;Sleek Plastic Chicken;orchestration
-3;Developer Tasty Architect;SAS;partnerships Chicken
-4;Corporate;input Engineer;Auto Loan Account
-5;Functionality transmit Legacy;Moroccan Dirham;Small Plastic Car
-6;Money Market Account deliverables;Grocery yellow;mint green Assistant local
-7;system Frozen override;Books invoice leading-edge;Steel circuit XML
-8;Berkshire firewall;Centralized;bypassing
-9;Fall;Rustic application;Costa Rican Colon Fresh Towels
-10;Hawaii COM methodical;Investment Account;Human Sri Lanka Rupee
+id;input_type;status;tenant_id;view_json;view_json_content_type
+1;panel paradigms;Baby overriding bricks-and-clicks;Frozen;../fake-data/blob/hipster.png;image/png
+2;multi-byte Coordinator;Sleek Plastic Chicken;orchestration;../fake-data/blob/hipster.png;image/png
+3;Developer Tasty Architect;SAS;partnerships Chicken;../fake-data/blob/hipster.png;image/png
+4;Corporate;input Engineer;Auto Loan Account;../fake-data/blob/hipster.png;image/png
+5;Functionality transmit Legacy;Moroccan Dirham;Small Plastic Car;../fake-data/blob/hipster.png;image/png
+6;Money Market Account deliverables;Grocery yellow;mint green Assistant local;../fake-data/blob/hipster.png;image/png
+7;system Frozen override;Books invoice leading-edge;Steel circuit XML;../fake-data/blob/hipster.png;image/png
+8;Berkshire firewall;Centralized;bypassing;../fake-data/blob/hipster.png;image/png
+9;Fall;Rustic application;Costa Rican Colon Fresh Towels;../fake-data/blob/hipster.png;image/png
+10;Hawaii COM methodical;Investment Account;Human Sri Lanka Rupee;../fake-data/blob/hipster.png;image/png
