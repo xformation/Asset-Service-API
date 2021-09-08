@@ -6,7 +6,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +20,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.synectiks.asset.business.service.CloudAssetService;
 import com.synectiks.asset.domain.Accounts;
 import com.synectiks.asset.domain.Asset;
+import com.synectiks.asset.domain.Inputs;
+import com.synectiks.asset.domain.Status;
 import com.synectiks.asset.repository.AccountsRepository;
 
 @RestController
@@ -28,16 +29,12 @@ import com.synectiks.asset.repository.AccountsRepository;
 public class CloudAssetController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(CloudAssetController.class);
-	private static final String ENTITY_NAME = "CloudAsset";
-	
-	@Value("${jhipster.clientApp.name}")
-	private String applicationName;
 	
 	@Autowired
 	private AccountsRepository accountsRepository;
 	
 	@Autowired
-	CloudAssetService cloudAssetService;
+	private CloudAssetService cloudAssetService;
 	
 	@GetMapping("/getDiscoveredAsset/{id}")
 	public ResponseEntity<List<Asset>> getCloudAssetByAccountId(@PathVariable Long id) {
@@ -68,13 +65,31 @@ public class CloudAssetController {
 	
 	
 	@PostMapping("/addCloudAsset")
-	public ResponseEntity<Asset> addCloudAsset(@RequestBody ObjectNode obj) {
+	public ResponseEntity<Status> addCloudAsset(@RequestBody ObjectNode obj) {
 		logger.info("Request to add cloud assets");
-		Asset asset = cloudAssetService.addCloudAsset(obj);
-		if(asset != null) {
-			return ResponseEntity.status(HttpStatus.OK).body(asset);
+		Status st = new Status();
+		try {
+			Asset asset = cloudAssetService.addCloudAsset(obj);
+			if(asset == null) {
+				st.setCode(HttpStatus.EXPECTATION_FAILED.value());
+				st.setType("ERROR");
+				st.setMessage("Adding cloud asset failed. Mandatory fields (Account id, cloud type (AWS, GCP etc.) or element type (VPC, EC2 etc.) ) missing");
+				return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(st);
+			}
+			st.setCode(HttpStatus.OK.value());
+			st.setType("SUCCESS");
+			st.setMessage("Cloud asset added successfully");
+			st.setObject(asset);
+			logger.info("Cloud asset added successfully");
+			return ResponseEntity.status(HttpStatus.OK).body(st);
+		}catch(Exception e) {
+			logger.error("Adding cloud asset failed", e);
+			st.setCode(HttpStatus.EXPECTATION_FAILED.value());
+			st.setType("ERROR");
+			st.setMessage("Adding cloud asset failed");
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(st);
 		}
-		return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
+		
 	}
 	
 }

@@ -60,7 +60,6 @@ public class CloudAsset implements Serializable {
     @Column(name = "created_by")
     private String createdBy;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }

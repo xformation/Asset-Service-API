@@ -7,7 +7,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -30,11 +29,6 @@ import com.synectiks.asset.repository.OrganizationalUnitRepository;
 public class OrganizationalUnitController {
 
 	private static final Logger logger = LoggerFactory.getLogger(OrganizationalUnitController.class);
-	
-	private static final String ENTITY_NAME = "OrganizationalUnit";
-	
-	@Value("${jhipster.clientApp.name}")
-	private String applicationName;
 	
 	@Autowired
 	OrganizationService organizationService;
@@ -64,24 +58,24 @@ public class OrganizationalUnitController {
 		return ResponseEntity.status(HttpStatus.OK).body(ou);
 	}
 	
-	@GetMapping("/getAllOrgUnits")
+	@GetMapping("/getAllOrganizationalUnits")
 	private List<OrganizationalUnit> getAllOrganizationalUnits() {
 		List<OrganizationalUnit> list = organizationalUnitRepository.findAll(Sort.by(Direction.ASC, "name"));
 		return list;
 	}
 	
 	@GetMapping("/getAllOrgUnitsByOrgId/{orgId}")
-	private List<OrganizationalUnit> getAllOrganizationalUnits(@PathVariable Long orgId) {
+	private List<OrganizationalUnit> getAllOrgUnitsByOrgId(@PathVariable Long orgId) {
 		OrganizationalUnit ou = new OrganizationalUnit();
 		ou.setOrganizationId(orgId);
 		List<OrganizationalUnit> ouList = organizationalUnitRepository.findAll(Example.of(ou), Sort.by(Direction.ASC, "name"));
 		return ouList;
 	}
 	
-	@GetMapping("/getAllOrgUnits/{userName}")
-	private Organization getAllOrganizationalUnits(@PathVariable String userName) {
+	@GetMapping("/getAllOrgUnitsByUserName/{userName}")
+	private Organization getAllOrgUnitsByUserName(@PathVariable String userName) {
 		Organization org = organizationService.getOrganization(userName);
-		List<OrganizationalUnit> list = getAllOrganizationalUnits(org.getId());
+		List<OrganizationalUnit> list = getAllOrgUnitsByOrgId(org.getId());
 		org.setOrganizationalUnitList(list);
 		return org;
 	}

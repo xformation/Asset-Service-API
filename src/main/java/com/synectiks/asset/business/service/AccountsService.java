@@ -31,13 +31,10 @@ public class AccountsService {
 	private static final Logger logger = LoggerFactory.getLogger(AccountsService.class);
 		
 	@Autowired
-	OrganizationService organizationService;
+	private OrganizationService organizationService;
 	
 	@Autowired
 	private AccountsRepository accountsRepository;
-	
-	@Autowired
-	CloudAssetService cloudAssetService;
 	
 	@Autowired
 	private OrganizationalUnitRepository organizationalUnitRepository;

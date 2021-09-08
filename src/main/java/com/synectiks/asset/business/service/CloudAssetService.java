@@ -2,6 +2,7 @@ package com.synectiks.asset.business.service;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -22,23 +23,25 @@ import com.synectiks.asset.domain.Accounts;
 import com.synectiks.asset.domain.Asset;
 import com.synectiks.asset.domain.CloudAsset;
 import com.synectiks.asset.domain.Organization;
-import com.synectiks.asset.repository.AccountsRepository;
 import com.synectiks.asset.repository.CloudAssetRepository;
+import com.synectiks.aws.entities.vpc.CustomVpc;
+import com.synectiks.aws.vpc.VpcProcessor;
+
+import software.amazon.awssdk.regions.Region;
 
 @Service
 public class CloudAssetService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(CloudAssetService.class);
 	
-//	@Autowired
-//	private AccountsRepository accountsRepository;
-	
 	@Autowired
 	private CloudAssetRepository cloudAssetRepository;
 	
 	@Autowired
-	OrganizationService organizationService;
+	private OrganizationService organizationService;
 	
+	@Autowired
+	private AccountsService accountsService;
 	
 	public List<Asset> getCloudAssets(Accounts accounts) {
 		logger.info("Getting cloud asset by account id: "+accounts);
@@ -136,12 +139,21 @@ public class CloudAssetService {
 			CloudAsset cloudAsset = new CloudAsset();
 			if(obj.get("accountId") != null) {
 				cloudAsset.setAccountId(obj.get("accountId").asText());
+			}else {
+				logger.warn("Cloud asset could not be added. Account id missing");
+				return null;
 			}
 			if(obj.get("type") != null) {
 				cloudAsset.setType(obj.get("type").asText());
+			}else {
+				logger.warn("Cloud asset could not be added. Cloud type (e.g. AWS, GCP etc.) missing");
+				return null;
 			}
 			if(obj.get("name") != null) {
 				cloudAsset.setName(obj.get("name").asText());
+			}else {
+				logger.warn("Cloud asset could not be added. Cloud element type (e.g. VPC, EC2 etc.) missing");
+				return null;
 			}
 			if(obj.get("description") != null) {
 				cloudAsset.setDescription(obj.get("description").asText());
@@ -153,6 +165,9 @@ public class CloudAssetService {
 				cloudAsset.setSourceJsonRef(obj.get("sourceJsonRef").asText());
 			}
 			
+			if(obj.get("sourceJson") != null) {
+				cloudAsset.setSourceJson(obj.get("sourceJson").asText().getBytes());
+			}
 			
 		 	if (obj.get("user") != null) {
 				cloudAsset.setCreatedBy(obj.get("user").asText());
@@ -164,6 +179,13 @@ public class CloudAssetService {
 			Instant now = Instant.now();
 			cloudAsset.setCreatedOn(now);
 			cloudAsset.setUpdatedOn(now);
+			
+			Accounts ac = getAccount(obj);
+			
+			if(obj.get("type").asText().equalsIgnoreCase("AWS") && obj.get("name").asText().equalsIgnoreCase("VPC")) {
+				List<CustomVpc> vpcList = getAwsVpcs(ac);
+			}
+			
 			cloudAsset = cloudAssetRepository.save(cloudAsset);
 			logger.info("Cloud asset record added successfully: Cloud asset: "+cloudAsset.toString());
 			Asset asset = new Asset();
@@ -178,5 +200,25 @@ public class CloudAssetService {
 		
 	}
 	
+	private List<CustomVpc> getAwsVpcs(Accounts ac) {
+		VpcProcessor vpcProcessor = new VpcProcessor(ac.getAccessKey(), ac.getSecretKey(), Region.of(ac.getRegion()));
+		List<CustomVpc> vpcList =  vpcProcessor.describeEC2Vpcs();
+		return vpcList;
+	}
 	
+	private List<CustomVpc> getAwsVpc(Accounts ac, String vpcId) {
+		VpcProcessor vpcProcessor = new VpcProcessor(ac.getAccessKey(), ac.getSecretKey(), Region.of(ac.getRegion()));
+		List<CustomVpc> vpcList =  vpcProcessor.describeEC2VpcById(vpcId);
+		return vpcList;
+	}
+	
+	private Accounts getAccount(ObjectNode obj) {
+		Map<String, String> map = new HashMap<>();
+		map.put("accountId", obj.get("accountId").asText());
+		List<Accounts> list = this.accountsService.searchAccounts(map);
+		if(list.size() == 0) {
+			return null; 
+		}
+		return list.get(0);
+	}
 }
