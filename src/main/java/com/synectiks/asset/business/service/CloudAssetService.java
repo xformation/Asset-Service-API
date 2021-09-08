@@ -2,7 +2,6 @@ package com.synectiks.asset.business.service;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -24,10 +23,6 @@ import com.synectiks.asset.domain.Asset;
 import com.synectiks.asset.domain.CloudAsset;
 import com.synectiks.asset.domain.Organization;
 import com.synectiks.asset.repository.CloudAssetRepository;
-import com.synectiks.aws.entities.vpc.CustomVpc;
-import com.synectiks.aws.vpc.VpcProcessor;
-
-import software.amazon.awssdk.regions.Region;
 
 @Service
 public class CloudAssetService {
@@ -180,11 +175,11 @@ public class CloudAssetService {
 			cloudAsset.setCreatedOn(now);
 			cloudAsset.setUpdatedOn(now);
 			
-			Accounts ac = getAccount(obj);
+//			Accounts ac = getAccount(obj);
 			
-			if(obj.get("type").asText().equalsIgnoreCase("AWS") && obj.get("name").asText().equalsIgnoreCase("VPC")) {
-				List<CustomVpc> vpcList = getAwsVpcs(ac);
-			}
+//			if(obj.get("type").asText().equalsIgnoreCase("AWS") && obj.get("name").asText().equalsIgnoreCase("VPC")) {
+//				List<CustomVpc> vpcList = getAwsVpcs(ac);
+//			}
 			
 			cloudAsset = cloudAssetRepository.save(cloudAsset);
 			logger.info("Cloud asset record added successfully: Cloud asset: "+cloudAsset.toString());
@@ -200,25 +195,25 @@ public class CloudAssetService {
 		
 	}
 	
-	private List<CustomVpc> getAwsVpcs(Accounts ac) {
-		VpcProcessor vpcProcessor = new VpcProcessor(ac.getAccessKey(), ac.getSecretKey(), Region.of(ac.getRegion()));
-		List<CustomVpc> vpcList =  vpcProcessor.describeEC2Vpcs();
-		return vpcList;
-	}
-	
-	private List<CustomVpc> getAwsVpc(Accounts ac, String vpcId) {
-		VpcProcessor vpcProcessor = new VpcProcessor(ac.getAccessKey(), ac.getSecretKey(), Region.of(ac.getRegion()));
-		List<CustomVpc> vpcList =  vpcProcessor.describeEC2VpcById(vpcId);
-		return vpcList;
-	}
-	
-	private Accounts getAccount(ObjectNode obj) {
-		Map<String, String> map = new HashMap<>();
-		map.put("accountId", obj.get("accountId").asText());
-		List<Accounts> list = this.accountsService.searchAccounts(map);
-		if(list.size() == 0) {
-			return null; 
-		}
-		return list.get(0);
-	}
+//	private List<CustomVpc> getAwsVpcs(Accounts ac) {
+//		VpcProcessor vpcProcessor = new VpcProcessor(ac.getAccessKey(), ac.getSecretKey(), Region.of(ac.getRegion()));
+//		List<CustomVpc> vpcList =  vpcProcessor.describeEC2Vpcs();
+//		return vpcList;
+//	}
+//	
+//	private List<CustomVpc> getAwsVpc(Accounts ac, String vpcId) {
+//		VpcProcessor vpcProcessor = new VpcProcessor(ac.getAccessKey(), ac.getSecretKey(), Region.of(ac.getRegion()));
+//		List<CustomVpc> vpcList =  vpcProcessor.describeEC2VpcById(vpcId);
+//		return vpcList;
+//	}
+//	
+//	private Accounts getAccount(ObjectNode obj) {
+//		Map<String, String> map = new HashMap<>();
+//		map.put("accountId", obj.get("accountId").asText());
+//		List<Accounts> list = this.accountsService.searchAccounts(map);
+//		if(list.size() == 0) {
+//			return null; 
+//		}
+//		return list.get(0);
+//	}
 }

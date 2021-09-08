@@ -99,11 +99,11 @@
     </dependencyManagement>
 
     <dependencies>
-    	<dependency>
+    	<!-- <dependency>
             <groupId>com.synectiks.aws</groupId>
 			<artifactId>xformation-compliance-aws-collector</artifactId>
 			<version>1.0.0</version>
-        </dependency>
+        </dependency> -->
         <dependency>
             <groupId>io.github.jhipster</groupId>
             <artifactId>jhipster-framework</artifactId>
