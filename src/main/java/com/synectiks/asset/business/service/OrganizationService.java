@@ -22,7 +22,7 @@ public class OrganizationService {
 	
 	public Organization getOrganization(String userName) {
         String secSrvUrl = appProps.getSecurityServiceUrl();
-        String url = secSrvUrl+"/security/organization/getOrganization?userName="+userName;
+        String url = secSrvUrl+"/security/organization/getOrganizationByUserName?userName="+userName;
         Organization org = this.restTemplate.getForObject(url, Organization.class);
         return org;
     }
