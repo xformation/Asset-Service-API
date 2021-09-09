@@ -379,15 +379,17 @@ public class ApplicationAssetService {
 		String data = displayTextInputStream(file.getObjectContent());
 		
 		ObjectMapper mapper = new ObjectMapper();
-//		ArrayNode arrayNode = mapper.createArrayNode();
+		ArrayNode arrayNode = mapper.createArrayNode();
 		
 		ObjectNode dataNode = (ObjectNode)mapper.readTree(data);
 		for(JsonNode panel : dataNode.get("panels")) {
 			ObjectNode oPanel = (ObjectNode)panel;
 			oPanel.put("datasource", dataSource);
-//			arrayNode.add(oPanel);
+			arrayNode.add(oPanel);
         }
-//		dataNode.put("panels", arrayNode);
+		dataNode.put("panels", arrayNode);
+		data = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(dataNode);
+		logger.debug("Datasource updated. Json : "+ data);
 		
 		String uid = RandomStringUtils.random(8, true, true);
 		dashboard.setUid(uid);
@@ -407,7 +409,7 @@ public class ApplicationAssetService {
 		String line = null;
         while ((line = reader.readLine()) != null) {
             sb.append(line).append(" ");
-        	logger.info(sb.toString());
+//        	logger.debug(sb.toString());
         }
         return sb.toString();
 	}
