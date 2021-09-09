@@ -188,8 +188,19 @@ public class AccountsService {
 		accounts.setAccessKey(obj.get("accessKey").asText());
 		accounts.setSecretKey(obj.get("secretKey").asText());
 		accounts.setCloudType("AWS");
-//		accounts.setRegion(obj.get("region").asText());
-//		accounts.setBucket(obj.get("bucket").asText());
+		
+		if(obj.get("region") != null) {
+			accounts.setRegion(obj.get("region").asText());
+		}else {
+			accounts.setRegion(Constants.DEFAULT_AWS_REGION);
+		}
+		
+		if(obj.get("bucket") != null) {
+			accounts.setBucket(obj.get("bucket").asText());
+		}else {
+			accounts.setBucket(Constants.DEFAULT_AWS_BUCKET);
+		}
+
 //		accounts.setEmail(obj.get("email").asText());
 //		accounts.setPassword(obj.get("password").asText());
 		

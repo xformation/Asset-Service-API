@@ -9,6 +9,7 @@ public final class Constants {
     public static final String ACTIVE = "ACTIVE";
     public static final String DEACTIVE = "DEACTIVE";
     public static final String DEFAULT_AWS_REGION = "us-east-1";
+    public static final String DEFAULT_AWS_BUCKET = "xformation.synectiks.com";
     public static final String STATUS_READY_TO_ENABLE = "READY_TO_ENABLE";
     public static final String STATUS_ENABLED = "ENABLED";
     

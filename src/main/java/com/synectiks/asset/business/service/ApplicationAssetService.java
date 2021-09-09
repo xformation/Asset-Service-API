@@ -377,6 +377,18 @@ public class ApplicationAssetService {
 		dashboard.setTitle(cloudType+"_"+elementType+"_"+dataSource);
 		dashboard.setSlug(cloudType+"_"+elementType+"_"+dataSource);
 		String data = displayTextInputStream(file.getObjectContent());
+		
+		ObjectMapper mapper = new ObjectMapper();
+//		ArrayNode arrayNode = mapper.createArrayNode();
+		
+		ObjectNode dataNode = (ObjectNode)mapper.readTree(data);
+		for(JsonNode panel : dataNode.get("panels")) {
+			ObjectNode oPanel = (ObjectNode)panel;
+			oPanel.put("datasource", dataSource);
+//			arrayNode.add(oPanel);
+        }
+//		dataNode.put("panels", arrayNode);
+		
 		String uid = RandomStringUtils.random(8, true, true);
 		dashboard.setUid(uid);
 		dashboard.setData(data);
