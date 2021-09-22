@@ -12,6 +12,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 
 import javax.annotation.PostConstruct;
@@ -26,6 +27,8 @@ public class AssetserviceApp {
 
     private static final Logger log = LoggerFactory.getLogger(AssetserviceApp.class);
 
+    private static ConfigurableApplicationContext ctx = null;
+    
     private final Environment env;
 
     public AssetserviceApp(Environment env) {
@@ -60,7 +63,11 @@ public class AssetserviceApp {
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(AssetserviceApp.class);
         DefaultProfileUtil.addDefaultProfile(app);
-        Environment env = app.run(args).getEnvironment();
+//        Environment env = app.run(args).getEnvironment();
+        
+        ctx  = app.run(args);
+        Environment env = ctx.getEnvironment();
+        
         logApplicationStartup(env);
     }
 
@@ -95,4 +102,22 @@ public class AssetserviceApp {
             contextPath,
             env.getActiveProfiles());
     }
+    
+    /**
+	 * Utility method to get bean from spring context.
+	 * @param cls
+	 * @return
+	 */
+	public static <T> T getBean(Class<T> cls) {
+		return ctx.getBean(cls);
+	}
+	
+	public static Environment getEnvironment() {
+		return ctx.getEnvironment();
+	}
+	
+	public static int getServerPort() {
+		return Integer.parseInt(ctx.getEnvironment().getProperty("server.port"));
+	}
+	
 }

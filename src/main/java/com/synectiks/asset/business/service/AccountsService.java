@@ -17,7 +17,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.synectiks.asset.aws.AwsUtils;
+import com.synectiks.asset.aws.Utils;
 import com.synectiks.asset.config.Constants;
 import com.synectiks.asset.domain.Accounts;
 import com.synectiks.asset.domain.Organization;
@@ -169,7 +169,7 @@ public class AccountsService {
 			accounts.setAccountId(obj.get("accountId").asText());
 		}else {
 			try {
-				String accountId = AwsUtils.getAwsAccountId(obj.get("accessKey").asText(), obj.get("secretKey").asText(), Constants.DEFAULT_AWS_REGION);
+				String accountId = Utils.getAwsAccountId(obj.get("accessKey").asText(), obj.get("secretKey").asText(), Constants.DEFAULT_AWS_REGION);
 				accounts.setAccountId(accountId);
 			}catch(Exception e) {
 				logger.warn("AWS connection failed. "+e.getMessage());

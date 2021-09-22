@@ -31,7 +31,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.synectiks.asset.aws.AwsUtils;
+import com.synectiks.asset.AssetserviceApp;
+import com.synectiks.asset.aws.Utils;
 import com.synectiks.asset.config.Constants;
 import com.synectiks.asset.domain.Accounts;
 import com.synectiks.asset.domain.ApplicationAssets;
@@ -54,6 +55,9 @@ public class ApplicationAssetService {
 
 	@Autowired
 	InputConfigService inputConfigService;
+	
+//	@Autowired
+//	CacheService cacheService;
 	
 	public Asset getApplicationAsset(Long id) {
 		logger.info("Getting application asset by id: "+id);
@@ -282,12 +286,19 @@ public class ApplicationAssetService {
 					String newJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(newJsonarray);
 					
 					logger.debug("Updated dashboard json Array : "+newJson);
+					requestObj.put("viewJson", newJson);
 					inputConfig.setViewJson(newJson.getBytes());
 					inputConfig = inputConfigService.updateInputConfig(inputConfig);
 					
 				}
 				logger.info("View json updated successfully");	
 			}
+			// build dashboard cache
+			CacheService cacheService = AssetserviceApp.getBean(CacheService.class);
+			if(cacheService != null) {
+				cacheService.buildDashboardCache(requestObj);
+			}
+			
 		}
 	}
 
@@ -362,7 +373,7 @@ public class ApplicationAssetService {
 		
 		Accounts account = accountsService.getAccountByAccountAndTenantId(accountId, tenantId);
 		
-		AmazonS3 s3Client = AwsUtils.getAmazonS3Client(account.getAccessKey(), account.getSecretKey(), account.getRegion());
+		AmazonS3 s3Client = Utils.getAmazonS3Client(account.getAccessKey(), account.getSecretKey(), account.getRegion());
 		S3Object file = s3Client.getObject(account.getBucket(), fileName);
 		
 		Dashboard dashboard = new Dashboard();

@@ -1,5 +1,11 @@
 package com.synectiks.asset.config;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.synectiks.asset.domain.Dashboard;
+
 /**
  * Application constants.
  */
@@ -15,6 +21,8 @@ public final class Constants {
     
     public static final String INPUT_TYPE_PERFORMANCE = "Performance";
     public static final String INPUT_TYPE_AVAILABILITY = "Availability";
+    
+    public static final Map<String, Map<String, Map<String, List<Dashboard>> > > DASHBOARD_CACHE = new HashMap<String, Map<String, Map<String, List<Dashboard>> > >();
     
     private Constants() {
     }

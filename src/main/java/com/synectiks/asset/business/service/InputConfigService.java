@@ -1,8 +1,5 @@
 package com.synectiks.asset.business.service;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -16,13 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.synectiks.asset.config.Constants;
 import com.synectiks.asset.domain.Accounts;
 import com.synectiks.asset.domain.Dashboard;
-import com.synectiks.asset.domain.DashboardMeta;
 import com.synectiks.asset.domain.InputConfig;
 import com.synectiks.asset.repository.AccountsRepository;
 import com.synectiks.asset.repository.InputConfigRepository;
@@ -38,8 +32,8 @@ public class InputConfigService {
 	@Autowired
 	private AccountsRepository accountsRepository;
 	
-	@Autowired
-	private ApplicationAssetService applicationAssetService;
+//	@Autowired
+//	private ApplicationAssetService applicationAssetService;
 	
 	public InputConfig getInputConfig(Long id) {
 		logger.info("Getting input config by id: "+id);
@@ -52,7 +46,7 @@ public class InputConfigService {
 		return null;
 	}
 	
-	public List<InputConfig> searchInputConfig(Map<String, String> object) throws IOException {
+	public List<InputConfig> searchInputConfig(Map<String, String> object) {
 		logger.info("Searching Input config");
 		InputConfig obj = new InputConfig();
 		
@@ -92,73 +86,20 @@ public class InputConfigService {
 			list = this.inputConfigRepository.findAll();
 		}
 		
-		ObjectMapper mapper = new ObjectMapper();
-		StringBuffer sb = new StringBuffer();
 		for(InputConfig inputConfig: list) {
-			sb.setLength(0);
-			ArrayNode existingJsonArray = (ArrayNode)mapper.readTree(inputConfig.getViewJson());
-			List<Dashboard> dashList = new ArrayList<>();
-			if(existingJsonArray.isArray()) {
-		        for(JsonNode jsonNode : existingJsonArray) {
-		        	Dashboard ds = fillDashboard(mapper, jsonNode);
-		        	sb.append(ds.toString()).append(",");
-		        	dashList.add(ds);
-		        }
-		    }
-			inputConfig.setEnabledDashboard(sb.toString().substring(0, sb.toString().lastIndexOf(",")));
-			inputConfig.setEnabledDashboardList(dashList);
+			if(Constants.DASHBOARD_CACHE.containsKey(inputConfig.getAccounts().getTenantId())) {
+				Map<String, Map<String, List<Dashboard>>> accountMap = Constants.DASHBOARD_CACHE.get(inputConfig.getAccounts().getTenantId());
+				if(accountMap.containsKey(inputConfig.getAccounts().getAccountId())) {
+					Map<String, List<Dashboard>> inpMap = accountMap.get(inputConfig.getAccounts().getAccountId());
+					if(inpMap.containsKey(inputConfig.getInputType().toUpperCase())) {
+						inputConfig.setEnabledDashboardList(inpMap.get(inputConfig.getInputType().toUpperCase()));
+					}
+				}
+			}
 			logger.debug("Enabled dashboards : "+inputConfig.getEnabledDashboard());
 		}
 		
 		return list;
-	}
-	
-	public Dashboard fillDashboard(ObjectMapper mapper, JsonNode jsonNode) throws IOException {
-		Map<String, String> object = new HashMap<>();
-		object.put("cloudType",jsonNode.get("CloudName").asText());
-		object.put("elementType",jsonNode.get("ElementType").asText());
-		object.put("tenantId",jsonNode.get("TenantId").asText());
-		object.put("accountId",jsonNode.get("AccountId").asText());
-		object.put("inputType",jsonNode.get("InputType").asText());
-		object.put("fileName",jsonNode.get("FileName").asText());
-		object.put("dataSource",jsonNode.get("InputSourceId").asText());
-		
-		Dashboard ds = applicationAssetService.getDashboardFromAwsS3(object);
-		ObjectNode dataNode = (ObjectNode)mapper.readTree(ds.getData());
-		
-		if(jsonNode.get("Uid") != null) {
-			ds.setUid(jsonNode.get("Uid").asText());
-			dataNode.put("uid", jsonNode.get("Uid").asText());
-		}
-		if(jsonNode.get("Uuid") != null) {
-			ds.setUuid(jsonNode.get("Uuid").asText());
-		}
-		if(jsonNode.get("Slug") != null) {
-			ds.setSlug(jsonNode.get("Slug").asText());
-			ds.setTitle(jsonNode.get("Slug").asText());
-			dataNode.put("slug", jsonNode.get("Slug").asText());
-			dataNode.put("title", jsonNode.get("Slug").asText());
-		}
-		if(jsonNode.get("Version") != null) {
-			ds.setVersion(jsonNode.get("Version").asInt());
-			dataNode.put("version", jsonNode.get("Version").asText());
-		}
-		if(jsonNode.get("Id") != null) {
-			ds.setId(jsonNode.get("Id").asLong());
-			dataNode.put("id", jsonNode.get("Id").asLong());
-		}
-		if(jsonNode.get("IsCloud") != null) {
-			ds.setCloud(jsonNode.get("IsCloud").asBoolean());
-		}
-		String newData = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(dataNode);
-		
-		DashboardMeta meta = ds.getDashboardMeta();
-		meta.setSlug(ds.getSlug());
-		meta.setVersion(ds.getVersion());
-		ds.setDashboardMeta(meta);
-		
-		ds.setData(newData);
-		return ds;
 	}
 	
 	public InputConfig addInputConfig(ObjectNode obj) {
