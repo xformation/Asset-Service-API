@@ -1,4 +1,4 @@
-package com.synectiks.asset.aws;
+package com.synectiks.asset.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;

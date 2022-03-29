@@ -1,4 +1,4 @@
-package com.synectiks.asset.business.service;
+package com.synectiks.asset.business.appservice;
 
 import java.util.List;
 import java.util.Map;
@@ -87,8 +87,8 @@ public class InputConfigService {
 		}
 		
 		for(InputConfig inputConfig: list) {
-			if(Constants.DASHBOARD_CACHE.containsKey(inputConfig.getAccounts().getTenantId())) {
-				Map<String, Map<String, List<Dashboard>>> accountMap = Constants.DASHBOARD_CACHE.get(inputConfig.getAccounts().getTenantId());
+			if(Constants.ENABLED_DASHBOARD_CACHE.containsKey(inputConfig.getAccounts().getTenantId())) {
+				Map<String, Map<String, List<Dashboard>>> accountMap = Constants.ENABLED_DASHBOARD_CACHE.get(inputConfig.getAccounts().getTenantId());
 				if(accountMap.containsKey(inputConfig.getAccounts().getAccountId())) {
 					Map<String, List<Dashboard>> inpMap = accountMap.get(inputConfig.getAccounts().getAccountId());
 					if(inpMap.containsKey(inputConfig.getInputType().toUpperCase())) {

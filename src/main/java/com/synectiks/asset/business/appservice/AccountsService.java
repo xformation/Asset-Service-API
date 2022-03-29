@@ -1,4 +1,4 @@
-package com.synectiks.asset.business.service;
+package com.synectiks.asset.business.appservice;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -17,13 +17,13 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.synectiks.asset.aws.Utils;
 import com.synectiks.asset.config.Constants;
 import com.synectiks.asset.domain.Accounts;
 import com.synectiks.asset.domain.Organization;
 import com.synectiks.asset.domain.OrganizationalUnit;
 import com.synectiks.asset.repository.AccountsRepository;
 import com.synectiks.asset.repository.OrganizationalUnitRepository;
+import com.synectiks.asset.util.Utils;
 
 @Service
 public class AccountsService {
@@ -103,43 +103,67 @@ public class AccountsService {
 			accounts.setAccountId(reqObj.get("accountId"));
 			isFilter = true;
 		}
-		if (reqObj.get("accessKey") != null) {
-			accounts.setAccessKey(reqObj.get("accessKey"));
-			isFilter = true;
-		}
-		if (reqObj.get("secretKey") != null) {
-			accounts.setSecretKey(reqObj.get("secretKey"));
-			isFilter = true;
-		}
+//		if (reqObj.get("accessKey") != null) {
+//			accounts.setAccessKey(reqObj.get("accessKey"));
+//			isFilter = true;
+//		}
+//		if (reqObj.get("secretKey") != null) {
+//			accounts.setSecretKey(reqObj.get("secretKey"));
+//			isFilter = true;
+//		}
 		if (reqObj.get("region") != null) {
 			accounts.setRegion(reqObj.get("region"));
 			isFilter = true;
 		}
-		if (reqObj.get("bucket") != null) {
-			accounts.setBucket(reqObj.get("bucket"));
-			isFilter = true;
-		}
+//		if (reqObj.get("bucket") != null) {
+//			accounts.setBucket(reqObj.get("bucket"));
+//			isFilter = true;
+//		}
 		if (reqObj.get("email") != null) {
 			accounts.setEmail(reqObj.get("email"));
 			isFilter = true;
 		}
-		if (reqObj.get("password") != null) {
-			accounts.setPassword(reqObj.get("password"));
-			isFilter = true;
-		}
+//		if (reqObj.get("password") != null) {
+//			accounts.setPassword(reqObj.get("password"));
+//			isFilter = true;
+//		}
 		if (reqObj.get("cloudType") != null) {
 			accounts.setCloudType(reqObj.get("cloudType"));
 			isFilter = true;
 		}
-		if (reqObj.get("sourceJsonRef") != null) {
-			accounts.setSourceJsonRef(reqObj.get("sourceJsonRef"));
-			isFilter = true;
-		}
-		if (reqObj.get("sourceJsonContentType") != null) {
-			accounts.setSourceJsonContentType(reqObj.get("sourceJsonContentType"));
-			isFilter = true;
-		}
+//		if (reqObj.get("sourceJsonRef") != null) {
+//			accounts.setSourceJsonRef(reqObj.get("sourceJsonRef"));
+//			isFilter = true;
+//		}
+//		if (reqObj.get("sourceJsonContentType") != null) {
+//			accounts.setSourceJsonContentType(reqObj.get("sourceJsonContentType"));
+//			isFilter = true;
+//		}
 
+		if (reqObj.get("status") != null) {
+			accounts.setStatus(reqObj.get("status").toUpperCase());
+			isFilter = true;
+		}
+		if (reqObj.get("createdOn") != null) {
+			Instant inst = Instant.parse(reqObj.get("createdOn"));
+			accounts.setCreatedOn(inst);
+			isFilter = true;
+		}
+		
+		if (reqObj.get("createdBy") != null) {
+			accounts.setCreatedBy(reqObj.get("createdBy"));
+			isFilter = true;
+		}
+		if (reqObj.get("updatedOn") != null) {
+			Instant inst = Instant.parse(reqObj.get("updatedOn"));
+			accounts.setUpdatedOn(inst);
+			isFilter = true;
+		}
+		if (reqObj.get("updatedBy") != null) {
+			accounts.setUpdatedBy(reqObj.get("updatedBy"));
+			isFilter = true;
+		}
+		
 		List<Accounts> list = null;
 		if (isFilter) {
 			list = this.accountsRepository.findAll(Example.of(accounts), Sort.by(Direction.DESC, "id"));
@@ -147,11 +171,11 @@ public class AccountsService {
 			list = this.accountsRepository.findAll(Sort.by(Direction.DESC, "id"));
 		}
 		
-		Map<String, String> assetSarchParams = new HashMap<String, String>();
+//		Map<String, String> assetSarchParams = new HashMap<String, String>();
 		for(Accounts ac: list) {
 			Organization org = organizationService.getOrganization(Long.parseLong(ac.getTenantId()));
 			ac.setOrganizationName(org.getName());
-			assetSarchParams.put("accountId", ac.getAccountId());
+//			assetSarchParams.put("accountId", ac.getAccountId());
 		}
 		return list;
 	}
@@ -213,6 +237,10 @@ public class AccountsService {
 			}
 		}
 		
+		if (obj.get("status") != null) {
+			accounts.setStatus(obj.get("status").asText().toUpperCase());
+		}
+		
 	 	if (obj.get("user") != null) {
 			accounts.setCreatedBy(obj.get("user").asText());
 			accounts.setUpdatedBy(obj.get("user").asText());
@@ -252,6 +280,9 @@ public class AccountsService {
 //		accounts.setSourceJsonRef(sourceJsonRef);
 //		String sourceJsonContentType =(obj.get("sourceJsonContentType")).asText();
 //		accounts.setSourceJsonContentType(sourceJsonContentType);
+		if (obj.get("status") != null) {
+			accounts.setStatus(obj.get("status").asText().toUpperCase());
+		}
 		if (obj.get("user") != null) {
 			accounts.setUpdatedBy(obj.get("user").asText());
 		} else {

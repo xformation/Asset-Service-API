@@ -1,4 +1,4 @@
-package com.synectiks.asset.business.service;
+package com.synectiks.asset.business.cacheservice;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,17 +18,19 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.synectiks.asset.aws.Utils;
+import com.synectiks.asset.business.appservice.AccountsService;
+import com.synectiks.asset.business.appservice.InputConfigService;
 import com.synectiks.asset.config.Constants;
 import com.synectiks.asset.domain.Accounts;
 import com.synectiks.asset.domain.Dashboard;
 import com.synectiks.asset.domain.DashboardMeta;
 import com.synectiks.asset.domain.InputConfig;
+import com.synectiks.asset.util.Utils;
 
 @Service
-public class CacheService {
+public class EnabledDashboardCacheService {
 	
-	private static final Logger logger = LoggerFactory.getLogger(CacheService.class);
+	private static final Logger logger = LoggerFactory.getLogger(EnabledDashboardCacheService.class);
 	
 	@Autowired
 	private AccountsService accountsService;
@@ -38,10 +40,10 @@ public class CacheService {
 	
 	@PostConstruct
     private void postConstruct() throws IOException {
-		this.initDashboardCache();
+		this.initEnableDashboardCache();
     }
 	
-	public void initDashboardCache() throws IOException {
+	public void initEnableDashboardCache() throws IOException {
 		logger.info("Initializing dashboard cache");
 		List<InputConfig> inputConfigList = inputConfigService.searchInputConfig(new HashMap<String, String>());
 		
@@ -51,12 +53,12 @@ public class CacheService {
 			requestObj.put("tenantId", inputConfig.getTenantId());
 			requestObj.put("inputType", inputConfig.getInputType());
 			requestObj.put("viewJson", new String(inputConfig.getViewJson()));
-			this.buildDashboardCache(requestObj);
+			this.preBuild(requestObj);
 		}
-		logger.info("Dashboard cache Initialized");
+		logger.info("Dashboard cache initialized");
 	}
 	
-	public void buildDashboardCache(ObjectNode requestObj) throws IOException {
+	public void preBuild(ObjectNode requestObj) throws IOException {
 		logger.info("Creating dashboard cache");
 		String accountId = requestObj.get("accountId").asText();
 		String tenantId = requestObj.get("tenantId").asText();
@@ -71,46 +73,19 @@ public class CacheService {
 		List<Dashboard> dashList = new ArrayList<>();
 		if(jsonArray.isArray()) {
 	        for(JsonNode jsonNode : jsonArray) {
-	        	Dashboard ds = fillDashboard(mapper, jsonNode, ac, s3Client);
+	        	Dashboard ds = downloadDashboardFromAwsS3(mapper, jsonNode, ac, s3Client);
 	        	dashList.add(ds);
 	        }
 	    }
 		 
-		createEnabledDashboardCache(accountId, tenantId, inputType, dashList);
+		buildCache(accountId, tenantId, inputType, dashList);
 
 		logger.info("Dashboard cache created");
 	}
 
-	private static void createEnabledDashboardCache(String accountId, String tenantId, String inputType,
-			List<Dashboard> dashList) {
-		if(!Constants.DASHBOARD_CACHE.containsKey(tenantId)) {
-			Map<String, List<Dashboard>> inputMap = new HashMap<>();
-			inputMap.put(inputType.toUpperCase(), dashList);
-			
-			Map<String, Map<String, List<Dashboard>> > accountMap = new HashMap<>();
-			accountMap.put(accountId, inputMap);
-			
-			Constants.DASHBOARD_CACHE.put(tenantId, accountMap);
-		}else {
-			Map<String, Map<String, List<Dashboard>> > accountMap = Constants.DASHBOARD_CACHE.get(tenantId);
-			if(!accountMap.containsKey(accountId)) {
-				Map<String, List<Dashboard>> inputMap = new HashMap<>();
-				inputMap.put(inputType.toUpperCase(), dashList);
-				accountMap.put(accountId, inputMap);
-			}else {
-				Map<String, List<Dashboard>> inpMap = accountMap.get(accountId);
-				if(!inpMap.containsKey(inputType.toUpperCase())) {
-					inpMap = new HashMap<>();
-					inpMap.put(inputType.toUpperCase(), dashList);
-				}else {
-					inpMap.put(inputType.toUpperCase(), dashList);
-				}
-				accountMap.put(accountId, inpMap);
-			}
-		}
-	}
 	
-	private Dashboard fillDashboard(ObjectMapper mapper, JsonNode jsonNode, Accounts account, AmazonS3 s3Client) throws IOException {
+	
+	private Dashboard downloadDashboardFromAwsS3(ObjectMapper mapper, JsonNode jsonNode, Accounts account, AmazonS3 s3Client) throws IOException {
 		Map<String, String> object = new HashMap<>();
 		object.put("cloudType",jsonNode.get("CloudName").asText());
 		object.put("elementType",jsonNode.get("ElementType").asText());
@@ -158,5 +133,33 @@ public class CacheService {
 		return ds;
 	}
 	
+	private static void buildCache(String accountId, String tenantId, String inputType,
+			List<Dashboard> dashList) {
+		if(!Constants.ENABLED_DASHBOARD_CACHE.containsKey(tenantId)) {
+			Map<String, List<Dashboard>> inputMap = new HashMap<>();
+			inputMap.put(inputType.toUpperCase(), dashList);
+			
+			Map<String, Map<String, List<Dashboard>> > accountMap = new HashMap<>();
+			accountMap.put(accountId, inputMap);
+			
+			Constants.ENABLED_DASHBOARD_CACHE.put(tenantId, accountMap);
+		}else {
+			Map<String, Map<String, List<Dashboard>> > accountMap = Constants.ENABLED_DASHBOARD_CACHE.get(tenantId);
+			if(!accountMap.containsKey(accountId)) {
+				Map<String, List<Dashboard>> inputMap = new HashMap<>();
+				inputMap.put(inputType.toUpperCase(), dashList);
+				accountMap.put(accountId, inputMap);
+			}else {
+				Map<String, List<Dashboard>> inpMap = accountMap.get(accountId);
+				if(!inpMap.containsKey(inputType.toUpperCase())) {
+					inpMap = new HashMap<>();
+					inpMap.put(inputType.toUpperCase(), dashList);
+				}else {
+					inpMap.put(inputType.toUpperCase(), dashList);
+				}
+				accountMap.put(accountId, inpMap);
+			}
+		}
+	}
 	
 }

@@ -17,12 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.synectiks.asset.business.service.CloudAssetService;
-import com.synectiks.asset.domain.Accounts;
+import com.synectiks.asset.business.appservice.CloudAssetService;
 import com.synectiks.asset.domain.Asset;
-import com.synectiks.asset.domain.Inputs;
 import com.synectiks.asset.domain.Status;
-import com.synectiks.asset.repository.AccountsRepository;
 
 @RestController
 @RequestMapping("/api")
@@ -31,16 +28,12 @@ public class CloudAssetController {
 	private static final Logger logger = LoggerFactory.getLogger(CloudAssetController.class);
 	
 	@Autowired
-	private AccountsRepository accountsRepository;
-	
-	@Autowired
 	private CloudAssetService cloudAssetService;
 	
-	@GetMapping("/getDiscoveredAsset/{id}")
-	public ResponseEntity<List<Asset>> getCloudAssetByAccountId(@PathVariable Long id) {
-		logger.info("Request to get cloud asset by account id: "+id);
-		Accounts acc = accountsRepository.findById(id).orElse(null);
-		List<Asset> asset = cloudAssetService.getCloudAssets(acc);
+	@GetMapping("/getDiscoveredAsset/{accountId}")
+	public ResponseEntity<List<Asset>> getCloudAssetByAccountId(@PathVariable Long accountId) {
+		logger.info("Request to get cloud asset by account id: "+accountId);
+		List<Asset> asset = cloudAssetService.getCloudAssets(accountId);
 		if(asset != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(asset);
 		}

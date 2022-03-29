@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.synectiks.asset.business.service.ApplicationAssetService;
+import com.synectiks.asset.business.appservice.ApplicationAssetService;
 import com.synectiks.asset.domain.Asset;
 import com.synectiks.asset.domain.Dashboard;
 import com.synectiks.asset.domain.Status;

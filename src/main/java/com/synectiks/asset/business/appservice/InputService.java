@@ -1,4 +1,4 @@
-package com.synectiks.asset.business.service;
+package com.synectiks.asset.business.appservice;
 
 import java.time.Instant;
 import java.util.List;

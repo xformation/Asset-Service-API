@@ -1,4 +1,4 @@
-package com.synectiks.asset.business.service;
+package com.synectiks.asset.business.appservice;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -38,8 +38,15 @@ public class CloudAssetService {
 	@Autowired
 	private AccountsService accountsService;
 	
+	public List<Asset> getCloudAssets(Long accountId) {
+		logger.info("Getting cloud asset by account id: "+accountId);
+		Accounts acc = accountsService.getAccount(accountId);
+		List<Asset> assetList = getCloudAssets(acc);
+		return assetList;
+	}
+	
 	public List<Asset> getCloudAssets(Accounts accounts) {
-		logger.info("Getting cloud asset by account id: "+accounts);
+		logger.info("Getting cloud asset for account : "+accounts.toString());
 		CloudAsset cloudAsset = new CloudAsset();
 		cloudAsset.setAccountId(accounts.getAccountId());
 		List<CloudAsset> list = cloudAssetRepository.findAll(Example.of(cloudAsset));
@@ -175,12 +182,6 @@ public class CloudAssetService {
 			cloudAsset.setCreatedOn(now);
 			cloudAsset.setUpdatedOn(now);
 			
-//			Accounts ac = getAccount(obj);
-			
-//			if(obj.get("type").asText().equalsIgnoreCase("AWS") && obj.get("name").asText().equalsIgnoreCase("VPC")) {
-//				List<CustomVpc> vpcList = getAwsVpcs(ac);
-//			}
-			
 			cloudAsset = cloudAssetRepository.save(cloudAsset);
 			logger.info("Cloud asset record added successfully: Cloud asset: "+cloudAsset.toString());
 			Asset asset = new Asset();
@@ -195,25 +196,50 @@ public class CloudAssetService {
 		
 	}
 	
-//	private List<CustomVpc> getAwsVpcs(Accounts ac) {
-//		VpcProcessor vpcProcessor = new VpcProcessor(ac.getAccessKey(), ac.getSecretKey(), Region.of(ac.getRegion()));
-//		List<CustomVpc> vpcList =  vpcProcessor.describeEC2Vpcs();
-//		return vpcList;
-//	}
-//	
-//	private List<CustomVpc> getAwsVpc(Accounts ac, String vpcId) {
-//		VpcProcessor vpcProcessor = new VpcProcessor(ac.getAccessKey(), ac.getSecretKey(), Region.of(ac.getRegion()));
-//		List<CustomVpc> vpcList =  vpcProcessor.describeEC2VpcById(vpcId);
-//		return vpcList;
-//	}
-//	
-//	private Accounts getAccount(ObjectNode obj) {
-//		Map<String, String> map = new HashMap<>();
-//		map.put("accountId", obj.get("accountId").asText());
-//		List<Accounts> list = this.accountsService.searchAccounts(map);
-//		if(list.size() == 0) {
-//			return null; 
-//		}
-//		return list.get(0);
-//	}
+	public CloudAsset saveCloudAsset(CloudAsset obj) {
+		logger.info("Saving cloud asset in database");
+		obj = cloudAssetRepository.save(obj);
+		logger.info("Cloud asset saved successfully in database");
+		return obj;
+	}
+	
+	public List<CloudAsset> searchDiscoveredAsset(Map<String, String> object) {
+		logger.info("Searching discovered asset");
+		CloudAsset obj = new CloudAsset();
+		
+		boolean isFilter = false;
+		if (object.get("id") != null) {
+			obj.setId(Long.parseLong(object.get("id")));
+			isFilter = true;
+		}
+		if (object.get("accountId") != null) {
+			obj.setAccountId(object.get("accountId"));
+			isFilter = true;
+		}
+		if (object.get("type") != null) {
+			obj.setType(object.get("type"));
+			isFilter = true;
+		}
+		if (object.get("name") != null) {
+			obj.setName(object.get("name"));
+			isFilter = true;
+		}
+		if (object.get("description") != null) {
+			obj.setDescription(object.get("description"));
+			isFilter = true;
+		}
+		if (object.get("status") != null) {
+			obj.setStatus(object.get("status").toUpperCase());
+			isFilter = true;
+		}
+		
+		List<CloudAsset> list = null;
+		if (isFilter) {
+			list = this.cloudAssetRepository.findAll(Example.of(obj), Sort.by(Direction.ASC, "name"));
+		} else {
+			list = this.cloudAssetRepository.findAll(Sort.by(Direction.ASC, "name"));
+		}
+		
+		return list;
+	}
 }

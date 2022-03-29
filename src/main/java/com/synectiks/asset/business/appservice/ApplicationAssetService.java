@@ -1,4 +1,4 @@
-package com.synectiks.asset.business.service;
+package com.synectiks.asset.business.appservice;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,7 +32,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.synectiks.asset.AssetserviceApp;
-import com.synectiks.asset.aws.Utils;
+import com.synectiks.asset.business.cacheservice.EnabledDashboardCacheService;
 import com.synectiks.asset.config.Constants;
 import com.synectiks.asset.domain.Accounts;
 import com.synectiks.asset.domain.ApplicationAssets;
@@ -41,6 +41,7 @@ import com.synectiks.asset.domain.Dashboard;
 import com.synectiks.asset.domain.DashboardMeta;
 import com.synectiks.asset.domain.InputConfig;
 import com.synectiks.asset.repository.ApplicationAssetsRepository;
+import com.synectiks.asset.util.Utils;
 
 @Service
 public class ApplicationAssetService {
@@ -294,9 +295,9 @@ public class ApplicationAssetService {
 				logger.info("View json updated successfully");	
 			}
 			// build dashboard cache
-			CacheService cacheService = AssetserviceApp.getBean(CacheService.class);
+			EnabledDashboardCacheService cacheService = AssetserviceApp.getBean(EnabledDashboardCacheService.class);
 			if(cacheService != null) {
-				cacheService.buildDashboardCache(requestObj);
+				cacheService.preBuild(requestObj);
 			}
 			
 		}

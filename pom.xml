@@ -99,11 +99,22 @@
     </dependencyManagement>
 
     <dependencies>
-    	<!-- <dependency>
+    	<dependency>
             <groupId>com.synectiks.aws</groupId>
 			<artifactId>xformation-compliance-aws-collector</artifactId>
 			<version>1.0.0</version>
-        </dependency> -->
+			<exclusions>
+		        <exclusion>
+		            <groupId>org.slf4j</groupId>
+		            <artifactId>slf4j-log4j12</artifactId>
+		        </exclusion>
+	        </exclusions>
+        </dependency>
+        <dependency>
+		    <groupId>org.jsoup</groupId>
+		    <artifactId>jsoup</artifactId>
+		    <version>1.14.3</version>
+		</dependency>
         <dependency>
             <groupId>io.github.jhipster</groupId>
             <artifactId>jhipster-framework</artifactId>

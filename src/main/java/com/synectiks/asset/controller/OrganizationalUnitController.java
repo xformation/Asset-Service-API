@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.synectiks.asset.business.service.OrganizationService;
+import com.synectiks.asset.business.appservice.OrganizationService;
 import com.synectiks.asset.config.Constants;
 import com.synectiks.asset.domain.Organization;
 import com.synectiks.asset.domain.OrganizationalUnit;
