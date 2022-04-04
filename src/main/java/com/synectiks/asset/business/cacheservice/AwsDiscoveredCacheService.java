@@ -34,10 +34,10 @@ public class AwsDiscoveredCacheService {
 	@Autowired
 	private CloudAssetService cloudAssetService;
 	
-	@PostConstruct
-    private void postConstruct() throws Exception {
-		this.initEnableDashboardCache();
-    }
+//	@PostConstruct
+//    private void postConstruct() throws Exception {
+//		this.initEnableDashboardCache();
+//    }
 	
 	public void initEnableDashboardCache() throws Exception {
 		logger.info("Initializing discovered asset cache");

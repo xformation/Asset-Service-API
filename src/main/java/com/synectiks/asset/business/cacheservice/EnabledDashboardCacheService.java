@@ -38,10 +38,10 @@ public class EnabledDashboardCacheService {
 	@Autowired
 	private InputConfigService inputConfigService;
 	
-	@PostConstruct
-    private void postConstruct() throws IOException {
-		this.initEnableDashboardCache();
-    }
+//	@PostConstruct
+//    private void postConstruct() throws IOException {
+//		this.initEnableDashboardCache();
+//    }
 	
 	public void initEnableDashboardCache() throws IOException {
 		logger.info("Initializing dashboard cache");
